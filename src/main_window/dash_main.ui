@@ -1,0 +1,1061 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1040</width>
+    <height>744</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow#MainWindow {
+    background: qlineargradient(
+        x1:0, y1:0, x2:1, y2:1,
+        stop:0 #EFF6FF,
+        stop:1 #E0E7FF
+    );
+    font-family: 'Tajawal', 'Segoe UI', 'Arial', sans-serif;
+}
+</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">QWidget#centralwidget { background: transparent; }</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>24</number>
+    </property>
+    <property name="topMargin">
+     <number>24</number>
+    </property>
+    <property name="rightMargin">
+     <number>24</number>
+    </property>
+    <property name="bottomMargin">
+     <number>24</number>
+    </property>
+    <item>
+     <widget class="QFrame" name="headerFrame">
+      <property name="styleSheet">
+       <string notr="true">QFrame#headerFrame {
+border-top-right-radius: 20px;
+border-top-left-radius: 20px;
+border: 1px solid rgb(216, 216, 216);
+border-bottom: none;
+background-color: rgba(255, 255, 255, 100);
+
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <layout class="QHBoxLayout" name="headerLayout">
+       <property name="spacing">
+        <number>12</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>5</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QToolButton" name="logoutBtn">
+           <property name="minimumSize">
+            <size>
+             <width>45</width>
+             <height>45</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>45</width>
+             <height>45</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">/* Base State */
+QToolButton#logoutBtn {
+    background-color: #FEF2F2;    /* Very light rose/red wash */
+    color: #EF4444;               /* Primary Red text */
+    border: none;
+    border-radius: 20px;          /* Pill shape (adjust based on height) */
+}
+
+/* Hover State: Background becomes slightly more vivid */
+QToolButton#logoutBtn:hover {
+    background-color: #FEE2E2;    /* Slightly deeper rose */
+    color: #DC2626;               /* Deeper red text */
+}
+
+/* Pressed State: Tactile &quot;click&quot; effect */
+QToolButton#logoutBtn:pressed {
+    background-color: #FECACA;    /* Darkest rose wash for click feedback */
+
+}
+
+/* Disabled State: Faded look */
+QToolButton#logoutBtn:disabled {
+    background-color: #F9FAFB;    /* Neutral grey-ish wash */
+    color: #D1D5DB;               /* Faded grey text */
+}
+</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../../assets/logout.svg</normaloff>../../assets/logout.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+           <property name="autoRepeatInterval">
+            <number>300</number>
+           </property>
+           <property name="popupMode">
+            <enum>QToolButton::DelayedPopup</enum>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonIconOnly</enum>
+           </property>
+           <property name="autoRaise">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="headerSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Expanding</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="minimumSize">
+          <size>
+           <width>354</width>
+           <height>69</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>354</width>
+           <height>69</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap>../../assets/Basmala.svg.png</pixmap>
+         </property>
+         <property name="scaledContents">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Expanding</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QToolButton" name="BackupBtn">
+           <property name="minimumSize">
+            <size>
+             <width>105</width>
+             <height>45</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>45</width>
+             <height>45</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Tajawal</family>
+             <pointsize>10</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">/* Base State */
+QToolButton#BackupBtn {
+    background-color: #EFF6FF;    /* Very light blue wash (Blue-50) */
+    color: #3B82F6;               /* Primary Blue text */
+    border: none;
+    border-radius: 20px;          /* Matches the pill shape of logout */
+    padding: 5px;
+}
+
+/* Hover State: Becomes more vivid blue */
+QToolButton#BackupBtn:hover {
+    background-color: #DBEAFE;    /* Light blue (Blue-100) */
+    color: #2563EB;               /* Deeper blue text */
+}
+
+/* Pressed State: Tactile feedback */
+QToolButton#BackupBtn:pressed {
+    background-color: #BFDBFE;    /* Medium blue (Blue-200) for click feedback */
+    padding-top: 10px;            /* Subtle physical sink effect */
+    padding-bottom: 6px;
+}
+
+/* Disabled State: Neutral look */
+QToolButton#BackupBtn:disabled {
+    background-color: #F9FAFB;    /* Neutral grey-ish wash */
+    color: #D1D5DB;               /* Faded grey text */
+}
+</string>
+           </property>
+           <property name="text">
+            <string>نسخ احتياطي</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../../assets/logout.svg</normaloff>../../assets/logout.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+           <property name="autoRepeatInterval">
+            <number>300</number>
+           </property>
+           <property name="popupMode">
+            <enum>QToolButton::DelayedPopup</enum>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonTextOnly</enum>
+           </property>
+           <property name="autoRaise">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QScrollArea" name="ScrollArea_Body">
+      <property name="styleSheet">
+       <string notr="true">QScrollBar:vertical { background: transparent; width: 8px; margin: 0; }
+QScrollBar::handle:vertical { background: #CBD5E1; border-radius: 4px; min-height: 20px; }
+QScrollBar::handle:vertical:hover { background: #94A3B8; }
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; background: none; }
+QScrollBar:horizontal { background: transparent; height: 8px; }
+QScrollBar::handle:horizontal { background: #CBD5E1; border-radius: 4px; min-width: 20px; }
+QScrollBar::handle:horizontal:hover { background: #94A3B8; }
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal { width: 0; background: none; }
+</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAsNeeded</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAsNeeded</enum>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>992</width>
+         <height>578</height>
+        </rect>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <layout class="QVBoxLayout" name="scrollLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QFrame" name="homeFrame">
+          <property name="styleSheet">
+           <string notr="true">QFrame#homeFrame {
+background-color: transparent;
+}
+</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QFrame" name="frame">
+             <property name="styleSheet">
+              <string notr="true">
+QFrame#frame {
+background-color: qlineargradient(
+        spread:pad, 
+        x1:0, y1:0, x2:1, y2:1, 
+        stop:0 rgba(101, 181, 255, 80),   /* #FF9600 بـ شفافية 80% */
+        stop:0.5 rgba(255, 255, 255, 102),    /* #000000 بـ شفافية 40% */
+        stop:1 rgba(0, 0, 0, 204)       /* #000000 بـ شفافية 80% */
+    );
+}</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_4">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_6">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <spacer name="verticalSpacer_2">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_4">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <spacer name="horizontalSpacer_6">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QFrame" name="dashFrame">
+                    <property name="minimumSize">
+                     <size>
+                      <width>400</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>16777215</width>
+                      <height>120</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QFrame#dashFrame {
+background-color: rgba(255, 255, 255, 140);
+border-radius: 25px;
+}</string>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_3">
+                     <property name="spacing">
+                      <number>0</number>
+                     </property>
+                     <item alignment="Qt::AlignHCenter">
+                      <widget class="QLabel" name="heroTitleLabel">
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>100</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Tajawal</family>
+                         <pointsize>48</pointsize>
+                         <weight>81</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">
+QLabel {
+background-color: transparent;
+color: #000000;
+font-weight: 650;
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>كناش</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_5">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_3">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::Fixed</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>15</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <spacer name="horizontalSpacer_3">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QFrame" name="Frame_Btns">
+                    <property name="minimumSize">
+                     <size>
+                      <width>690</width>
+                      <height>350</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>16777215</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QFrame#Frame_Btns {
+	background-color: rgba(255, 255, 255, 110);
+	border-radius: 25px;
+	border: 1px solid rgb(176, 176, 176);
+
+}
+
+/* Base State: White card with light border */
+QToolButton {
+    background-color: #FFFFFF;
+    border-radius: 14px;
+    border: 1px solid #E5E7EB;
+    padding: 30px 14px;
+    text-align: right; /* Aligns Arabic text to the right */
+    font-weight: 600;
+    color: #4B5563; /* Slate grey for unselected text */
+	spacing: 6px;
+}
+
+/* Hover State: Subtle grey wash */
+QToolButton:hover {
+    background-color: #F9FAFB;
+    border-color: #D1D5DB;
+    color: #111827; /* Darker text on hover */
+}
+
+/* Checked State: Dark Navy (Active Page) */
+QToolButton:checked {
+    background-color: #0F172A; /* Deep Navy from your Hero frame */
+    color: #FFFFFF;            /* White text */
+    border: none;
+}
+
+/* Pressed State: Tactile feedback when clicking */
+QToolButton:pressed {
+    background-color: #E5E7EB;
+    padding: 30px 14px;
+}
+
+/* Disabled State: Faded out if a menu item is locked */
+QToolButton:disabled {
+    background-color: #F3F4F6;
+    color: #9CA3AF;
+    border: 1px solid #E5E7EB;
+}
+
+/* Specific styling for the Icon */
+QToolButton::menu-indicator {
+    image: none; /* Hide the default dropdown arrow */
+}</string>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout">
+                     <property name="leftMargin">
+                      <number>15</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>15</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>15</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>15</number>
+                     </property>
+                     <property name="spacing">
+                      <number>0</number>
+                     </property>
+                     <item row="3" column="2">
+                      <widget class="QToolButton" name="Button_ClientsReview">
+                       <property name="minimumSize">
+                        <size>
+                         <width>200</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>200</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Tajawal</family>
+                         <pointsize>13</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="text">
+                        <string>مراجعة الزبناء</string>
+                       </property>
+                       <property name="icon">
+                        <iconset>
+                         <normaloff>../../assets/clients.svg</normaloff>../../assets/clients.svg</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>40</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                       <property name="toolButtonStyle">
+                        <enum>Qt::ToolButtonTextUnderIcon</enum>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="4">
+                      <widget class="QToolButton" name="Button_CMITrans">
+                       <property name="minimumSize">
+                        <size>
+                         <width>200</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>200</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Tajawal</family>
+                         <pointsize>13</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="text">
+                        <string>عمليات TPE</string>
+                       </property>
+                       <property name="icon">
+                        <iconset>
+                         <normaloff>../../assets/creditcard.svg</normaloff>../../assets/creditcard.svg</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>35</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="popupMode">
+                        <enum>QToolButton::DelayedPopup</enum>
+                       </property>
+                       <property name="toolButtonStyle">
+                        <enum>Qt::ToolButtonTextUnderIcon</enum>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="0">
+                      <widget class="QToolButton" name="Button_DailyEntry">
+                       <property name="minimumSize">
+                        <size>
+                         <width>200</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>200</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Tajawal</family>
+                         <pointsize>13</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="cursor">
+                        <cursorShape>ArrowCursor</cursorShape>
+                       </property>
+                       <property name="text">
+                        <string>القيد اليومي</string>
+                       </property>
+                       <property name="icon">
+                        <iconset>
+                         <normaloff>../../assets/book.svg</normaloff>../../assets/book.svg</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>45</width>
+                         <height>45</height>
+                        </size>
+                       </property>
+                       <property name="autoRepeatInterval">
+                        <number>300</number>
+                       </property>
+                       <property name="toolButtonStyle">
+                        <enum>Qt::ToolButtonTextUnderIcon</enum>
+                       </property>
+                       <property name="autoRaise">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="4">
+                      <widget class="QToolButton" name="Button_Factures">
+                       <property name="minimumSize">
+                        <size>
+                         <width>200</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>200</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Tajawal</family>
+                         <pointsize>13</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="text">
+                        <string>الفواتير</string>
+                       </property>
+                       <property name="icon">
+                        <iconset>
+                         <normaloff>../../assets/factures.svg</normaloff>../../assets/factures.svg</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>35</width>
+                         <height>32</height>
+                        </size>
+                       </property>
+                       <property name="toolButtonStyle">
+                        <enum>Qt::ToolButtonTextUnderIcon</enum>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="2">
+                      <widget class="QToolButton" name="Button_DailyBalance">
+                       <property name="minimumSize">
+                        <size>
+                         <width>200</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>200</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Tajawal</family>
+                         <pointsize>13</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="text">
+                        <string>الرصيد اليومي</string>
+                       </property>
+                       <property name="icon">
+                        <iconset>
+                         <normaloff>../../assets/pocket.svg</normaloff>../../assets/pocket.svg</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>35</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="toolButtonStyle">
+                        <enum>Qt::ToolButtonTextUnderIcon</enum>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="0">
+                      <widget class="QToolButton" name="Button_AccountReview">
+                       <property name="maximumSize">
+                        <size>
+                         <width>200</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Tajawal</family>
+                         <pointsize>13</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="text">
+                        <string>رصيد الحسابات
+و الوكالات</string>
+                       </property>
+                       <property name="icon">
+                        <iconset>
+                         <normaloff>../../assets/building.svg</normaloff>../../assets/building.svg</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>35</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="toolButtonStyle">
+                        <enum>Qt::ToolButtonTextUnderIcon</enum>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_4">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>7</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QFrame" name="footerFrame">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QFrame#footerFrame {
+font: 9pt &quot;Overpass&quot;;
+border-bottom-right-radius: 15px;
+border-bottom-left-radius: 15px;
+border: 1px solid rgb(216, 216, 216);
+border-top: none;
+background-color: rgba(255, 255, 255, 180);
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <layout class="QHBoxLayout" name="footerLayout">
+       <property name="spacing">
+        <number>8</number>
+       </property>
+       <item>
+        <spacer name="footerSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>5</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="footerCodesLayout">
+         <item alignment="Qt::AlignBottom">
+          <widget class="QLabel" name="footerIceLabel">
+           <property name="text">
+            <string>ICE: 001788127000090</string>
+           </property>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignBottom">
+          <widget class="QLabel" name="footerIfLabel">
+           <property name="text">
+            <string>IF: 06994700</string>
+           </property>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignBottom">
+          <widget class="QLabel" name="footerRcLabel">
+           <property name="text">
+            <string>RC: 2241</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="footerSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item alignment="Qt::AlignBottom">
+        <widget class="QLabel" name="footerCopyLabel">
+         <property name="text">
+          <string>© 2026 Visa Services Agency System. All rights reserved.</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="footerSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>5</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

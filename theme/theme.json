@@ -1,0 +1,260 @@
+{
+    "meta": {
+        "name": "Fintech Cash Management Theme",
+        "version": "2.0",
+        "author": "Abdelfatah Laktaoui",
+        "description": "Full light/dark color token system extracted from HTML prototypes. Covers window, glass panels, all widget types, 3 button variants, table, totals, and scrollbar."
+    },
+    "light": {
+        "window": {
+            "gradient_start": "#EFF6FF",
+            "gradient_end": "#E0E7FF"
+        },
+        "glass": {
+            "card_bg": "rgba(255, 255, 255, 0.88)",
+            "card_border": "rgba(255, 255, 255, 0.65)",
+            "header_bg": "rgba(255, 255, 255, 0.62)",
+            "header_border": "rgba(209, 213, 219, 0.50)",
+            "section_bg": "rgba(255, 255, 255, 0.52)",
+            "section_border": "rgba(255, 255, 255, 0.62)",
+            "footer_bg": "rgba(255, 255, 255, 0.82)",
+            "footer_border": "#E5E7EB",
+            "table_frame_bg": "rgba(255, 255, 255, 0.62)"
+        },
+        "text": {
+            "primary": "#1F2937",
+            "secondary": "#6B7280",
+            "muted": "#9CA3AF",
+            "inverse": "#FFFFFF",
+            "disabled": "#94A3B8",
+            "link": "#3B82F6"
+        },
+        "border": {
+            "default": "#E5E7EB",
+            "strong": "#D1D5DB",
+            "focus": "#3B82F6",
+            "hover": "#93C5FD"
+        },
+        "primary": {
+            "base": "#3B82F6",
+            "hover": "#2563EB",
+            "pressed": "#1D4ED8",
+            "light_bg": "#DBEAFE",
+            "light_text": "#1E40AF"
+        },
+        "status": {
+            "success_text": "#15803D",
+            "success_bg": "#DCFCE7",
+            "success_border": "#BBF7D0"
+        },
+        "buttons": {
+            "primary": {
+                "bg": "#3B82F6",
+                "bg_hover": "#2563EB",
+                "bg_pressed": "#1D4ED8",
+                "text": "#FFFFFF",
+                "border": "none"
+            },
+            "secondary": {
+                "bg": "#FFFFFF",
+                "bg_hover": "#F9FAFB",
+                "bg_pressed": "#F3F4F6",
+                "text": "#374151",
+                "border": "#D1D5DB",
+                "border_hover": "#9CA3AF"
+            },
+            "ghost_normal": {
+                "bg": "transparent",
+                "bg_hover": "transparent",
+                "text": "#6B7280",
+                "text_hover": "#374151",
+                "border": "none"
+            },
+            "ghost_danger": {
+                "bg": "transparent",
+                "bg_hover": "transparent",
+                "text": "#EF4444",
+                "text_hover": "#B91C1C",
+                "border": "none"
+            },
+            "icon_only": {
+                "bg": "transparent",
+                "bg_hover": "rgba(209, 213, 219, 0.55)",
+                "text": "#6B7280",
+                "border": "none"
+            }
+        },
+        "input": {
+            "bg": "#FFFFFF",
+            "text": "#374151",
+            "placeholder": "#9CA3AF",
+            "border": "#E5E7EB",
+            "focus_border": "#3B82F6",
+            "hover_border": "#93C5FD",
+            "selection_bg": "#DBEAFE",
+            "selection_text": "#1E40AF",
+            "disabled_bg": "#F3F4F6",
+            "disabled_text": "#9CA3AF"
+        },
+        "table": {
+            "bg": "transparent",
+            "header_bg": "rgba(249, 250, 251, 0.85)",
+            "header_text": "#374151",
+            "row_text": "#4B5563",
+            "row_hover": "rgba(239, 246, 255, 0.55)",
+            "row_selected_bg": "#DBEAFE",
+            "row_selected_text": "#1E40AF",
+            "grid": "rgba(243, 244, 246, 0.90)",
+            "alternate_row": "rgba(255, 255, 255, 0.22)",
+            "row_border": "#E5E7EB"
+        },
+        "totals": {
+            "frame_bg": "#F9FAFB",
+            "frame_border": "#E5E7EB",
+            "label_text": "#6B7280",
+            "value_text": "#1F2937",
+            "grand_label_text": "#3B82F6",
+            "grand_value_text": "#3B82F6",
+            "separator": "#D1D5DB"
+        },
+        "scrollbar": {
+            "track": "transparent",
+            "thumb": "#CBD5E1",
+            "thumb_hover": "#94A3B8"
+        },
+        "icon_colors": {
+            "title": "#3B82F6",
+            "settings": "#6B7280",
+            "btn_primary": "#FFFFFF",
+            "btn_secondary": "#374151",
+            "btn_ghost": "#6B7280",
+            "btn_danger": "#EF4444"
+        }
+    },
+    "dark": {
+        "window": {
+            "gradient_start": "#0F172A",
+            "gradient_end": "#000000"
+        },
+        "glass": {
+            "card_bg": "rgba(30, 41, 59, 0.60)",
+            "card_border": "rgba(255, 255, 255, 0.10)",
+            "header_bg": "rgba(30, 41, 59, 0.40)",
+            "header_border": "rgba(255, 255, 255, 0.07)",
+            "section_bg": "rgba(30, 41, 59, 0.40)",
+            "section_border": "rgba(255, 255, 255, 0.07)",
+            "footer_bg": "rgba(15, 23, 42, 0.90)",
+            "footer_border": "#334155",
+            "table_frame_bg": "rgba(30, 41, 59, 0.40)"
+        },
+        "text": {
+            "primary": "#F1F5F9",
+            "secondary": "#94A3B8",
+            "muted": "#64748B",
+            "inverse": "#0F172A",
+            "disabled": "#64748B",
+            "link": "#60A5FA"
+        },
+        "border": {
+            "default": "#334155",
+            "strong": "#475569",
+            "focus": "#3B82F6",
+            "hover": "#4B82F6"
+        },
+        "primary": {
+            "base": "#3B82F6",
+            "hover": "#2563EB",
+            "pressed": "#1D4ED8",
+            "light_bg": "#1E3A8A",
+            "light_text": "#93C5FD"
+        },
+        "status": {
+            "success_text": "#22C55E",
+            "success_bg": "rgba(16, 185, 129, 0.15)",
+            "success_border": "rgba(16, 185, 129, 0.30)"
+        },
+        "buttons": {
+            "primary": {
+                "bg": "#3B82F6",
+                "bg_hover": "#2563EB",
+                "bg_pressed": "#1D4ED8",
+                "text": "#FFFFFF",
+                "border": "none"
+            },
+            "secondary": {
+                "bg": "#1E293B",
+                "bg_hover": "#334155",
+                "bg_pressed": "#475569",
+                "text": "#F1F5F9",
+                "border": "#475569",
+                "border_hover": "#64748B"
+            },
+            "ghost_normal": {
+                "bg": "transparent",
+                "bg_hover": "rgba(30, 41, 59, 0.80)",
+                "text": "#94A3B8",
+                "text_hover": "#E2E8F0",
+                "border": "none"
+            },
+            "ghost_danger": {
+                "bg": "transparent",
+                "bg_hover": "rgba(127, 29, 29, 0.20)",
+                "text": "#EF4444",
+                "text_hover": "#FCA5A5",
+                "border": "none"
+            },
+            "icon_only": {
+                "bg": "transparent",
+                "bg_hover": "rgba(71, 85, 105, 0.55)",
+                "text": "#94A3B8",
+                "border": "none"
+            }
+        },
+        "input": {
+            "bg": "rgba(15, 23, 42, 0.80)",
+            "text": "#E2E8F0",
+            "placeholder": "#64748B",
+            "border": "#334155",
+            "focus_border": "#3B82F6",
+            "hover_border": "#4B82F6",
+            "selection_bg": "#1E3A8A",
+            "selection_text": "#93C5FD",
+            "disabled_bg": "rgba(71, 85, 105, 0.40)",
+            "disabled_text": "#64748B"
+        },
+        "table": {
+            "bg": "transparent",
+            "header_bg": "rgba(15, 23, 42, 0.80)",
+            "header_text": "#E2E8F0",
+            "row_text": "#CBD5E1",
+            "row_hover": "rgba(51, 65, 85, 0.60)",
+            "row_selected_bg": "#1D4ED8",
+            "row_selected_text": "#FFFFFF",
+            "grid": "rgba(51, 65, 85, 0.50)",
+            "alternate_row": "rgba(30, 41, 59, 0.20)",
+            "row_border": "#334155"
+        },
+        "totals": {
+            "frame_bg": "rgba(15, 23, 42, 0.50)",
+            "frame_border": "#334155",
+            "label_text": "#94A3B8",
+            "value_text": "#E2E8F0",
+            "grand_label_text": "#3B82F6",
+            "grand_value_text": "#3B82F6",
+            "separator": "#334155"
+        },
+        "scrollbar": {
+            "track": "transparent",
+            "thumb": "#475569",
+            "thumb_hover": "#64748B"
+        },
+        "icon_colors": {
+            "title": "#3B82F6",
+            "settings": "#94A3B8",
+            "btn_primary": "#FFFFFF",
+            "btn_secondary": "#F1F5F9",
+            "btn_ghost": "#94A3B8",
+            "btn_danger": "#EF4444"
+        }
+    }
+}

@@ -1,0 +1,10 @@
+<RCC>
+  <qresource prefix="img">
+    <file>assets/hamobackground.png</file>
+    <file>assets/background.png</file>
+    <file>assets/Basmala.svg</file>
+    <file>assets/Basmala.svg.png</file>
+    <file>assets/Basmalah.png</file>
+    <file>assets/Basmalah_1.svg</file>
+  </qresource>
+</RCC>

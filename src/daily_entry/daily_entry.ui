@@ -1,0 +1,2157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow_TransactionManager</class>
+ <widget class="QMainWindow" name="MainWindow_TransactionManager">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>860</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>900</width>
+    <height>640</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>مدير المعاملات المالية</string>
+  </property>
+  <property name="layoutDirection">
+   <enum>Qt::RightToLeft</enum>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow#MainWindow_TransactionManager {
+    background: qlineargradient(
+        x1:0, y1:0, x2:1, y2:1,
+        stop:0 #EFF6FF,
+        stop:1 #E0E7FF
+    );
+    font-family: 'Tajawal', 'Segoe UI', 'Arial', sans-serif;
+}</string>
+  </property>
+  <widget class="QWidget" name="Widget_CentralMain">
+   <property name="styleSheet">
+    <string notr="true">QWidget#Widget_CentralMain { background: transparent; }</string>
+   </property>
+   <layout class="QVBoxLayout" name="rootLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>24</number>
+    </property>
+    <property name="topMargin">
+     <number>24</number>
+    </property>
+    <property name="rightMargin">
+     <number>24</number>
+    </property>
+    <property name="bottomMargin">
+     <number>24</number>
+    </property>
+    <item>
+     <widget class="QFrame" name="Frame_OuterContainer">
+      <property name="styleSheet">
+       <string notr="true">QFrame#Frame_OuterContainer {
+    background-color: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 20px;
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <layout class="QVBoxLayout" name="outerLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="Frame_TopHeader">
+         <property name="styleSheet">
+          <string notr="true">QFrame#Frame_TopHeader {
+    background-color: rgba(255, 255, 255, 0.62);
+    border-bottom: 1px solid rgba(209, 213, 219, 0.50);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <layout class="QHBoxLayout" name="headerLayout">
+          <property name="spacing">
+           <number>12</number>
+          </property>
+          <property name="leftMargin">
+           <number>24</number>
+          </property>
+          <property name="topMargin">
+           <number>16</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>16</number>
+          </property>
+          <item>
+           <layout class="QVBoxLayout" name="titleSectionLayout">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" name="titleRowLayout">
+              <property name="spacing">
+               <number>8</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="Label_HeaderIcon">
+                <property name="minimumSize">
+                 <size>
+                  <width>24</width>
+                  <height>24</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLabel#Label_HeaderIcon {
+    color: #3B82F6;
+    font-size: 20px;
+}</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="scaledContents">
+                 <bool>false</bool>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="Label_DocumentTitle">
+                <property name="font">
+                 <font>
+                  <family>Tajawal</family>
+                  <pointsize>1</pointsize>
+                  <weight>87</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::RightToLeft</enum>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLabel#Label_DocumentTitle {
+    color: #1F2937;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+}</string>
+                </property>
+                <property name="text">
+                 <string>مستند جديد</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="titleSpacer">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QLabel" name="Label_DocumentSubtitle">
+              <property name="font">
+               <font>
+                <family>Tajawal</family>
+                <pointsize>1</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="layoutDirection">
+               <enum>Qt::RightToLeft</enum>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLabel#Label_DocumentSubtitle {
+    color: #6B7280;
+    font-size: 15px;
+    font-weight: 400;
+    margin-top: 2px;
+}</string>
+              </property>
+              <property name="text">
+               <string>إدخال وإدارة المعاملات المالية</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="headerSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="headerControlsLayout">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QToolButton" name="Button_ListTransactions">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>48</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>48</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Tajawal</family>
+                <pointsize>1</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QToolButton#Button_ListTransactions {
+    background-color: #3B82F6;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 7px 18px;
+    min-height: 34px;
+    spacing: 6px;
+}
+QToolButton#Button_ListTransactions:hover { background-color: #2563EB; }
+QToolButton#Button_ListTransactions:pressed { background-color: #1D4ED8; }</string>
+              </property>
+              <property name="text">
+               <string>قائمة الفواتير</string>
+              </property>
+              <property name="toolButtonStyle">
+               <enum>Qt::ToolButtonTextBesideIcon</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="Button_AddTier">
+              <property name="font">
+               <font>
+                <family>Tajawal</family>
+                <pointsize>1</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton#Button_AddTier {
+    background-color: #3B82F6;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 7px 18px;
+    min-height: 34px;
+    spacing: 6px;
+}
+QPushButton#Button_AddTier:hover { background-color: #2563EB; }
+QPushButton#Button_AddTier:pressed { background-color: #1D4ED8; }</string>
+              </property>
+              <property name="text">
+               <string>إضافة</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="Button_OpenSettings">
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="toolTip">
+               <string>الإعدادات</string>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QToolButton#Button_OpenSettings {
+    background: transparent;
+    border: none;
+    border-radius: 18px;
+    padding: 6px;
+    color: #6B7280;
+    min-width: 36px;
+    min-height: 36px;
+}
+QToolButton#Button_OpenSettings:hover { background-color: rgba(209, 213, 219, 0.55); }
+QToolButton::menu-indicator { image: none; }</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="toolButtonStyle">
+               <enum>Qt::ToolButtonIconOnly</enum>
+              </property>
+              <property name="autoRaise">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QScrollArea" name="ScrollArea_Body">
+         <property name="styleSheet">
+          <string notr="true">QScrollBar:vertical { background: transparent; width: 8px; margin: 0; }
+QScrollBar::handle:vertical { background: #CBD5E1; border-radius: 4px; min-height: 20px; }
+QScrollBar::handle:vertical:hover { background: #94A3B8; }
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; background: none; }
+QScrollBar:horizontal { background: transparent; height: 8px; }
+QScrollBar::handle:horizontal { background: #CBD5E1; border-radius: 4px; min-width: 20px; }
+QScrollBar::handle:horizontal:hover { background: #94A3B8; }
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal { width: 0; background: none; }</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="verticalScrollBarPolicy">
+          <enum>Qt::ScrollBarAsNeeded</enum>
+         </property>
+         <property name="horizontalScrollBarPolicy">
+          <enum>Qt::ScrollBarAsNeeded</enum>
+         </property>
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollContents">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>1230</width>
+            <height>527</height>
+           </rect>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::RightToLeft</enum>
+          </property>
+          <layout class="QVBoxLayout" name="scrollLayout">
+           <property name="spacing">
+            <number>16</number>
+           </property>
+           <property name="leftMargin">
+            <number>20</number>
+           </property>
+           <property name="topMargin">
+            <number>20</number>
+           </property>
+           <property name="rightMargin">
+            <number>20</number>
+           </property>
+           <property name="bottomMargin">
+            <number>20</number>
+           </property>
+           <item>
+            <widget class="QFrame" name="Frame_CustomerDetailsSection">
+             <property name="styleSheet">
+              <string notr="true">QFrame#Frame_CustomerDetailsSection {
+    background-color: rgba(255, 255, 255, 0.52);
+    border: 1px solid rgba(255, 255, 255, 0.62);
+    border-radius: 12px;
+}</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <layout class="QGridLayout" name="customerGrid">
+              <property name="leftMargin">
+               <number>18</number>
+              </property>
+              <property name="topMargin">
+               <number>16</number>
+              </property>
+              <property name="rightMargin">
+               <number>18</number>
+              </property>
+              <property name="bottomMargin">
+               <number>16</number>
+              </property>
+              <property name="horizontalSpacing">
+               <number>16</number>
+              </property>
+              <property name="verticalSpacing">
+               <number>6</number>
+              </property>
+              <item row="1" column="2">
+               <widget class="QDateEdit" name="Input_TransactionDate">
+                <property name="minimumSize">
+                 <size>
+                  <width>150</width>
+                  <height>46</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Tajawal</family>
+                  <pointsize>1</pointsize>
+                 </font>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::RightToLeft</enum>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QDateEdit#Input_TransactionDate {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 15px;
+    padding: 6px 10px;
+    min-height: 32px;
+    selection-background-color: #DBEAFE;
+    selection-color: #1E40AF;
+}
+QDateEdit#Input_TransactionDate:focus { border: 2px solid #3B82F6; background-color: #FFFFFF; }
+QDateEdit#Input_TransactionDate:hover { border-color: #93C5FD; }
+QDateEdit#Input_TransactionDate:disabled { background-color: #F3F4F6; color: #9CA3AF; }
+QDateEdit#Input_TransactionDate::drop-down { border: none; width: 24px; }
+QDateEdit#Input_TransactionDate::down-arrow { image: url(../../assets/calendar.svg); width: 14px; height: 14px; }</string>
+                </property>
+                <property name="displayFormat">
+                 <string>yyyy/MM/dd</string>
+                </property>
+                <property name="calendarPopup">
+                 <bool>true</bool>
+                </property>
+                <property name="date">
+                 <date>
+                  <year>2026</year>
+                  <month>2</month>
+                  <day>25</day>
+                 </date>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2" alignment="Qt::AlignLeft">
+               <widget class="QLabel" name="Label_TransactionDate">
+                <property name="font">
+                 <font>
+                  <family>Tajawal</family>
+                  <pointsize>1</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLabel#Label_TransactionDate {
+    color: #6B7280;
+    font-size: 13px;
+    font-weight: 600;
+}</string>
+                </property>
+                <property name="text">
+                 <string>التاريخ</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLineEdit" name="Input_CustomerName">
+                <property name="font">
+                 <font>
+                  <family>Tajawal</family>
+                  <pointsize>1</pointsize>
+                 </font>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLineEdit#Input_CustomerName {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 15px;
+    padding: 6px 10px;
+    min-height: 32px;
+    selection-background-color: #DBEAFE;
+    selection-color: #1E40AF;
+}
+QLineEdit#Input_CustomerName:focus {
+    border: 2px solid #3B82F6;
+    background-color: #FFFFFF;
+}
+QLineEdit#Input_CustomerName:hover { border-color: #93C5FD; }
+QLineEdit#Input_CustomerName:disabled {
+    background-color: #F3F4F6;
+    color: #9CA3AF;
+}</string>
+                </property>
+                <property name="placeholderText">
+                 <string>اسم العميل</string>
+                </property>
+                <property name="clearButtonEnabled">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0" alignment="Qt::AlignLeft">
+               <widget class="QLabel" name="Label_CustomerID">
+                <property name="font">
+                 <font>
+                  <family>Tajawal</family>
+                  <pointsize>1</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::RightToLeft</enum>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLabel#Label_CustomerID {
+    color: #6B7280;
+    font-size: 13px;
+    font-weight: 600;
+}</string>
+                </property>
+                <property name="text">
+                 <string>معرف العميل</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1" alignment="Qt::AlignLeft">
+               <widget class="QLabel" name="Label_CustomerName">
+                <property name="font">
+                 <font>
+                  <family>Tajawal</family>
+                  <pointsize>1</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLabel#Label_CustomerName {
+    color: #6B7280;
+    font-size: 13px;
+    font-weight: 600;
+}</string>
+                </property>
+                <property name="text">
+                 <string>العميل</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="3">
+               <widget class="QComboBox" name="ComboBox_CustomerAccount">
+                <property name="minimumSize">
+                 <size>
+                  <width>200</width>
+                  <height>46</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Tajawal</family>
+                  <pointsize>1</pointsize>
+                 </font>
+                </property>
+                <property name="toolTip">
+                 <string>اختر معرف العميل</string>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::RightToLeft</enum>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QComboBox#ComboBox_CustomerAccount {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 15px;
+    padding: 6px 10px;
+    min-height: 32px;
+    selection-background-color: #DBEAFE;
+    selection-color: #1E40AF;
+}
+QComboBox#ComboBox_CustomerAccount:focus { border: 2px solid #3B82F6; background-color: #FFFFFF; }
+QComboBox#ComboBox_CustomerAccount:hover { border-color: #93C5FD; }
+QComboBox#ComboBox_CustomerAccount:disabled { background-color: #F3F4F6; color: #9CA3AF; }
+QComboBox#ComboBox_CustomerAccount::drop-down { border: none; width: 24px; }
+QComboBox#ComboBox_CustomerAccount::down-arrow { image: url(../../assets/chevron_down.svg); width: 14px; height: 14px; }</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>اختر العميل...</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>شركة النور</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>مؤسسة الأفق</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="0" column="3" alignment="Qt::AlignLeft">
+               <widget class="QLabel" name="Label_CustomerAccount">
+                <property name="font">
+                 <font>
+                  <family>Tajawal</family>
+                  <pointsize>1</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLabel#Label_CustomerAccount {
+    color: #6B7280;
+    font-size: 13px;
+    font-weight: 600;
+}</string>
+                </property>
+                <property name="text">
+                 <string>الحساب / المرجع</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QComboBox" name="ComboBox_CustomerID">
+                <property name="font">
+                 <font>
+                  <family>Tajawal</family>
+                  <pointsize>1</pointsize>
+                 </font>
+                </property>
+                <property name="toolTip">
+                 <string>اختر معرف العميل</string>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::RightToLeft</enum>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QComboBox#ComboBox_CustomerID {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 15px;
+    padding: 6px 10px;
+	text-align: left;
+    min-height: 32px;
+    selection-background-color: #DBEAFE;
+    selection-color: #1E40AF;
+}
+QComboBox#ComboBox_CustomerID:focus { border: 2px solid #3B82F6; background-color: #FFFFFF; }
+QComboBox#ComboBox_CustomerID:hover { border-color: #93C5FD; }
+QComboBox#ComboBox_CustomerID:disabled { background-color: #F3F4F6; color: #9CA3AF; }
+QComboBox#ComboBox_CustomerID::drop-down { border: none; width: 24px; }
+QComboBox#ComboBox_CustomerID::down-arrow { image: url(../../assets/chevron_down.svg); width: 14px; height: 14px; }</string>
+                </property>
+                <property name="editable">
+                 <bool>false</bool>
+                </property>
+                <property name="placeholderText">
+                 <string>اختر العميل...</string>
+                </property>
+                <property name="frame">
+                 <bool>true</bool>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>اختر العميل...</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>شركة النور</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>مؤسسة الأفق</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="1" column="4">
+               <widget class="QPushButton" name="Button_VerifyCustomer">
+                <property name="font">
+                 <font>
+                  <family>Tajawal</family>
+                  <pointsize>1</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton#Button_VerifyCustomer {
+    background-color: #3B82F6;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 7px 18px;
+    min-height: 34px;
+    spacing: 6px;
+}
+QPushButton#Button_VerifyCustomer:hover { background-color: #2563EB; }
+QPushButton#Button_VerifyCustomer:pressed { background-color: #1D4ED8; }</string>
+                </property>
+                <property name="text">
+                 <string>تأكيد</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QFrame" name="Frame_ItemEntrySection">
+             <property name="styleSheet">
+              <string notr="true">QFrame#Frame_ItemEntrySection {
+    background-color: rgba(255, 255, 255, 0.52);
+    border: 1px solid rgba(255, 255, 255, 0.62);
+    border-radius: 12px;
+}</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <layout class="QVBoxLayout" name="itemSectionLayout">
+              <property name="spacing">
+               <number>12</number>
+              </property>
+              <property name="leftMargin">
+               <number>18</number>
+              </property>
+              <property name="topMargin">
+               <number>16</number>
+              </property>
+              <property name="rightMargin">
+               <number>18</number>
+              </property>
+              <property name="bottomMargin">
+               <number>14</number>
+              </property>
+              <item>
+               <widget class="QFrame" name="Frame_ActionDividerLine">
+                <property name="styleSheet">
+                 <string notr="true">QFrame#Frame_ActionDividerLine {
+    color: #E5E7EB;
+}</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::HLine</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Sunken</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QGridLayout" name="itemFormGrid">
+                <property name="horizontalSpacing">
+                 <number>12</number>
+                </property>
+                <property name="verticalSpacing">
+                 <number>5</number>
+                </property>
+                <item row="0" column="0" alignment="Qt::AlignLeft">
+                 <widget class="QLabel" name="Label_ItemDescription">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>1</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#Label_ItemDescription {
+    color: #6B7280;
+    font-size: 13px;
+    font-weight: 600;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>البيان</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="3">
+                 <widget class="QLineEdit" name="Input_ItemUnitPrice">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>1</pointsize>
+                   </font>
+                  </property>
+                  <property name="layoutDirection">
+                   <enum>Qt::LeftToRight</enum>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLineEdit#Input_ItemUnitPrice {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 15px;
+    padding: 6px 10px;
+    min-height: 32px;
+    selection-background-color: #DBEAFE;
+    selection-color: #1E40AF;
+}
+QLineEdit#Input_ItemUnitPrice:focus {
+    border: 2px solid #3B82F6;
+    background-color: #FFFFFF;
+}
+QLineEdit#Input_ItemUnitPrice:hover { border-color: #93C5FD; }
+QLineEdit#Input_ItemUnitPrice:disabled {
+    background-color: #F3F4F6;
+    color: #9CA3AF;
+}</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                  <property name="placeholderText">
+                   <string>0.00</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLineEdit" name="Input_ItemDescription">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>1</pointsize>
+                   </font>
+                  </property>
+                  <property name="layoutDirection">
+                   <enum>Qt::LeftToRight</enum>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLineEdit#Input_ItemDescription {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 15px;
+    padding: 6px 10px;
+    min-height: 32px;
+    selection-background-color: #DBEAFE;
+    selection-color: #1E40AF;
+}
+QLineEdit#Input_ItemDescription:focus {
+    border: 2px solid #3B82F6;
+    background-color: #FFFFFF;
+}
+QLineEdit#Input_ItemDescription:hover { border-color: #93C5FD; }
+QLineEdit#Input_ItemDescription:disabled {
+    background-color: #F3F4F6;
+    color: #9CA3AF;
+}</string>
+                  </property>
+                  <property name="placeholderText">
+                   <string>وصف الصنف</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="4" alignment="Qt::AlignLeft">
+                 <widget class="QLabel" name="Label_ItemPayment">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>1</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#Label_ItemPayment {
+    color: #6B7280;
+    font-size: 13px;
+    font-weight: 600;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>الدفع</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1" alignment="Qt::AlignLeft">
+                 <widget class="QLabel" name="Label_ItemQuantity">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>1</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#Label_ItemQuantity {
+    color: #6B7280;
+    font-size: 13px;
+    font-weight: 600;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>الكمية</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QSpinBox" name="Input_ItemQuantity">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>1</pointsize>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QSpinBox#Input_ItemQuantity {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 15px;
+    padding: 6px 10px;
+    min-height: 32px;
+    selection-background-color: #DBEAFE;
+    selection-color: #1E40AF;
+}
+QSpinBox#Input_ItemQuantity:focus {
+    border: 2px solid #3B82F6;
+    background-color: #FFFFFF;
+}
+QSpinBox#Input_ItemQuantity:hover { border-color: #93C5FD; }
+QSpinBox#Input_ItemQuantity:disabled {
+    background-color: #F3F4F6;
+    color: #9CA3AF;
+}</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                  <property name="buttonSymbols">
+                   <enum>QAbstractSpinBox::NoButtons</enum>
+                  </property>
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>99999</number>
+                  </property>
+                  <property name="value">
+                   <number>1</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="4">
+                 <widget class="QLineEdit" name="Input_PaymentAmount">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>1</pointsize>
+                   </font>
+                  </property>
+                  <property name="layoutDirection">
+                   <enum>Qt::LeftToRight</enum>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLineEdit#Input_PaymentAmount {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 15px;
+    padding: 6px 10px;
+    min-height: 32px;
+    selection-background-color: #DBEAFE;
+    selection-color: #1E40AF;
+}
+QLineEdit#Input_PaymentAmount:focus {
+    border: 2px solid #3B82F6;
+    background-color: #FFFFFF;
+}
+QLineEdit#Input_PaymentAmount:hover { border-color: #93C5FD; }
+QLineEdit#Input_PaymentAmount:disabled {
+    background-color: #F3F4F6;
+    color: #9CA3AF;
+}</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                  <property name="placeholderText">
+                   <string>0.00</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="3" alignment="Qt::AlignLeft">
+                 <widget class="QLabel" name="Label_ItemUnitPrice">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>1</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#Label_ItemUnitPrice {
+    color: #6B7280;
+    font-size: 13px;
+    font-weight: 600;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>المبلغ</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="5">
+                 <widget class="QLineEdit" name="Input_RemainingAmount">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>1</pointsize>
+                   </font>
+                  </property>
+                  <property name="layoutDirection">
+                   <enum>Qt::LeftToRight</enum>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLineEdit#Input_RemainingAmount {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 15px;
+    padding: 6px 10px;
+    min-height: 32px;
+    selection-background-color: #DBEAFE;
+    selection-color: #1E40AF;
+}
+QLineEdit#Input_RemainingAmount:focus {
+    border: 2px solid #3B82F6;
+    background-color: #FFFFFF;
+}
+QLineEdit#Input_RemainingAmount:hover { border-color: #93C5FD; }
+QLineEdit#Input_RemainingAmount:disabled {
+    background-color: #F3F4F6;
+    color: #9CA3AF;
+}</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                  <property name="placeholderText">
+                   <string>0.00</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="5" alignment="Qt::AlignLeft">
+                 <widget class="QLabel" name="Label_RemainingAmountTitle">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>1</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#Label_RemainingAmountTitle {
+    color: #6B7280;
+    font-size: 13px;
+    font-weight: 600;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>الباقي</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="6">
+                 <widget class="QCheckBox" name="CheckBox_TransactionOut">
+                  <property name="font">
+                   <font>
+                    <family>Overpass</family>
+                    <pointsize>10</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>OUT</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="7">
+                 <widget class="QCheckBox" name="CheckBox_TransactionIn">
+                  <property name="font">
+                   <font>
+                    <family>Overpass</family>
+                    <pointsize>10</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>IN</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="actionBtnsLayout">
+                <property name="spacing">
+                 <number>6</number>
+                </property>
+                <item>
+                 <spacer name="actionBtnsSpacer">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QToolButton" name="Button_AddItem">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>1</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QToolButton#Button_AddItem {
+    background-color: #3B82F6;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 7px 18px;
+    min-height: 34px;
+    spacing: 6px;
+}
+QToolButton#Button_AddItem:hover { background-color: #2563EB; }
+QToolButton#Button_AddItem:pressed { background-color: #1D4ED8; }</string>
+                  </property>
+                  <property name="text">
+                   <string>إضافة</string>
+                  </property>
+                  <property name="toolButtonStyle">
+                   <enum>Qt::ToolButtonTextBesideIcon</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QToolButton" name="Button_DeleteItem">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>1</pointsize>
+                    <weight>62</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QToolButton#Button_DeleteItem {
+    background: transparent;
+    color: #EF4444;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 7px 14px;
+    min-height: 34px;
+    spacing: 6px;
+}
+QToolButton#Button_DeleteItem:hover {
+    background: transparent;
+    color: #B91C1C;
+	border: 1px solid #EF4444
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>حذف</string>
+                  </property>
+                  <property name="toolButtonStyle">
+                   <enum>Qt::ToolButtonTextBesideIcon</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QToolButton" name="Button_CancelItem">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>1</pointsize>
+                    <weight>62</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QToolButton#Button_CancelItem {
+    background: transparent;
+    color: #6B7280;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 7px 14px;
+    min-height: 34px;
+    spacing: 6px;
+}
+QToolButton#Button_CancelItem:hover {
+    background: transparent;
+    color: #374151;
+	border: 1px solid #6B7280
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>إلغاء</string>
+                  </property>
+                  <property name="toolButtonStyle">
+                   <enum>Qt::ToolButtonTextBesideIcon</enum>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QFrame" name="Frame_TransactionsTableContainer">
+             <property name="styleSheet">
+              <string notr="true">QFrame#Frame_TransactionsTableContainer {
+    background-color: rgba(255, 255, 255, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 12px;
+}</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <layout class="QVBoxLayout" name="tableFrameLayout">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QTableWidget" name="Table_TransactionsList">
+                <property name="font">
+                 <font>
+                  <family>Tajawal</family>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::RightToLeft</enum>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QTableWidget#Table_TransactionsList {
+    background-color: transparent;
+    border: none;
+    gridline-color: rgba(243, 244, 246, 0.90);
+	font-family: &quot;Tajawal&quot;;
+    alternate-background-color: rgba(255, 255, 255, 0.22);
+    outline: none;
+}
+QTableWidget#Table_TransactionsList::item {
+    padding: 10px 20px;
+    color: #4B5563;
+    border-bottom: 1px solid #E5E7EB;
+	min-height: 50px;
+}
+QTableWidget#Table_TransactionsList::item:hover { background-color: rgba(239, 246, 255, 0.55); }
+QTableWidget#Table_TransactionsList::item:selected { background-color: #DBEAFE; color: #1E40AF; }
+QHeaderView::section {
+    background-color: rgba(249, 250, 251, 0.85);
+    color: #374151;
+	font-family: &quot;Tajawal&quot;;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 12px 20px;
+    border: none;
+    border-bottom: 1px solid #E5E7EB;
+    text-transform: uppercase;
+    letter-spacing: 0px;
+}</string>
+                </property>
+                <property name="editTriggers">
+                 <set>QAbstractItemView::NoEditTriggers</set>
+                </property>
+                <property name="alternatingRowColors">
+                 <bool>true</bool>
+                </property>
+                <property name="selectionMode">
+                 <enum>QAbstractItemView::SingleSelection</enum>
+                </property>
+                <property name="selectionBehavior">
+                 <enum>QAbstractItemView::SelectRows</enum>
+                </property>
+                <property name="verticalScrollMode">
+                 <enum>QAbstractItemView::ScrollPerPixel</enum>
+                </property>
+                <property name="horizontalScrollMode">
+                 <enum>QAbstractItemView::ScrollPerPixel</enum>
+                </property>
+                <property name="showGrid">
+                 <bool>false</bool>
+                </property>
+                <property name="sortingEnabled">
+                 <bool>true</bool>
+                </property>
+                <attribute name="verticalHeaderVisible">
+                 <bool>false</bool>
+                </attribute>
+                <column>
+                 <property name="text">
+                  <string>البيان</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>الكمية</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>المبلغ</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>الدفع</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>الباقي</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>IN</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>OUT</string>
+                 </property>
+                </column>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="bottomSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>8</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="Frame_BottomFooter">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>185</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QFrame#Frame_BottomFooter {
+    background-color: rgba(255, 255, 255, 0.82);
+    border-top: 1px solid #E5E7EB;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    min-height: 76px;
+}</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <layout class="QHBoxLayout" name="footerLayout">
+          <property name="spacing">
+           <number>16</number>
+          </property>
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>14</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>14</number>
+          </property>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout">
+              <property name="spacing">
+               <number>10</number>
+              </property>
+              <item>
+               <widget class="QToolButton" name="Button_CloseWindow">
+                <property name="font">
+                 <font>
+                  <family>Tajawal</family>
+                  <pointsize>1</pointsize>
+                  <weight>62</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QToolButton#Button_CloseWindow {
+    background-color: #FFFFFF;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 7px 20px;
+    min-height: 36px;
+    spacing: 6px;
+}
+QToolButton#Button_CloseWindow:hover {
+    background-color: #F9FAFB;
+    border-color: #9CA3AF;
+}
+QToolButton#Button_CloseWindow:pressed { background-color: #F3F4F6; }</string>
+                </property>
+                <property name="text">
+                 <string>إغلاق</string>
+                </property>
+                <property name="toolButtonStyle">
+                 <enum>Qt::ToolButtonTextBesideIcon</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QToolButton" name="Button_PrintTransaction">
+                <property name="font">
+                 <font>
+                  <family>Tajawal</family>
+                  <pointsize>1</pointsize>
+                  <weight>62</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QToolButton#Button_PrintTransaction {
+    background-color: #FFFFFF;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 7px 20px;
+    min-height: 36px;
+    spacing: 6px;
+}
+QToolButton#Button_PrintTransaction:hover {
+    background-color: #F9FAFB;
+    border-color: #9CA3AF;
+}
+QToolButton#Button_PrintTransaction:pressed { background-color: #F3F4F6; }</string>
+                </property>
+                <property name="text">
+                 <string>طباعة</string>
+                </property>
+                <property name="toolButtonStyle">
+                 <enum>Qt::ToolButtonTextBesideIcon</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QToolButton" name="Button_NewTransaction">
+                <property name="font">
+                 <font>
+                  <family>Tajawal</family>
+                  <pointsize>1</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QToolButton#Button_NewTransaction {
+    background-color: #3B82F6;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 7px 18px;
+    min-height: 34px;
+    spacing: 6px;
+}
+QToolButton#Button_NewTransaction:hover { background-color: #2563EB; }
+QToolButton#Button_NewTransaction:pressed { background-color: #1D4ED8; }</string>
+                </property>
+                <property name="text">
+                 <string>جديد</string>
+                </property>
+                <property name="toolButtonStyle">
+                 <enum>Qt::ToolButtonTextBesideIcon</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="footerSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QFrame" name="Frame_TotalsSecondary">
+              <property name="styleSheet">
+               <string notr="true">QFrame#Frame_TotalsSecondary {
+    background-color: #F9FAFB;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 0 8px;
+}</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Plain</enum>
+              </property>
+              <layout class="QHBoxLayout" name="totalsLayout_2">
+               <property name="spacing">
+                <number>20</number>
+               </property>
+               <property name="leftMargin">
+                <number>20</number>
+               </property>
+               <property name="topMargin">
+                <number>10</number>
+               </property>
+               <property name="rightMargin">
+                <number>20</number>
+               </property>
+               <property name="bottomMargin">
+                <number>10</number>
+               </property>
+               <item>
+                <layout class="QVBoxLayout" name="subtotalLayout_4">
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
+                 <item alignment="Qt::AlignLeft">
+                  <widget class="QLabel" name="Label_TotalAmountHeader">
+                   <property name="font">
+                    <font>
+                     <family>Tajawal</family>
+                     <pointsize>1</pointsize>
+                     <weight>87</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#Label_TotalAmountHeader {
+    color: #6B7280;
+    font-size: 15px;
+    font-weight: 700;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>المجموع</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="Label_GrandTotalValue">
+                   <property name="font">
+                    <font>
+                     <family>Courier New</family>
+                     <pointsize>1</pointsize>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="layoutDirection">
+                    <enum>Qt::LeftToRight</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#Label_GrandTotalValue {
+    color: #1F2937;
+    font-family: 'Courier New', monospace;
+    font-size: 20px;
+    font-weight: 600;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>0.00</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QFrame" name="Separator_TotalsPrimaryRight">
+                 <property name="styleSheet">
+                  <string notr="true">QFrame#Separator_TotalsPrimaryRight {
+    background-color: #D1D5DB;
+    max-width: 1px;
+    min-width: 1px;
+}</string>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::VLine</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Sunken</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="grandTotalLayout">
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
+                 <item alignment="Qt::AlignLeft">
+                  <widget class="QLabel" name="Label_PayHeader">
+                   <property name="font">
+                    <font>
+                     <family>Tajawal</family>
+                     <pointsize>1</pointsize>
+                     <weight>87</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#Label_PayHeader {
+    color: #3B82F6;
+    font-size: 17px;
+    font-weight: 700;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>الدفع</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="Label_PayValue">
+                   <property name="layoutDirection">
+                    <enum>Qt::LeftToRight</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#Label_PayValue {
+    color: #3B82F6;
+    font-family: 'Courier New', monospace;
+    font-size: 20px;
+    font-weight: 700;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>0.00</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QFrame" name="Separator_TotalsSecondary">
+                 <property name="styleSheet">
+                  <string notr="true">QFrame#Separator_TotalsSecondary {
+    background-color: #D1D5DB;
+    max-width: 1px;
+    min-width: 1px;
+}</string>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::VLine</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Sunken</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="grandTotalLayout_2">
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
+                 <item alignment="Qt::AlignLeft">
+                  <widget class="QLabel" name="Label_RemainingTotalHeader">
+                   <property name="font">
+                    <font>
+                     <family>Tajawal</family>
+                     <pointsize>1</pointsize>
+                     <weight>87</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#Label_RemainingTotalHeader {
+    color: #3B82F6;
+    font-size: 17px;
+    font-weight: 700;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>الباقي</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="Label_OverallRemainingValue">
+                   <property name="layoutDirection">
+                    <enum>Qt::LeftToRight</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#Label_OverallRemainingValue {
+    color: #3B82F6;
+    font-family: 'Courier New', monospace;
+    font-size: 20px;
+    font-weight: 700;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>0.00</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QFrame" name="Frame_TotalsPrimary">
+              <property name="styleSheet">
+               <string notr="true">QFrame#Frame_TotalsPrimary {
+    background-color: #F9FAFB;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 0 8px;
+}</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Plain</enum>
+              </property>
+              <layout class="QHBoxLayout" name="totalsLayout">
+               <property name="spacing">
+                <number>20</number>
+               </property>
+               <property name="leftMargin">
+                <number>20</number>
+               </property>
+               <property name="topMargin">
+                <number>10</number>
+               </property>
+               <property name="rightMargin">
+                <number>20</number>
+               </property>
+               <property name="bottomMargin">
+                <number>10</number>
+               </property>
+               <item>
+                <layout class="QVBoxLayout" name="subtotalLayout_2">
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
+                 <item alignment="Qt::AlignLeft">
+                  <widget class="QLabel" name="Label_PreviousTotalHeader">
+                   <property name="font">
+                    <font>
+                     <family>Tajawal</family>
+                     <pointsize>1</pointsize>
+                     <weight>87</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#Label_PreviousTotalHeader {
+    color: #6B7280;
+    font-size: 15px;
+    font-weight: 700;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>السابق</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="Label_PreviousTotalValue">
+                   <property name="font">
+                    <font>
+                     <family>Courier New</family>
+                     <pointsize>1</pointsize>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="layoutDirection">
+                    <enum>Qt::LeftToRight</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#Label_PreviousTotalValue {
+    color: #1F2937;
+    font-family: 'Courier New', monospace;
+    font-size: 20px;
+    font-weight: 600;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>0.00</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QFrame" name="Separator_TotalsPrimaryLeft">
+                 <property name="styleSheet">
+                  <string notr="true">QFrame#Separator_TotalsPrimaryLeft {
+    background-color: #D1D5DB;
+    max-width: 1px;
+    min-width: 1px;
+}</string>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::VLine</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Sunken</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="subtotalLayout">
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
+                 <item alignment="Qt::AlignLeft">
+                  <widget class="QLabel" name="Label_GrandTotalHeader">
+                   <property name="font">
+                    <font>
+                     <family>Tajawal</family>
+                     <pointsize>1</pointsize>
+                     <weight>87</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#Label_GrandTotalHeader {
+    color: #6B7280;
+    font-size: 15px;
+    font-weight: 700;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>المجموع الكلي</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="Label_TotalAmountValue">
+                   <property name="font">
+                    <font>
+                     <family>Courier New</family>
+                     <pointsize>1</pointsize>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="layoutDirection">
+                    <enum>Qt::LeftToRight</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#Label_TotalAmountValue {
+    color: #1F2937;
+    font-family: 'Courier New', monospace;
+    font-size: 20px;
+    font-weight: 600;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>0.00</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

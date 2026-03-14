@@ -1,0 +1,4585 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RasidJour</class>
+ <widget class="QMainWindow" name="RasidJour">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1240</width>
+    <height>957</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>الرصيد اليومي</string>
+  </property>
+  <property name="layoutDirection">
+   <enum>Qt::RightToLeft</enum>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow { background-color: #EDE8E1; }</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">QWidget#centralwidget { background-color: #EDE8E1; }</string>
+   </property>
+   <layout class="QVBoxLayout" name="centralLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="styleSheet">
+       <string notr="true">QScrollArea { background: transparent; border: none; }
+QScrollBar:vertical { background: transparent; width: 6px; margin: 0; }
+QScrollBar::handle:vertical { background: #C9B99A; border-radius: 3px; min-height: 20px; }
+QScrollBar::handle:vertical:hover { background: #A89070; }
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; background: none; }</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollContent">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1223</width>
+         <height>1911</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QWidget#scrollContent { background-color: #EDE8E1; font-family: 'Tajawal', 'Segoe UI', Arial, sans-serif; }</string>
+       </property>
+       <layout class="QVBoxLayout" name="scrollLayout">
+        <property name="spacing">
+         <number>16</number>
+        </property>
+        <property name="leftMargin">
+         <number>20</number>
+        </property>
+        <property name="topMargin">
+         <number>20</number>
+        </property>
+        <property name="rightMargin">
+         <number>20</number>
+        </property>
+        <property name="bottomMargin">
+         <number>20</number>
+        </property>
+        <item>
+         <widget class="QFrame" name="headerFrame">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QFrame#headerFrame {
+	background-color: #f8f9fa;   /* Very light off-white */
+    border: 1px solid #e0e0e0;   /* Thin, subtle border */
+    border-radius: 20px;         /* Rounded &quot;pill&quot; corners */
+    padding: 10px;}</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <layout class="QHBoxLayout" name="headerLayout">
+           <property name="spacing">
+            <number>10</number>
+           </property>
+           <property name="leftMargin">
+            <number>4</number>
+           </property>
+           <property name="topMargin">
+            <number>4</number>
+           </property>
+           <property name="rightMargin">
+            <number>4</number>
+           </property>
+           <property name="bottomMargin">
+            <number>4</number>
+           </property>
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_2">
+             <item>
+              <widget class="QLabel" name="titleLabel">
+               <property name="styleSheet">
+                <string notr="true">QLabel#titleLabel { color: #3B82F6;
+font-size: 27px; 
+font-weight: 800;
+font-family: 'Tajawal';
+ letter-spacing: -0.5px; }</string>
+               </property>
+               <property name="text">
+                <string>الرصيد اليومي</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item alignment="Qt::AlignLeft">
+              <widget class="QLabel" name="subtitleLabel">
+               <property name="styleSheet">
+                <string notr="true">QLabel#subtitleLabel { color: #7A7A8C;
+font-size: 15px; 
+font-weight: 400;
+font-family: 'Tajawal';
+ letter-spacing: -0.5px; }</string>
+               </property>
+               <property name="text">
+                <string>مجموع العمليات اليومية</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QFrame" name="dateFrame">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>140</width>
+               <height>45</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>135</width>
+               <height>45</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QFrame#dateFrame { background-color: rgba(255,255,255,0.75); border: 0px solid rgba(200,190,178,0.60); border-radius: 16px; 
+padding-left: 5px;}</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <layout class="QHBoxLayout" name="dateLayout">
+              <property name="spacing">
+               <number>5</number>
+              </property>
+              <property name="leftMargin">
+               <number>14</number>
+              </property>
+              <property name="topMargin">
+               <number>5</number>
+              </property>
+              <property name="rightMargin">
+               <number>14</number>
+              </property>
+              <property name="bottomMargin">
+               <number>5</number>
+              </property>
+              <item>
+               <widget class="QDateEdit" name="day_date">
+                <property name="minimumSize">
+                 <size>
+                  <width>90</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Overpass</family>
+                  <pointsize>10</pointsize>
+                  <weight>62</weight>
+                  <italic>false</italic>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">/* Base Style: Mimicking n_piece_editline */
+QDateEdit {
+    background-color: transparent;
+    border: none;
+    border-radius: 8px;
+    /*padding: 6px 10px;*/
+    font: 500 10pt &quot;Overpass&quot;;
+    color: #374151;
+}
+
+/* Interaction States */
+QDateEdit:hover {
+    border-color: #d1d5db;
+}
+
+QDateEdit:focus {
+    border-color: #1d7ae2;
+}
+
+/* Hiding the Spin/Drop-down Buttons via QSS */
+QDateEdit::drop-down {
+    width: 0px;
+    border: none;
+    background: transparent;
+}
+
+QDateEdit::down-arrow {
+    image: none;
+    width: 0px;
+    height: 0px;
+}
+
+/* Read-Only State (Matching your previous EditLine style) */
+QDateEdit[readOnly=&quot;true&quot;] {
+    background-color: #f9fafb;
+    color: #9ca3af;
+    border: 1px solid #f3f4f6;
+}
+
+/* Disabled State */
+QDateEdit:disabled {
+    background-color: #f1f5f9;
+    color: #94a3b8;
+    border: 1px solid #e2e8f0;
+}</string>
+                </property>
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::NoButtons</enum>
+                </property>
+                <property name="calendarPopup">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="dateIconLabel">
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QFrame" name="counterFrame">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>80</width>
+               <height>45</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>80</width>
+               <height>45</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QFrame#counterFrame { background-color: rgba(255,255,255,0.75); border: 0px solid rgba(200,190,178,0.60); border-radius: 16px; }</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <layout class="QHBoxLayout" name="counterLayout">
+              <property name="spacing">
+               <number>5</number>
+              </property>
+              <property name="leftMargin">
+               <number>13</number>
+              </property>
+              <property name="topMargin">
+               <number>5</number>
+              </property>
+              <property name="rightMargin">
+               <number>13</number>
+              </property>
+              <property name="bottomMargin">
+               <number>5</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="counterLabel">
+                <property name="minimumSize">
+                 <size>
+                  <width>30</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLabel#counterLabel { color: #3A3A4A; font-size: 15px; font-weight: 600; 
+font-family:   &quot;Overpass&quot;;}
+</string>
+                </property>
+                <property name="text">
+                 <string>001</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="counterIconLabel">
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="navLayout">
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QToolButton" name="navLastBtn">
+            <property name="toolTip">
+             <string>آخر سجل</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QToolButton#navLastBtn { background-color: rgba(255,255,255,0.80); border: 1px solid rgba(200,190,178,0.70); border-radius: 18px; padding: 5px; min-width: 34px; min-height: 34px; }
+QToolButton#navLastBtn:hover { background-color: #FFFFFF; border-color: #9CA3AF; }</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="navNextBtn">
+            <property name="toolTip">
+             <string>التالي</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QToolButton#navNextBtn { background-color: rgba(255,255,255,0.80); border: 1px solid rgba(200,190,178,0.70); border-radius: 18px; padding: 5px; min-width: 34px; min-height: 34px; }
+QToolButton#navNextBtn:hover { background-color: #FFFFFF; border-color: #9CA3AF; }</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="navPrevBtn">
+            <property name="toolTip">
+             <string>السابق</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QToolButton#navPrevBtn { background-color: rgba(255,255,255,0.80); border: 1px solid rgba(200,190,178,0.70); border-radius: 18px; padding: 5px; min-width: 34px; min-height: 34px; }
+QToolButton#navPrevBtn:hover { background-color: #FFFFFF; border-color: #9CA3AF; }</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="navFirstBtn">
+            <property name="toolTip">
+             <string>أول سجل</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QToolButton#navFirstBtn { background-color: rgba(255,255,255,0.80); border: 1px solid rgba(200,190,178,0.70); border-radius: 18px; padding: 5px; min-width: 34px; min-height: 34px; }
+QToolButton#navFirstBtn:hover { background-color: #FFFFFF; border-color: #9CA3AF; }</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="cardsRowLayout">
+          <property name="spacing">
+           <number>16</number>
+          </property>
+          <item>
+           <widget class="QFrame" name="cashPlusCard">
+            <property name="styleSheet">
+             <string notr="true">QFrame#cashPlusCard { background-color: #FFFFFF; border: 1px solid rgba(220,212,200,0.60); border-radius: 14px; }
+
+QLineEdit {
+    color: #2c343f;               /* Keep the high-contrast dark text */
+    font-family: &quot;Arial&quot;; 
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #ffffff;    /* Pure white background */
+    border-radius: 7px;
+    border: 1px solid #E5E7EB;    /* Soft neutral border */
+    padding: 5px 10px;            /* Increased padding for a more modern feel */
+}
+
+/* Hover State */
+QLineEdit:hover {
+    border: 1px solid #F59E0B;    /* Amber border on hover */
+    background-color: #fffbeb;    /* Extremely light amber tint */
+}
+
+/* Focus State */
+QLineEdit:focus {
+    border: 2px solid #F59E0B;    /* Thicker amber border when active */
+    background-color: #ffffff;    /* Return to white background for typing clarity */
+    outline: none;                /* Removes default OS focus glow */
+}
+
+/* Disabled State (Optional but recommended) */
+QLineEdit:disabled {
+    background-color: #f3f4f6;
+    color: #9ca3af;
+    border: 1px solid #e5e7eb;
+}
+
+QLabel {
+    color: #1E293B; /* Color from image analysis */
+    font-family: 'Tajawal';
+    font-size: 11pt;
+    font-weight: 500;
+    qproperty-alignment: 'AlignCenter';
+	padding-left: 5px;
+	color: #1E293B;
+}</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <layout class="QVBoxLayout" name="cpLayout">
+             <property name="spacing">
+              <number>10</number>
+             </property>
+             <property name="leftMargin">
+              <number>16</number>
+             </property>
+             <property name="topMargin">
+              <number>16</number>
+             </property>
+             <property name="rightMargin">
+              <number>16</number>
+             </property>
+             <property name="bottomMargin">
+              <number>16</number>
+             </property>
+             <item>
+              <widget class="QFrame" name="frame">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>50</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>50</height>
+                </size>
+               </property>
+               <layout class="QHBoxLayout" name="cpHeaderRow">
+                <property name="spacing">
+                 <number>8</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="cpTitleIconLabel">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="cpTitleLabel">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>-1</pointsize>
+                    <weight>87</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#cpTitleLabel { color: #1A1A2E; font-size: 20px; font-weight: 700; }</string>
+                  </property>
+                  <property name="text">
+                   <string>عمليات كاش بلوس</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>10</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="cpSep2">
+               <property name="styleSheet">
+                <string notr="true">QFrame#cpSep2 { background-color: rgba(0,0,0,0.60); max-height: 1px; border: none; }</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::HLine</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_15">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>10</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout">
+               <item>
+                <spacer name="spacer_23">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Fixed</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>14</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="lbl_cpBalanceFirst">
+                 <property name="font">
+                  <font>
+                   <family>Tajawal</family>
+                   <pointsize>11</pointsize>
+                   <weight>62</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLabel#lbl_cpBalanceFirst { color: #6B7280;}</string>
+                 </property>
+                 <property name="text">
+                  <string>الرصيد الأولي</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="spacer">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>10</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="cpBalanceFirstBadge">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>150</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>160</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLabel#cpBalanceFirstBadge { 
+color: #EF4444; 
+background-color: #FFFFFF; 
+border: 1px solid #EF4444;
+border-radius: 8px; 
+padding: 4px 12px; 
+font-size: 16px; 
+font-weight: 800; 
+font-family: 'Liberation Mon';
+ }</string>
+                 </property>
+                 <property name="text">
+                  <string>0.00</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QFrame" name="cpSep1">
+               <property name="styleSheet">
+                <string notr="true">QFrame#cpSep1 { background-color: rgba(229,231,235,0.60); max-height: 1px; border: none; }</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::HLine</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="cpRowsFrame">
+               <property name="styleSheet">
+                <string notr="true">QFrame#cpRowsFrame { background: transparent; border: none; }</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+               <layout class="QVBoxLayout" name="cpRowsLayout">
+                <property name="spacing">
+                 <number>6</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QFrame" name="transinFrame">
+                  <property name="styleSheet">
+                   <string notr="true">/* The Container Frame */
+QFrame#transinFrame {
+    background-color: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 15px; /* High radius for pill shape */
+    padding: 7px;
+}
+
+/* The Value Label */
+QLabel {
+    color: #475569; /* Dark charcoal */
+    font-weight: 500;
+    qproperty-alignment: 'AlignCenter';
+}</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_10">
+                   <property name="spacing">
+                    <number>2</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>3</number>
+                   </property>
+                   <item>
+                    <layout class="QHBoxLayout">
+                     <item>
+                      <widget class="QLabel" name="lbl_cpTransferIn">
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string>التحويلات الوطنية IN</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer>
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>10</width>
+                         <height>10</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="le_cpNatTransIn">
+                       <property name="minimumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                       <property name="placeholderText">
+                        <string>0.00</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="_3">
+                     <item>
+                      <widget class="QLabel" name="lbl_cpIntTransIn">
+                       <property name="styleSheet">
+                        <string notr="true">QLabel#lbl_cpTotal1 { color: #6B7280; font-size: 12px; font-weight: 500; }</string>
+                       </property>
+                       <property name="text">
+                        <string>التحويلات الدولية IN</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer>
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>10</width>
+                         <height>10</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="le_cpIntTransIn">
+                       <property name="minimumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                       <property name="placeholderText">
+                        <string>0.00</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="transoutFrame">
+                  <property name="styleSheet">
+                   <string notr="true">/* The Container Frame */
+QFrame#transoutFrame {
+    background-color: #f0f7ff;
+    border: 2px solid #d1e3f8;
+    border-radius: 15px; /* High radius for pill shape */
+    padding: 7px;
+}
+
+/* The Value Label */
+QLabel {
+    color: #1e40af; /* Dark charcoal */
+    font-weight: 500;
+    qproperty-alignment: 'AlignCenter';
+}</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="transoutframe">
+                   <property name="spacing">
+                    <number>2</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>3</number>
+                   </property>
+                   <item>
+                    <layout class="QHBoxLayout">
+                     <item>
+                      <widget class="QLabel" name="lbl_cpNatTransOut">
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string>التحويلات الوطنية OUT</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer>
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>10</width>
+                         <height>10</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="le_cpNatTransOut">
+                       <property name="minimumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                       <property name="placeholderText">
+                        <string>0.00</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="_2">
+                     <item>
+                      <widget class="QLabel" name="lbl_cpIntTransOut">
+                       <property name="styleSheet">
+                        <string notr="true">QLabel#lbl_cpTotal1 { color: #6B7280; font-size: 12px; font-weight: 500; }</string>
+                       </property>
+                       <property name="text">
+                        <string>التحويلات الدولية OUT</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer>
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>10</width>
+                         <height>10</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="le_cpIntTransOut">
+                       <property name="minimumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                       <property name="placeholderText">
+                        <string>0.00</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="compteFrame">
+                  <property name="styleSheet">
+                   <string notr="true">/* The Container Frame */
+QFrame#compteFrame {
+    background-color: #edefff;
+    border: 2px solid #c9caff;
+    border-radius: 15px;
+    padding: 7px;
+}
+
+/* The Value Label */
+QLabel {
+    color: #1a3796; /* Deep Terracotta */
+    font-weight: 500;
+    qproperty-alignment: 'AlignCenter';
+}</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_9">
+                   <property name="spacing">
+                    <number>2</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>3</number>
+                   </property>
+                   <item>
+                    <layout class="QHBoxLayout">
+                     <item>
+                      <widget class="QLabel" name="lbl_cpClientIn">
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string>حساب الزبون IN</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer>
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>10</width>
+                         <height>10</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="le_cpClientIn">
+                       <property name="minimumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                       <property name="placeholderText">
+                        <string>0.00</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout">
+                     <item>
+                      <widget class="QLabel" name="lbl_cpClientOut">
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string>حساب الزبون OUT</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer>
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>10</width>
+                         <height>10</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="le_cpClientOut">
+                       <property name="minimumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                       <property name="placeholderText">
+                        <string>0.00</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="factursFrame">
+                  <property name="styleSheet">
+                   <string notr="true">/* The Container Frame */
+QFrame#factursFrame {
+    background-color: #fffbeb;
+    border: 2px solid #fde68a;
+    border-radius: 15px; /* High radius for pill shape */
+    padding: 7px;
+}
+
+/* The Value Label */
+QLabel {
+    color: #b45309; /* Dark charcoal */
+    font-weight: 500;
+    qproperty-alignment: 'AlignCenter';
+}</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_8">
+                   <property name="spacing">
+                    <number>2</number>
+                   </property>
+                   <property name="sizeConstraint">
+                    <enum>QLayout::SetDefaultConstraint</enum>
+                   </property>
+                   <property name="leftMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>3</number>
+                   </property>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_2">
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="lbl_cpInvoices">
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string>الفواتير</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer>
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>10</width>
+                         <height>10</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="le_cpInvoices">
+                       <property name="minimumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                       <property name="placeholderText">
+                        <string>0.00</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_4">
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="lbl_cpSetup">
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string>CP MARCHANT</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer>
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>10</width>
+                         <height>10</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="le_cpMarchant">
+                       <property name="minimumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                       <property name="placeholderText">
+                        <string>0.00</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_3">
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="lbl_cpClientIn">
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string>ضريبة السيارة</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer>
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>10</width>
+                         <height>10</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="le_cpVehicleTax">
+                       <property name="minimumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                       <property name="placeholderText">
+                        <string>0.00</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="otheservesFrame">
+                  <property name="styleSheet">
+                   <string notr="true">/* The Container Frame */
+QFrame#otheservesFrame {
+    background-color: #fff7ed;
+    border: 2px solid #ffedd5;
+    border-radius: 15px;
+    padding: 7px;
+}
+
+/* The Value Label */
+QLabel {
+    color: #9a3412; /* Deep Terracotta */
+    font-weight: 500;
+    qproperty-alignment: 'AlignCenter';
+}</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_11">
+                   <property name="spacing">
+                    <number>2</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>3</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>3</number>
+                   </property>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_5">
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="lbl_cpDetail">
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string>DETAILLANT</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer>
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>10</width>
+                         <height>10</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="le_cpDetailant">
+                       <property name="minimumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                       <property name="placeholderText">
+                        <string>0.00</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <widget class="QFrame" name="detaillantframe">
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <layout class="QHBoxLayout">
+                      <property name="spacing">
+                       <number>6</number>
+                      </property>
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
+                     </layout>
+                    </widget>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout">
+                     <item>
+                      <widget class="QLabel" name="lbl_cpMarchant">
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string>تعبئة الهاتف</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer>
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>10</width>
+                         <height>10</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="le_cpPhoneTopup">
+                       <property name="minimumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>150</width>
+                         <height>35</height>
+                        </size>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                       <property name="placeholderText">
+                        <string>0.00</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_3">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::Fixed</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>10</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QFrame" name="totalFrame_2">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">/* The Main Container Frame */
+QFrame#totalFrame_2 {
+    background-color: #fef2f2; /* Light Amber background */
+    border: 1px solid #fecaca; /* Slightly darker amber border */
+    border-radius: 12px;       /* Rounded corners as seen in the image */
+    padding: 5px 10px;
+}
+
+/* The Title Label (e.g., &quot;المجموع المدفوعات OUT&quot;) */
+QLabel#lbl_totaltitle2 {
+    color: #b91c1c;           /* Dark Brown/Amber text */
+    font-family: 'Tajawal';   /* Primary Arabic font from your files */
+    font-size: 15px;
+    font-weight: 600;
+    background: transparent;
+    qproperty-alignment: 'AlignCenter';
+}
+
+/* The Numerical Value Label (e.g., &quot;106852.18&quot;) */
+QLabel#lbl_totalval {
+    color: #78350F;           /* Deep Chocolate Brown */
+    font-family: 'Liberation Mono'; /* Monospaced font for aligned numbers */
+    font-size: 20px;
+    font-weight: 800;         /* Extra bold for emphasis */
+    background: transparent;
+    qproperty-alignment: 'AlignCenter';
+}
+
+/* The Container Frame */
+QFrame#cpRemaining1Frame {
+    background-color: #fff1f2;
+    border: 2px solid #fecdd3;
+    border-radius: 15px;
+    padding: 7px;
+}
+
+/* The Value Label */
+QLabel {
+    color: #be123c; /* Rose Crimson */
+    font-weight: 500;
+    qproperty-alignment: 'AlignCenter';
+}</string>
+                  </property>
+                  <property name="frameShape">
+                   <enum>QFrame::NoFrame</enum>
+                  </property>
+                  <layout class="QHBoxLayout" name="cpRem1Layout_2">
+                   <property name="leftMargin">
+                    <number>10</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>7</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>10</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>7</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="lbl_totaltitle2">
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string>المجموع</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="lbl_totalval">
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string>0.00</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="cpRemaining1Frame">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">/* The Main Container Frame */
+QFrame#cpRemaining1Frame {
+    background-color: #FEF3C7; /* Light Amber background */
+    border: 1px solid #FDE68A; /* Slightly darker amber border */
+    border-radius: 12px;       /* Rounded corners as seen in the image */
+    padding: 5px 10px;
+}
+
+/* The Title Label (e.g., &quot;المجموع المدفوعات OUT&quot;) */
+QLabel#lbl_cpRemaining1 {
+    color: #92400E;           /* Dark Brown/Amber text */
+    font-family: 'Tajawal';   /* Primary Arabic font from your files */
+    font-size: 15px;
+    font-weight: 600;
+    background: transparent;
+    qproperty-alignment: 'AlignCenter';
+}
+
+/* The Numerical Value Label (e.g., &quot;106852.18&quot;) */
+QLabel#cpRemaining1Val {
+    color: #78350F;           /* Deep Chocolate Brown */
+    font-family: 'Liberation Mono'; /* Monospaced font for aligned numbers */
+    font-size: 20px;
+    font-weight: 800;         /* Extra bold for emphasis */
+    background: transparent;
+    qproperty-alignment: 'AlignCenter';
+}</string>
+                  </property>
+                  <property name="frameShape">
+                   <enum>QFrame::NoFrame</enum>
+                  </property>
+                  <layout class="QHBoxLayout" name="cpRem1Layout">
+                   <property name="leftMargin">
+                    <number>10</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>7</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>10</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>7</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="lbl_cpRemaining1">
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string>الباقي</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="cpRemaining1Val">
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string>0.00</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>10</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QFrame" name="cpSubPanel">
+               <property name="styleSheet">
+                <string notr="true">QFrame#cpSubPanel { background-color: rgba(248,247,245,0.90); border: 1px solid rgba(220,212,200,0.80); border-radius: 12px; }</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+               <layout class="QVBoxLayout" name="cpSubLayout">
+                <property name="spacing">
+                 <number>10</number>
+                </property>
+                <property name="leftMargin">
+                 <number>12</number>
+                </property>
+                <property name="topMargin">
+                 <number>12</number>
+                </property>
+                <property name="rightMargin">
+                 <number>12</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>12</number>
+                </property>
+                <item>
+                 <layout class="QHBoxLayout">
+                  <item>
+                   <widget class="QLabel" name="cpSubPanelIconLabel">
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="cpSubPanelTitle">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel#cpSubPanelTitle { color: #374151; font-size: 13px; font-weight: 600; }</string>
+                    </property>
+                    <property name="text">
+                     <string>دخول / خروج</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer>
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>10</width>
+                      <height>10</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QToolButton" name="cpSubPanelToggleBtn">
+                    <property name="minimumSize">
+                     <size>
+                      <width>50</width>
+                      <height>35</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>118</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <family>Tajawal</family>
+                      <pointsize>9</pointsize>
+                      <weight>75</weight>
+                      <bold>true</bold>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QToolButton {
+    /* Background and Border */
+    background-color: #DBEAFE; /* Light blue background (from Tailwind blue-100) */
+    border: none;
+    border-radius: 15px;       /* High radius for the pill/oval shape */
+    
+    /* Padding and Size */
+    padding: 10px;
+    min-width: 30px;
+    min-height: 15px;
+}
+
+QToolButton:hover {
+    background-color: #BFDBFE; /* Slightly darker blue on hover (blue-200) */
+}
+
+QToolButton:pressed {
+    background-color: #93C5FD; /* Even deeper blue when clicked (blue-300) */
+}
+
+/* Icon Styling */
+/* Note: Qt handles the icon color via the QIcon file itself, 
+   but you can adjust the padding for the icon here. */
+QToolButton::menu-indicator {
+    image: none;               /* Removes the small arrow if it has a menu */
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>القيد اليومي</string>
+                    </property>
+                    <property name="toolButtonStyle">
+                     <enum>Qt::ToolButtonTextBesideIcon</enum>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QFrame" name="cpTotalInFrame">
+                  <property name="styleSheet">
+                   <string notr="true">/* --- OUT (Payments) Frame --- */
+QFrame#cpTotalInFrame {
+    background-color: #FEF3C7; /* Light Amber from image */
+    border: 1px solid #FDE68A;
+    border-radius: 15px;
+    min-height: 70px;
+}
+
+QLabel#lbl_cpTotalIn {
+    color: #92400E; /* Dark Amber */
+    font-family: 'Tajawal';
+    font-size: 15px;
+    font-weight: bold;
+}
+
+QLabel#cpTotalOutVal {
+    color: #78350F; /* Deep Brown */
+     font-family: 'Liberation Mono'; /* Monospace for numbers */
+    font-size: 25px;
+    font-weight: 800;
+}</string>
+                  </property>
+                  <property name="frameShape">
+                   <enum>QFrame::NoFrame</enum>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_5">
+                   <property name="leftMargin">
+                    <number>10</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>8</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>10</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>8</number>
+                   </property>
+                   <item alignment="Qt::AlignHCenter">
+                    <widget class="QLabel" name="lbl_cpTotalIn">
+                     <property name="styleSheet">
+                      <string notr="true">QLabel#lbl_cpTotalOut { color: #B91C1C; font-size: 11px; font-weight: 600; }</string>
+                     </property>
+                     <property name="text">
+                      <string>إجمالي المدفوعات</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="cpTotalOutVal">
+                     <property name="font">
+                      <font>
+                       <family>Liberation Mono</family>
+                       <pointsize>-1</pointsize>
+                       <weight>99</weight>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string>0.00</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="cpTotalOutFrame">
+                  <property name="styleSheet">
+                   <string notr="true">QFrame#cpTotalOutFrame {
+    background-color: #FFF1F2; /* Light Rose from image */
+    border: 1px solid #FECDD3;
+    border-radius: 15px;
+    min-height: 70px;
+}
+
+QLabel#lbl_cpTotalOut {
+    color: #9F1239; /* Dark Red */
+    font-family: 'Tajawal';
+    font-size: 15px;
+    font-weight: bold;
+}
+
+QLabel#cpTotalInVal {
+    color: #881337; /* Deep Rose */
+     font-family: 'Liberation Mono'; /* Monospace for numbers */
+    font-size: 25px;
+    font-weight: 800;
+}</string>
+                  </property>
+                  <property name="frameShape">
+                   <enum>QFrame::NoFrame</enum>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_4">
+                   <property name="leftMargin">
+                    <number>10</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>8</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>10</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>8</number>
+                   </property>
+                   <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+                    <widget class="QLabel" name="lbl_cpTotalOut">
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string>إجمالي المقبوضات</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="cpTotalInVal">
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string>0.00</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_4">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QFrame" name="cpLastDayFrame">
+               <property name="styleSheet">
+                <string notr="true">QFrame#cpLastDayFrame { background-color: #3B82F6; color: #ffffff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; padding: 7px 16px; border-radius: 24px;}</string>
+               </property>
+               <layout class="QHBoxLayout" name="cpLastDayRow">
+                <property name="spacing">
+                 <number>10</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="lbl_cpLastDay">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>-1</pointsize>
+                    <weight>62</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#lbl_cpLastDay {color: #ffffff; font-size: 18px}</string>
+                  </property>
+                  <property name="text">
+                   <string>رصيد اخر اليوم</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>10</width>
+                    <height>10</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="cpLastDayVal">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>-1</pointsize>
+                    <weight>99</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#cpLastDayVal {  font-size:21px; font-weight: 800; color: #ffffff }</string>
+                  </property>
+                  <property name="text">
+                   <string>0.00</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="cashBoxCard">
+            <property name="styleSheet">
+             <string notr="true">QFrame#cashBoxCard { background-color: #FFFFFF; border: 1px solid rgba(220,212,200,0.60); border-radius: 14px; }
+
+QLineEdit {
+    color: #2c343f;               /* Professional dark charcoal text */
+    font-family: &quot;Arial&quot;; 
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #ffffff;    /* Solid white for contrast */
+    border-radius: 7px;
+    border: 1px solid #E5E7EB;    /* Light grey neutral border */
+    padding: 5px 10px;            /* Comfortable internal spacing */
+    qproperty-alignment: 'AlignCenter';
+}
+
+/* Hover State */
+QLineEdit:hover {
+    border: 1px solid #00ab84;    /* Emerald green highlight */
+    background-color: #f0fdf4;    /* Very soft mint tint */
+}
+
+/* Focus State (Active Typing) */
+QLineEdit:focus {
+    border: 2px solid #00ab84;    /* Bold emerald border */
+    background-color: #ffffff;    /* Clear white for typing */
+}
+
+/* Disabled/Read-Only State */
+QLineEdit:disabled {
+    background-color: #f9fafb;
+    color: #9ca3af;
+    border: 1px solid #e5e7eb;
+}
+
+QLabel {
+    color: #1E293B; /* Color from image analysis */
+    font-family: 'Tajawal';
+    font-size: 11pt;
+    font-weight: 500;
+    qproperty-alignment: 'AlignCenter';
+	padding-left: 5px;
+}</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <layout class="QVBoxLayout" name="cbLayout">
+             <property name="spacing">
+              <number>10</number>
+             </property>
+             <property name="leftMargin">
+              <number>16</number>
+             </property>
+             <property name="topMargin">
+              <number>16</number>
+             </property>
+             <property name="rightMargin">
+              <number>16</number>
+             </property>
+             <property name="bottomMargin">
+              <number>16</number>
+             </property>
+             <item>
+              <widget class="QFrame" name="cbHeaderFrame">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>50</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <layout class="QHBoxLayout" name="cbHeaderRow">
+                <property name="spacing">
+                 <number>8</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="cbTitleIconLabel">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="cbTitleLabel">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#cbTitleLabel { color: #1A1A2E; font-size: 20px; font-weight: 700; padding-left: 0px; }</string>
+                  </property>
+                  <property name="text">
+                   <string>الصندوق</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>10</width>
+                    <height>10</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="cbCashBoxBadge">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#cbCashBoxBadge { color: #15803D; background-color: #DCFCE7; border: 1px solid #BBF7D0; border-radius: 8px; padding: 3px 8px; font-size: 11px; font-weight: 700; }</string>
+                  </property>
+                  <property name="text">
+                   <string>CASH-BOX</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="spacer_12">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::Fixed</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>4</width>
+                    <height>10</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="cbSep1">
+               <property name="styleSheet">
+                <string notr="true">QFrame#cbSep1{ background-color: rgba(0,0,0,0.60); max-height: 1px; border: none; }</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::HLine</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_14">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>10</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_13">
+               <property name="spacing">
+                <number>3</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_6">
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <spacer name="spacer_3">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Fixed</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>25</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_cbValue">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel {
+    color: #9CA3AF; /* Color from image analysis */
+    font-family: 'Tajawal';
+    font-size: 12pt;
+    font-weight: 500;
+    qproperty-alignment: 'AlignCenter';
+	padding-bottom: 0px;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>القيمة</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_cbQty">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel {
+    color: #9CA3AF; /* Color from image analysis */
+    font-family: 'Tajawal';
+    font-size: 12pt;
+    font-weight: 500;
+    qproperty-alignment: 'AlignCenter';
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>العدد</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="spacer_2">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Fixed</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>50</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QFrame" name="cbColSep">
+                 <property name="styleSheet">
+                  <string notr="true">QFrame#cbColSep { background-color: rgba(229,231,235,0.60); max-height: 1px; border: none; }</string>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::HLine</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Fixed</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>7</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="cbColHeaderRow_7">
+                 <item>
+                  <spacer name="spacer_4">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Fixed</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_cbQty_7">
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#lbl_cbQty { color: #9CA3AF; font-size: 11px; font-weight: 600; }</string>
+                   </property>
+                   <property name="text">
+                    <string>حزمة 10000 درهم</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="le_cb10000">
+                   <property name="minimumSize">
+                    <size>
+                     <width>150</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>150</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="cbColHeaderRow_2">
+                 <item>
+                  <spacer name="spacer_5">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Fixed</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_cbQty_2">
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#lbl_cbQty { color: #9CA3AF; font-size: 11px; font-weight: 600; }</string>
+                   </property>
+                   <property name="text">
+                    <string>اوراق مالية 200</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="le_cb200">
+                   <property name="minimumSize">
+                    <size>
+                     <width>150</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>150</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="cbColHeaderRow_3">
+                 <item>
+                  <spacer name="spacer_6">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Fixed</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_cbQty_3">
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#lbl_cbQty { color: #9CA3AF; font-size: 11px; font-weight: 600; }</string>
+                   </property>
+                   <property name="text">
+                    <string>اوراق مالية 100</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="le_cb100">
+                   <property name="minimumSize">
+                    <size>
+                     <width>150</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>150</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="cbColHeaderRow_4">
+                 <item>
+                  <spacer name="spacer_7">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Fixed</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_cbQty_4">
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#lbl_cbQty { color: #9CA3AF; font-size: 11px; font-weight: 600; }</string>
+                   </property>
+                   <property name="text">
+                    <string>اوراق مالية 50</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="le_cb50">
+                   <property name="minimumSize">
+                    <size>
+                     <width>150</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>150</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="cbColHeaderRow_5">
+                 <item>
+                  <spacer name="spacer_8">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Fixed</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_cbQty_5">
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#lbl_cbQty { color: #9CA3AF; font-size: 11px; font-weight: 600; }</string>
+                   </property>
+                   <property name="text">
+                    <string>اوراق مالية 20</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="le_cb20">
+                   <property name="minimumSize">
+                    <size>
+                     <width>150</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>150</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="cbColHeaderRow_6">
+                 <item>
+                  <spacer name="spacer_9">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Fixed</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_cbQty_6">
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#lbl_cbQty { color: #9CA3AF; font-size: 11px; font-weight: 600; }</string>
+                   </property>
+                   <property name="text">
+                    <string>عملات نقدية 10</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="le_cb10">
+                   <property name="minimumSize">
+                    <size>
+                     <width>150</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>150</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="cbColHeaderRow_8">
+                 <item>
+                  <spacer name="spacer_10">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Fixed</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_cbQty_8">
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#lbl_cbQty { color: #9CA3AF; font-size: 11px; font-weight: 600; }</string>
+                   </property>
+                   <property name="text">
+                    <string>عملات نقدية 5</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="le_cb5">
+                   <property name="minimumSize">
+                    <size>
+                     <width>150</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>150</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="inputMask">
+                    <string/>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="cbColHeaderRow_9">
+                 <item>
+                  <spacer name="spacer_11">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Fixed</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_cbQty_9">
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#lbl_cbQty { color: #9CA3AF; font-size: 11px; font-weight: 600; }</string>
+                   </property>
+                   <property name="text">
+                    <string>عملات نقدية 1</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>10</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="le_cb1">
+                   <property name="minimumSize">
+                    <size>
+                     <width>150</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>150</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_5">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>15</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QFrame" name="cbTotalFrame">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>100</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QFrame#cbTotalFrame { background: qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #059669,stop:1 #10B981); border: none; border-radius: 10px; }
+
+/* The Container Box */
+QFrame#cbTotalFrame {
+    background-color: #e9f5f0; /* Very light mint background */
+    border: 1px solid #c2e2d5;   /* Subtle light green border */
+    border-radius: 20px;         /* Rounded corners */
+    padding: 7px;
+}
+
+/* The &quot;Grand Total&quot; Arabic Text */
+QLabel#lbl_cbTotal {
+    color: #10B981;              /* Primary green color */
+    font-family: &quot;Tajawal&quot;; 
+    font-size: 20px;
+    font-weight: bold;
+    background: transparent;
+}
+
+/* The Numerical Value */
+QLabel#cbTotalVal {
+    color: #10B981;              /* Primary green color */
+    font-family: &quot;Segoe UI&quot;, &quot;Arial&quot;;
+    font-size: 30px;             /* Larger size for the amount */
+    font-weight: 800;            /* Extra Bold */
+    background: transparent;
+}</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_3">
+                <property name="leftMargin">
+                 <number>14</number>
+                </property>
+                <property name="topMargin">
+                 <number>10</number>
+                </property>
+                <property name="rightMargin">
+                 <number>14</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>10</number>
+                </property>
+                <item alignment="Qt::AlignHCenter">
+                 <widget class="QLabel" name="lbl_cbTotal">
+                  <property name="styleSheet">
+                   <string notr="true">padding-left: 0px;</string>
+                  </property>
+                  <property name="text">
+                   <string>المجموع الكلي</string>
+                  </property>
+                 </widget>
+                </item>
+                <item alignment="Qt::AlignHCenter">
+                 <widget class="QLabel" name="cbTotalVal">
+                  <property name="styleSheet">
+                   <string notr="true">padding-left: 0px;</string>
+                  </property>
+                  <property name="text">
+                   <string>0.00</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_6">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>15</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QFrame" name="cmiframe_2">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>120</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>120</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">/* The Container Frame */
+QFrame#cmiframe_2 {
+    background-color: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 15px; /* High radius for pill shape */
+    padding: 7px;
+}
+
+/* The Value Label */
+QLabel {
+    color: #475569; /* Dark charcoal */
+    font-weight: 500;
+    qproperty-alignment: 'AlignCenter';
+}</string>
+               </property>
+               <layout class="QVBoxLayout" name="cmiframe">
+                <property name="spacing">
+                 <number>6</number>
+                </property>
+                <property name="leftMargin">
+                 <number>4</number>
+                </property>
+                <property name="topMargin">
+                 <number>4</number>
+                </property>
+                <property name="rightMargin">
+                 <number>4</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>4</number>
+                </property>
+                <item>
+                 <layout class="QHBoxLayout">
+                  <item>
+                   <widget class="QLineEdit" name="le_cbCmiTam">
+                    <property name="minimumSize">
+                     <size>
+                      <width>150</width>
+                      <height>35</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>150</width>
+                      <height>35</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLineEdit {
+    color: #2c343f;               /* Professional dark charcoal text */
+    font-family: &quot;Arial&quot;; 
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #ffffff;    /* Solid white for contrast */
+    border-radius: 7px;
+    border: 1px solid #E5E7EB;    /* Light grey neutral border */
+    padding: 5px 10px;            /* Comfortable internal spacing */
+    qproperty-alignment: 'AlignCenter';
+}
+
+/* Hover State */
+QLineEdit:hover {
+    border: 1px solid #FACC15;    /* Soft gold border on hover */
+    background-color: #fff8c2;    /* Your main color: Light yellow tint */
+}
+
+/* Focus State (Active Typing) */
+QLineEdit:focus {
+    border: 2px solid #CA8A04;    /* Deeper amber border for high visibility */
+    background-color: #ffffff;    /* Clear white for typing */
+}
+
+/* Disabled/Read-Only State */
+QLineEdit:disabled {
+    background-color: #F9FAFB;
+    color: #9CA3AF;
+    border: 1px solid #E5E7EB;
+}</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                    <property name="placeholderText">
+                     <string>0.00</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer>
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>10</width>
+                      <height>10</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="lbl_cbCmiTam">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel#lbl_cbCmiTam { color: #6B7280; font-size: 17px; }</string>
+                    </property>
+                    <property name="text">
+                     <string>CMI-TAM</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="spacer_13">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                     <enum>QSizePolicy::Fixed</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>10</width>
+                      <height>10</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout">
+                  <item>
+                   <widget class="QLabel" name="cbCmiBankBadge">
+                    <property name="minimumSize">
+                     <size>
+                      <width>150</width>
+                      <height>35</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>150</width>
+                      <height>35</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel#cbCmiBankBadge { color: #92400E; background-color: #FEF08A; border: 1px solid #FDE047; border-radius: 8px; padding: 4px 12px; font-size: 16px; font-weight: 500; font-family: 'Overpass'; }</string>
+                    </property>
+                    <property name="text">
+                     <string>0.00</string>
+                    </property>
+                    <property name="textFormat">
+                     <enum>Qt::AutoText</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer>
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>10</width>
+                      <height>10</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="lbl_cbCmiBank">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel#lbl_cbCmiBank { color: #6B7280; font-size: 17px; }</string>
+                    </property>
+                    <property name="text">
+                     <string>CMI-BANK</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="spacer_14">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                     <enum>QSizePolicy::Fixed</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>10</width>
+                      <height>10</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_11">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>25</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QFrame" name="cbMizanFrame">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>90</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QFrame#cbMizanFrame { background-color:rgba(186, 186, 186, 30); border: 2px solid rgb(255, 0, 0); border-radius: 10px; }</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout">
+                <property name="leftMargin">
+                 <number>12</number>
+                </property>
+                <property name="topMargin">
+                 <number>8</number>
+                </property>
+                <property name="rightMargin">
+                 <number>12</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>8</number>
+                </property>
+                <item alignment="Qt::AlignHCenter">
+                 <widget class="QLabel" name="lbl_cbMizan">
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#lbl_cbMizan { color: #000000; font-size: 20px; font-weight: 500; }</string>
+                  </property>
+                  <property name="text">
+                   <string>الميزان</string>
+                  </property>
+                 </widget>
+                </item>
+                <item alignment="Qt::AlignHCenter">
+                 <widget class="QLabel" name="cbMizanVal">
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#cbMizanVal { color: #3B82F6; font-size: 27px; font-weight: 800; font-family: 'Liberation Mono';
+ }
+</string>
+                  </property>
+                  <property name="text">
+                   <string>0.00</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_7">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="generalCard">
+            <property name="styleSheet">
+             <string notr="true">QFrame#generalCard { background-color: #FFFFFF; border: 1px solid rgba(220,212,200,0.60); border-radius: 14px; }
+
+QLineEdit {
+    color: #2c343f;               
+    font-family: &quot;Overpass&quot;; 
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #ffffff;    
+    border-radius: 7px;
+    border: 1px solid #E5E7EB;    
+    padding: 5px 10px;            
+}
+
+/* Hover State - Soft Blue Glow */
+QLineEdit:hover {
+    border: 1px solid #3B82F6;    /* Primary Blue border */
+    background-color: #eff6ff;    /* Extremely light blue wash (Blue-50) */
+}
+
+/* Focus State - Active Typing */
+QLineEdit:focus {
+    border: 2px solid #3B82F6;    /* Thicker blue border */
+    background-color: #ffffff;    
+    outline: none;                
+}
+
+/* Disabled State */
+QLineEdit:disabled {
+    background-color: #f8fafc;    /* Very light slate/grey */
+    color: #94a3b8;
+    border: 1px solid #e2e8f0;
+}
+
+/* Read-Only State (Added for consistency with your previous requests) */
+QLineEdit[readOnly=&quot;true&quot;] {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+
+QLabel {
+    color: #1E293B; /* Color from image analysis */
+    font-family: 'Tajawal';
+    font-size: 11pt;
+    font-weight: 500;
+    qproperty-alignment: 'AlignCenter';
+	padding-left: 5px;
+	color: #1E293B;
+}</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <layout class="QVBoxLayout" name="genLayout">
+             <property name="spacing">
+              <number>10</number>
+             </property>
+             <property name="leftMargin">
+              <number>16</number>
+             </property>
+             <property name="topMargin">
+              <number>16</number>
+             </property>
+             <property name="rightMargin">
+              <number>16</number>
+             </property>
+             <property name="bottomMargin">
+              <number>16</number>
+             </property>
+             <item>
+              <widget class="QFrame" name="frame">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>50</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>50</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <layout class="QHBoxLayout" name="genHeaderRow">
+                <property name="spacing">
+                 <number>8</number>
+                </property>
+                <item>
+                 <widget class="QToolButton" name="genIconBtn">
+                  <property name="styleSheet">
+                   <string notr="true">QToolButton#genIconBtn { background-color: #3B82F6; border: none; border-radius: 8px; padding: 5px; min-width: 30px; min-height: 30px; }
+QToolButton#genIconBtn:hover { background-color: #2563EB; }</string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="genTitleLabel">
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#genTitleLabel { color: #1A1A2E; font-size: 20px; font-weight: 700; }</string>
+                  </property>
+                  <property name="text">
+                   <string>عام</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>10</width>
+                    <height>10</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="genDiffPercent">
+                  <property name="minimumSize">
+                   <size>
+                    <width>80</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>79</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#genDiffPercent { color: #3B82F6; background-color: #DBEAFE; border: 1px solid #BBF7D0; border-radius: 10px; padding: 2px 8px; font-size: 12px; font-weight: 700; }</string>
+                  </property>
+                  <property name="text">
+                   <string>+2.4%</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="genSep1">
+               <property name="styleSheet">
+                <string notr="true">QFrame#genSep1 { background-color: rgba(0,0,0,0.60); max-height: 1px; border: none; }</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::HLine</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_16">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>10</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QFrame" name="genRowsFrame">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>550</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QFrame#genRowsFrame { background: transparent; border: none;padding: 0px; }
+QFrame {
+	border-radius: 16px;
+	background-color: rgba(226, 226, 226, 50);
+	padding: 5px;
+}
+QLabel {
+	
+	background-color: transparent;
+}</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+               <layout class="QVBoxLayout" name="genRowsLayout">
+                <property name="spacing">
+                 <number>4</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QFrame" name="genFirstBalFrame">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>65</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <layout class="QHBoxLayout">
+                   <item>
+                    <widget class="QLabel" name="lbl_genFirstBal">
+                     <property name="styleSheet">
+                      <string notr="true">/*QLabel#lbl_genFirstBal { color: #6B7280; font-size: 16px; font-weight: 400; }</string>
+                     </property>
+                     <property name="text">
+                      <string>الرصيد الأولي العام</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer>
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>10</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="genFirstBalVal">
+                     <property name="minimumSize">
+                      <size>
+                       <width>150</width>
+                       <height>35</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>150</width>
+                       <height>35</height>
+                      </size>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                     <property name="placeholderText">
+                      <string>0.00</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="spacer_15">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeType">
+                      <enum>QSizePolicy::Fixed</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>10</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="genBranchFrame">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>65</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <layout class="QHBoxLayout">
+                   <item>
+                    <widget class="QLabel" name="lbl_genBranch">
+                     <property name="styleSheet">
+                      <string notr="true">/*QLabel#lbl_genBranch { color: #6B7280; font-size: 16px; font-weight: 400; }</string>
+                     </property>
+                     <property name="text">
+                      <string>رصيد الفروع</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer>
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>10</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="genBranchVal">
+                     <property name="minimumSize">
+                      <size>
+                       <width>150</width>
+                       <height>35</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>150</width>
+                       <height>35</height>
+                      </size>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                     <property name="placeholderText">
+                      <string>0.00</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="spacer_16">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeType">
+                      <enum>QSizePolicy::Fixed</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>10</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="genCashPlusFrame">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>65</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <layout class="QHBoxLayout">
+                   <item>
+                    <widget class="QLabel" name="lbl_genCashPlus">
+                     <property name="styleSheet">
+                      <string notr="true">/*QLabel#lbl_genCashPlus { color: #6B7280; font-size: 16px; font-weight: 400; }</string>
+                     </property>
+                     <property name="text">
+                      <string>رصيد كاش بلوس</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer>
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>10</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="genCashPlusVal">
+                     <property name="minimumSize">
+                      <size>
+                       <width>150</width>
+                       <height>35</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>150</width>
+                       <height>35</height>
+                      </size>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                     <property name="placeholderText">
+                      <string>0.00</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="spacer_17">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeType">
+                      <enum>QSizePolicy::Fixed</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>10</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="genBankFrame">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>65</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <layout class="QHBoxLayout">
+                   <item>
+                    <widget class="QLabel" name="lbl_genBank">
+                     <property name="styleSheet">
+                      <string notr="true">/*QLabel#lbl_genBank { color: #6B7280; font-size: 16px; font-weight: 400; }*/</string>
+                     </property>
+                     <property name="text">
+                      <string>رصيد البنك</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer>
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>10</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="genBankVal">
+                     <property name="minimumSize">
+                      <size>
+                       <width>150</width>
+                       <height>35</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>150</width>
+                       <height>35</height>
+                      </size>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                     <property name="placeholderText">
+                      <string>0.00</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="spacer_18">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeType">
+                      <enum>QSizePolicy::Fixed</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>10</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="genCmiFrame">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>65</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <layout class="QHBoxLayout">
+                   <item>
+                    <widget class="QLabel" name="lbl_genCmiTpe">
+                     <property name="styleSheet">
+                      <string notr="true">/*QLabel#lbl_genCmiTpe { color: #6B7280; font-size: 16px; font-weight: 400; }*/</string>
+                     </property>
+                     <property name="text">
+                      <string>عمليات TPE</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer>
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>10</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="genCmiTpeVal">
+                     <property name="minimumSize">
+                      <size>
+                       <width>150</width>
+                       <height>35</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>150</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                     <property name="placeholderText">
+                      <string>0.00</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="spacer_19">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeType">
+                      <enum>QSizePolicy::Fixed</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>10</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="genDailyFrame">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>65</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <layout class="QHBoxLayout">
+                   <item>
+                    <widget class="QLabel" name="lbl_othertrans">
+                     <property name="styleSheet">
+                      <string notr="true">QLabel#lbl_genLastBal { color: #6B7280; font-size: 16px; font-weight: 400; }</string>
+                     </property>
+                     <property name="text">
+                      <string>عمليات يومية</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer>
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>10</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="otherTransactionVal">
+                     <property name="minimumSize">
+                      <size>
+                       <width>150</width>
+                       <height>35</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>150</width>
+                       <height>35</height>
+                      </size>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                     <property name="placeholderText">
+                      <string>0.00</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="spacer_20">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeType">
+                      <enum>QSizePolicy::Fixed</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>10</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="genDailyFrame_2">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>65</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <layout class="QHBoxLayout" name="_5">
+                   <item>
+                    <widget class="QLabel" name="lbl_genDailyBal">
+                     <property name="styleSheet">
+                      <string notr="true">QLabel#lbl_genLastBal { color: #6B7280; font-size: 16px; font-weight: 400; }</string>
+                     </property>
+                     <property name="text">
+                      <string>الرصيد اليومي</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer>
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>10</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="genDailyBalVal">
+                     <property name="minimumSize">
+                      <size>
+                       <width>150</width>
+                       <height>35</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>150</width>
+                       <height>35</height>
+                      </size>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                     <property name="placeholderText">
+                      <string>0.00</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="spacer_24">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeType">
+                      <enum>QSizePolicy::Fixed</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>10</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="genFinalFrame">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>65</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <layout class="QHBoxLayout" name="_4">
+                   <item>
+                    <widget class="QLabel" name="lbl_genFinalBal">
+                     <property name="styleSheet">
+                      <string notr="true">QLabel#lbl_genLastBal { color: #6B7280; font-size: 13px; font-weight: 400; }</string>
+                     </property>
+                     <property name="text">
+                      <string>اخر الرصيد العام</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="spacer_22">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>10</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="genFinalBalVal">
+                     <property name="minimumSize">
+                      <size>
+                       <width>150</width>
+                       <height>35</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>150</width>
+                       <height>35</height>
+                      </size>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                     <property name="placeholderText">
+                      <string>0.00</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="spacer_21">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeType">
+                      <enum>QSizePolicy::Fixed</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>10</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="genTotalCard">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>116</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>116</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QFrame#genTotalCard { background: qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #2563EB,stop:1 #3B82F6); border: none; border-radius: 12px; }</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_6">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <property name="leftMargin">
+                 <number>16</number>
+                </property>
+                <property name="topMargin">
+                 <number>20</number>
+                </property>
+                <property name="rightMargin">
+                 <number>16</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>20</number>
+                </property>
+                <item alignment="Qt::AlignHCenter">
+                 <widget class="QLabel" name="lbl_genTotalDiff">
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#lbl_genTotalDiff { color: rgba(255,255,255,1.00); font-size: 20px; font-weight: 600; }</string>
+                  </property>
+                  <property name="text">
+                   <string>فرق الرصيد العام</string>
+                  </property>
+                 </widget>
+                </item>
+                <item alignment="Qt::AlignHCenter">
+                 <widget class="QLabel" name="genTotalDiffVal">
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#genTotalDiffVal { color: #FFFFFF; font-size: 22px; font-weight: 800; font-family: 'Overpass', monospace; letter-spacing: 1px; }</string>
+                  </property>
+                  <property name="text">
+                   <string>0.00</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <spacer>
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>8</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QFrame" name="transactionsFrame">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>400</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QFrame#transactionsFrame { background-color: #FFFFFF; border: 1px solid rgba(220,212,200,0.60); border-radius: 14px; }</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <layout class="QVBoxLayout" name="transLayout">
+           <property name="spacing">
+            <number>12</number>
+           </property>
+           <property name="leftMargin">
+            <number>16</number>
+           </property>
+           <property name="topMargin">
+            <number>16</number>
+           </property>
+           <property name="rightMargin">
+            <number>16</number>
+           </property>
+           <property name="bottomMargin">
+            <number>16</number>
+           </property>
+           <item>
+            <layout class="QHBoxLayout" name="transHeaderRow">
+             <property name="spacing">
+              <number>10</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="transTitleIconLabel">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="transTitleLabel">
+               <property name="styleSheet">
+                <string notr="true">QLabel#transTitleLabel { color: #1A1A2E; font-size: 17px; font-weight: 700; }</string>
+               </property>
+               <property name="text">
+                <string>سجل المعاملات</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QTableWidget" name="transactionsTable">
+             <property name="font">
+              <font>
+               <family>Tajawal</family>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QTableWidget#transactionsTable { background-color: transparent; border: none; gridline-color: transparent; alternate-background-color: rgba(249,250,251,0.80); outline: none; selection-background-color: #DBEAFE; selection-color: #1E40AF; }
+QTableWidget#transactionsTable QHeaderView::section { background-color: #F9FAFB; color: #6B7280; font-size: 13px; font-weight: 600; font-family: Tajawal;  padding: 10px 16px; border: none; border-bottom: 1px solid #E5E7EB; }
+QTableWidget#transactionsTable::item { padding: 8px 16px; color: #374151; border-bottom: 1px solid rgba(229,231,235,0.50); }
+QTableWidget#transactionsTable::item:selected { background-color: #DBEAFE; color: #1E40AF; }</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="editTriggers">
+              <set>QAbstractItemView::NoEditTriggers</set>
+             </property>
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
+             <property name="selectionBehavior">
+              <enum>QAbstractItemView::SelectRows</enum>
+             </property>
+             <property name="showGrid">
+              <bool>false</bool>
+             </property>
+             <column>
+              <property name="text">
+               <string>التاريخ</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>العدد</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>الحساب</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>اسم الزبون</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>المبلغ</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>الدفع</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>الباقي</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>OUT</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>IN</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

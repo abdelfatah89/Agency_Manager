@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="فاتورة - {{ company_name|default('STE VISA SERVICES EXPESSES SAR') }}">
+    <title>فاتورة رقم {{ invoice_no|default('---') }}</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="invoice-box" role="main" aria-label="فاتورة">
+        <!-- Company Header -->
+        <h2 class="top-company-name">{{ company_name|default('STE VISA SERVICES EXPESSES SAR') }}</h2>
+        
+        <!-- Invoice Title -->
+        <div class="invoice-header">
+            <h1 class="invoice-title">فاتورة</h1>
+        </div>
+
+        <!-- Header with Client and Invoice Info -->
+        <div class="header" dir="ltr"> <!-- Use LTR here so Invoice Info is left, Client Info is right naturally in CSS row -->
+            <!-- Invoice Info Box -->
+            <div class="info-box invoice-box-border">
+                <div class="info-row">
+                    <span class="info-value">{{ invoice_no|default('---') }}</span>
+                    <span class="info-colon">:</span>
+                    <span class="info-label">رقم الفاتورة</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-value">{{ date|default('---') }}</span>
+                    <span class="info-colon">:</span>
+                    <span class="info-label">{{ date_label|default('التاريخ') }}</span>
+                </div>
+            </div>
+
+            <!-- Client & Account Info Box -->
+            <div class="info-box client-box-border">
+                <div class="info-row">
+                    <span class="info-value"><strong>{{ client_name|default('غير محدد') }}</strong></span>
+                    <span class="info-colon">:</span>
+                    <span class="info-label">اسم الزبون</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-value">{{ account_name|default('---') }}</span>
+                    <span class="info-colon">:</span>
+                    <span class="info-label">الحساب</span>
+                </div>
+            </div>
+        </div>
+
+        <hr class="separator">
+
+        <!-- Invoice Items Table -->
+        <section role="region" aria-label="تفاصيل العمليات">
+            <table class="items-table" role="table" aria-label="جدول العمليات المالية">
+                <thead>
+                    <tr>
+                        <th scope="col">التاريخ</th>
+                        <th scope="col">البيان (المنتج/الخدمة)</th>
+                        <th scope="col">الكمية</th>
+                        <th scope="col">المبلغ</th>
+                        <th scope="col">الدفع</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if items and items|length > 0 %}
+                        {% for item in items %}
+                        <tr>
+                            <td data-label="التاريخ">
+                                <time datetime="{{ item.date }}">{{ item.date|default('---') }}</time>
+                            </td>
+                            <td data-label="البيان">{{ item.description|default('---') }}</td>
+                            <td data-label="الكمية">{{ item.qty|default('1') }}</td>
+                            <td data-label="المبلغ" class="amount-cell">
+                                <span dir="ltr">{{ "{:,.2f}".format(item.amount) if item.amount is not none else '0.00' }}</span>
+                            </td>
+                            <td data-label="الدفع" class="amount-cell">
+                                <span dir="ltr">{{ "{:,.2f}".format(item.paid) if item.paid is not none else '0.00' }}</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr class="empty-state">
+                            <td colspan="5" class="empty-message">لا توجد عمليات مسجلة</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+                {% if items and items|length > 0 %}
+                <tfoot>
+                    <tr>
+                        <td colspan="5" class="item-count">
+                            <small>عدد العمليات: <strong>{{ items|length }}</strong></small>
+                        </td>
+                    </tr>
+                </tfoot>
+                {% endif %}
+            </table>
+        </section>
+
+        <!-- Summary Section -->
+        <section class="summary-wrapper" role="region" aria-label="ملخص الفاتورة">
+            <table class="summary-table" role="table" aria-label="جدول الملخص المالي">
+                <caption class="sr-only">ملخص المبالغ المالية</caption>
+                <tbody>
+                    <tr class="total-row">
+                        <th scope="row">المجموع الكلي</th>
+                        <td class="amount-value" aria-label="المجموع الكلي">
+                            <span dir="ltr">{{ "{:,.2f}".format(total_amount) if total_amount is not none else '0.00' }}</span> درهم
+                        </td>
+                    </tr>
+                    <tr class="vat-row">
+                        <th scope="row">
+                            مجموع TVA
+                            {% if vat_rate is not none %}
+                                <small class="vat-rate">({{ "{:.0f}".format(vat_rate * 100) }}%)</small>
+                            {% endif %}
+                        </th>
+                        <td class="amount-value" aria-label="مجموع TVA">
+                            <span dir="ltr">{{ "{:,.2f}".format(total_vat) if total_vat is not none else '0.00' }}</span> درهم
+                        </td>
+                    </tr>
+                    <tr class="paid-row">
+                        <th scope="row">إجمالي المدفوع</th>
+                        <td class="amount-value" aria-label="إجمالي المدفوع">
+                            <span dir="ltr">{{ "{:,.2f}".format(total_paid) if total_paid is not none else '0.00' }}</span> درهم
+                        </td>
+                    </tr>
+                    <tr class="balance-row">
+                        <th scope="row">المتبقي</th>
+                        <td class="amount-value balance-value" aria-label="المبلغ المتبقي">
+                            <span dir="ltr">{{ "{:,.2f}".format(balance) if balance is not none else '0.00' }}</span> درهم
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Footer with Company Info -->
+        <footer class="footer" role="contentinfo">
+            <hr class="separator" style="border: 0; border-top: 1px solid #eee; margin-bottom: 8px;">
+            <div class="company-details">
+                <span><strong>العنوان:</strong> {{ adresse|default('---') }}</span>
+                <span><strong>الهاتف:</strong> {{ telephone|default('---') }}</span>
+                <span>{{ num_rc|default('---') }} <strong>:RC</strong></span>
+                <span> {{ ste_ICE|default('---') }} <strong>:ICE</strong></span>
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>
