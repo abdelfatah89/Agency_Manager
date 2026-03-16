@@ -2,7 +2,7 @@ import sys
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QFont
 
-from src.main_window.main_window import MainWindowDashboard
+from src.login.login import LoginWindow
 from services.db_services.backup_service import run_backup_now
 
 def main() -> None:
@@ -13,8 +13,8 @@ def main() -> None:
     app.setApplicationName("KONACH - Daily Balance")
     app.setOrganizationName("KONACH")
 
-    # Start directly with dashboard (login screen disabled).
-    window = MainWindowDashboard()
+    # Start with login screen.
+    window = LoginWindow()
     window.show()
 
     # Execute application

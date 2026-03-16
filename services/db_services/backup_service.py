@@ -31,6 +31,14 @@ RCLONE_SOURCE_DIR = Path(os.getenv("DB_BACKUP_RCLONE_SOURCE_DIR", str(BACKUP_ROO
 def _find_rclone() -> Optional[str]:
     if RCLONE_PATH and Path(RCLONE_PATH).exists():
         return RCLONE_PATH
+    local_candidates = [
+        PROJECT_ROOT / "rclone.exe",
+        PROJECT_ROOT / "rclone" / "rclone.exe",
+        PROJECT_ROOT / "rclone" / "rclone",
+    ]
+    for candidate in local_candidates:
+        if candidate.exists():
+            return str(candidate)
     return shutil.which("rclone")
 
 
@@ -50,8 +58,7 @@ def _run_rclone_sync() -> Tuple[bool, str]:
     source_dir.mkdir(parents=True, exist_ok=True)
 
     remote_target = f"{RCLONE_REMOTE_NAME}:{RCLONE_REMOTE_PATH}" if RCLONE_REMOTE_PATH else f"{RCLONE_REMOTE_NAME}:"
-    cmd = [rclone_bin, "copy", str(source_dir), remote_target]
-    print("cmd", cmd)
+    cmd = [rclone_bin, "sync", str(source_dir), remote_target]
 
     try:
         proc = subprocess.run(cmd, capture_output=True, check=False)

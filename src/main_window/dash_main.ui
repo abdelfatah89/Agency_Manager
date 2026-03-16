@@ -299,6 +299,148 @@ QToolButton#BackupBtn:disabled {
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QToolButton" name="UserManagerBtn">
+           <property name="minimumSize">
+            <size>
+             <width>45</width>
+             <height>45</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>45</width>
+             <height>45</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">/* Base State */
+QToolButton#UserManagerBtn {
+    background-color: #EEF2FF;    /* Very light Indigo wash */
+    color: #6366F1;               /* Primary Indigo text */
+    border: none;
+    border-radius: 20px;          /* Pill shape */
+    padding: 5px;
+    font-weight: 600;
+}
+
+/* Hover State */
+QToolButton#UserManagerBtn:hover {
+    background-color: #E0E7FF;    /* Deeper Indigo wash */
+    color: #4F46E5;               /* Richer Indigo text */
+}
+
+/* Pressed State */
+QToolButton#UserManagerBtn:pressed {
+    background-color: #C7D2FE;    /* Medium Indigo for click */
+    padding-top: 10px;            /* Tactile sink effect */
+    padding-bottom: 6px;
+}
+
+/* Disabled State */
+QToolButton#UserManagerBtn:disabled {
+    background-color: #F9FAFB;    /* Neutral grey wash */
+    color: #D1D5DB;               /* Faded grey text */
+}</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../../assets/user_icon.svg</normaloff>../../assets/user_icon.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+           <property name="autoRepeatInterval">
+            <number>300</number>
+           </property>
+           <property name="popupMode">
+            <enum>QToolButton::DelayedPopup</enum>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonIconOnly</enum>
+           </property>
+           <property name="autoRaise">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="InfoBtn">
+           <property name="minimumSize">
+            <size>
+             <width>45</width>
+             <height>45</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>45</width>
+             <height>45</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">/* Base State */
+QToolButton#InfoBtn {
+    background-color: #F1F5F9;    /* Soft Slate wash */
+    color: #475569;               /* Slate Grey-Blue text */
+    border: none;
+    border-radius: 20px;          /* Pill shape */
+    padding: 5px;
+    font-weight: 600;
+}
+
+/* Hover State */
+QToolButton#InfoBtn:hover {
+    background-color: #E2E8F0;    /* Slightly deeper slate */
+    color: #1E293B;               /* Darker navy-slate text */
+}
+
+/* Pressed State */
+QToolButton#InfoBtn:pressed {
+    background-color: #CBD5E1;    /* Click feedback */
+    padding-top: 10px;            /* Tactile sink effect */
+    padding-bottom: 6px;
+}
+
+/* Disabled State */
+QToolButton#InfoBtn:disabled {
+    background-color: #F9FAFB;    /* Neutral grey wash */
+    color: #D1D5DB;               /* Faded grey text */
+}</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../../assets/info.svg</normaloff>../../assets/info.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+           <property name="autoRepeatInterval">
+            <number>300</number>
+           </property>
+           <property name="popupMode">
+            <enum>QToolButton::DelayedPopup</enum>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonIconOnly</enum>
+           </property>
+           <property name="autoRaise">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
       </layout>

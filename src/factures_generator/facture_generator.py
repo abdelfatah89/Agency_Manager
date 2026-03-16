@@ -8,6 +8,7 @@ import os
 from sqlalchemy.exc import SQLAlchemyError
 from PyQt5.QtWidgets import QTableWidget, QComboBox, QDateEdit, QLabel, QWidget
 from src.utils.printing import open_pdf_file
+from src.utils.company_info import load_company_info, to_invoice_context
 
 # Adjust Python path to allow absolute imports from 'services'
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
@@ -25,12 +26,8 @@ def extract_invoice_data(table, combo, date_widget_from, date_widget_to, lbl_tot
     it as a dictionary suitable for Jinja PDF generation.
     """
     data = {
-        "company_name": "STE VISA SERVICES EXPESSES SAR",
-        "adresse": "123 شارع الرئيسي، الجزائر العاصمة",
-        "telephone": "0123 45 67 89",
-        "num_rc": "123456789000",
-        "ste_ICE": "123 456 789 ICE",
-        "invoice_no": f"FA{random.randint(10000, 99999)}"
+        **to_invoice_context(load_company_info()),
+        "invoice_no": f"FA{random.randint(10000, 99999)}",
     }
 
     # 1. Extract Date From/To
@@ -164,12 +161,8 @@ def extract_daily_invoice_data(
     it as a dictionary suitable for Jinja PDF generation.
     """
     data = {
-        "company_name": "STE VISA SERVICES EXPESSES SAR",
-        "adresse": "123 شارع الرئيسي، الجزائر العاصمة",
-        "telephone": "0123 45 67 89",
-        "num_rc": "123456789000",
-        "ste_ICE": "123 456 789 ICE",
-        "invoice_no": f"FA{random.randint(10000, 99999)}"
+        **to_invoice_context(load_company_info()),
+        "invoice_no": f"FA{random.randint(10000, 99999)}",
     }
 
     # 1. Extract Date
