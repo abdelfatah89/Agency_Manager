@@ -15,7 +15,7 @@ class User(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     username: Mapped[str] = mapped_column(String(100), unique=True)
     password_hash: Mapped[str] = mapped_column(String(255))
-    role: Mapped[str] = mapped_column(String(20), default="user")
+    role: Mapped[str] = mapped_column(String(32), default="cashplus_employer")
     created_at: Mapped[Optional[DateTime]] = mapped_column(DateTime, server_default=func.current_timestamp())
 
 
@@ -184,6 +184,8 @@ class DailyBalance(Base):
     opening_balance: Mapped[Decimal] = mapped_column(Numeric(14, 2), default=0)
     total_output: Mapped[Decimal] = mapped_column(Numeric(14, 2), default=0)
     total_input: Mapped[Decimal] = mapped_column(Numeric(14, 2), default=0)
+    # Keep compatibility with existing schema typo: local_agency_balane.
+    local_agency_balance: Mapped[Decimal] = mapped_column("local_agency_balane", Numeric(14, 2), default=0)
     closing_balance: Mapped[Decimal] = mapped_column(Numeric(14, 2), default=0)
     created_at: Mapped[Optional[DateTime]] = mapped_column(DateTime, server_default=func.current_timestamp())
     updated_at: Mapped[Optional[DateTime]] = mapped_column(

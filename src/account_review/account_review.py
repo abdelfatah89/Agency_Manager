@@ -7,12 +7,15 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QHeaderView
 
 from src.account_review.func import setup_funcs
 from src.utils import asset_url
+from services.access_control import PERM_OPEN_ACCOUNT_REVIEW, has_permission
 
 class AccountReviewWindow(QMainWindow):
     """Account review window loaded from account_review.ui."""
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, current_user_role=None):
         super().__init__(parent)
+        if current_user_role and not has_permission(current_user_role, PERM_OPEN_ACCOUNT_REVIEW):
+            raise PermissionError("User is not allowed to access account review")
         loadUi(str(Path(__file__).parent / "account_review.ui"), self)
         self._fix_widget_icons()
         self._setup()

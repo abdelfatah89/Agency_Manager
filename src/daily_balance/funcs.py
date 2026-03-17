@@ -27,6 +27,21 @@ from src.utils import calculate_agency_balances, compute_diff_percent, parse_flo
 from src.utils.ui_helpers import create_readonly_checkbox_cell, apply_numeric_input_restrictions
 
 
+def _ensure_local_agency_column(session):
+    """Ensure daily_balance has local agency column, preserving existing typo-based schema."""
+    try:
+        session.execute(
+            text(
+                "ALTER TABLE daily_balance "
+                "ADD COLUMN IF NOT EXISTS local_agency_balane DECIMAL(14,2) NOT NULL DEFAULT 0.00"
+            )
+        )
+        session.commit()
+    except Exception:
+        # Best effort only; app should continue with existing schema.
+        session.rollback()
+
+
 def _get_or_create_session_by_date(session, target_date):
     row = session.execute(select(DailySession).where(DailySession.session_date == target_date)).scalar_one_or_none()
     if row:
@@ -370,6 +385,8 @@ def load_balance_data(self, daily_id, session=None):
         self.cpLastDayVal.setText(f"{parse_float(bal.closing_balance):.2f}")
         self.cbCmiBankBadge.setText(f"{cmi_tam - cmi_tam * 0.02:.2f}" if cmi_tam > 0 else "0.00")
         self.cbMizanVal.setText(f"{parse_float(bal.closing_balance) - parse_float(self.cbTotalVal.text()):,.2f}")
+        if hasattr(self, "le_LocalAgency"):
+            self.le_LocalAgency.setText(f"{parse_float(bal.local_agency_balance):.2f}")
         return
 
     self.cpBalanceFirstBadge.setText("0.00")
@@ -379,6 +396,8 @@ def load_balance_data(self, daily_id, session=None):
     self.cpLastDayVal.setText("0.00")
     self.cbCmiBankBadge.setText("0.00")
     self.cbMizanVal.setText("0.00")
+    if hasattr(self, "le_LocalAgency"):
+        self.le_LocalAgency.setText("")
 
 
 def load_transactions_table(self, daily_id, session=None):
@@ -437,12 +456,13 @@ def calculate_operations(self, session=None):
         get_value(self.le_cpPhoneTopup),
         get_value(self.le_cbCmiTam),
     ]
+    local_agency = get_value(self.le_LocalAgency) if hasattr(self, "le_LocalAgency") else 0.0
 
     total_in = values[0] + values[1] + values[4]
     total_out = values[2] + values[3] + values[5]
     expenses = values[6] + values[7] + values[8] + values[9] + values[10]
 
-    total_result = total_in - total_out + expenses
+    total_result = total_in - total_out + expenses - local_agency
     opening = get_value(self.cpBalanceFirstBadge)
     rest_amount = opening + total_result
 
@@ -555,13 +575,15 @@ def calculate_balance(self, session=None):
                 opening_balance = parse_float(prev_balance.closing_balance)
     # No previous session (first-time app usage): keep opening balance at 0.0.
 
+    opening_balance = get_value(self.cpBalanceFirstBadge)
     cmi_tam_amount = get_value(self.le_cbCmiTam)
     cmi_bank_net = cmi_tam_amount - (cmi_tam_amount * 0.02)
     cashplus_operations_total = get_value(self.lbl_totalval)
+    local_agency = get_value(self.le_LocalAgency) if hasattr(self, "le_LocalAgency") else 0.0
     # Keep UI widget names unchanged; map them to semantic values for clarity.
     # cpTotalInVal label = total payments (OUT), cpTotalOutVal label = total receipts (IN).
-    transactions_total_out = get_value(self.cpTotalInVal)
-    transactions_total_in = get_value(self.cpTotalOutVal)
+    transactions_total_out = get_value(self.cpTotalOutVal)
+    transactions_total_in = get_value(self.cpTotalInVal)
 
     closing_cashplus_balance = (
         opening_balance
@@ -586,6 +608,7 @@ def calculate_balance(self, session=None):
             opening_balance=float(opening_balance),
             total_output=float(transactions_total_out),
             total_input=float(transactions_total_in),
+            local_agency_balance=float(local_agency),
             closing_balance=float(closing_cashplus_balance),
         )
         session.add(row)
@@ -593,6 +616,7 @@ def calculate_balance(self, session=None):
         row.opening_balance = float(opening_balance)
         row.total_output = float(transactions_total_out)
         row.total_input = float(transactions_total_in)
+        row.local_agency_balance = float(local_agency)
         row.closing_balance = float(closing_cashplus_balance)
 
 
@@ -753,6 +777,7 @@ def setup_funcs(self):
         self.le_cpVehicleTax,
         self.le_cpDetailant,
         self.le_cpPhoneTopup,
+        self.le_LocalAgency,
         self.le_cbCmiTam,
         self.genCashPlusVal,
         self.genBankVal,
@@ -772,6 +797,7 @@ def setup_funcs(self):
             widget.setPlaceholderText("0.00")
 
     # Startup should always point to the latest existing session ID.
+    with_session(lambda _self, session=None: _ensure_local_agency_column(session))(self)
     get_daily_id(self)
     calculate_all(self)
 

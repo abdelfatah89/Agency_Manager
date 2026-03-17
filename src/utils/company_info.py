@@ -10,7 +10,7 @@ DEFAULT_COMPANY_INFO: Dict[str, str] = {
     "company_name": "STE VISA SERVICES EXPESSES SAR",
     "phone": "0123 45 67 89",
     "address": "123 شارع الرئيسي، الجزائر العاصمة",
-    "ice": "123 456 789 ICE",
+    "ice": "123 456 789",
     "if_code": "06994700",
     "rc": "2241",
 }

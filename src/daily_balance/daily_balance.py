@@ -37,7 +37,12 @@ from PyQt5.QtGui import QColor
 from PyQt5 import uic
 from theme.theme_manager import get_colored_icon
 from src.utils import asset_path
-from services.auth_service import ROLE_CASHPLUS_EMPLOYER, ROLE_TPE_EMPLOYER
+from services.access_control import (
+    PERM_OPEN_DAILY_BALANCE,
+    ROLE_ADMIN,
+    ROLE_CASHPLUS_EMPLOYER,
+    has_permission,
+)
 
 # Import funcs module - must be after path setup
 from src.daily_balance.funcs import setup_funcs
@@ -65,11 +70,13 @@ ICONS = {
 
 
 class DailyBalance(QMainWindow):
-    def __init__(self, parent=None, restricted_role=None):
+    def __init__(self, parent=None, current_user_role=None):
         super().__init__(parent)
         uic.loadUi(str(Path(__file__).parent / "daily_balance.ui"), self)
         self._current_page = 1
-        self._restricted_role = restricted_role
+        self._current_user_role = current_user_role
+        if self._current_user_role and not has_permission(self._current_user_role, PERM_OPEN_DAILY_BALANCE):
+            raise PermissionError("User is not allowed to access daily balance")
         self._setup()
         setup_funcs(self)
         self._apply_role_restrictions()
@@ -83,23 +90,17 @@ class DailyBalance(QMainWindow):
         self._apply_icons()
 
     def _apply_role_restrictions(self):
-        if not self._restricted_role:
+        if not self._current_user_role:
             return
 
-        if self._restricted_role == ROLE_CASHPLUS_EMPLOYER:
-            # Only hide TPE/CMI sub-card, keep cashPlus card visible.
-            if hasattr(self, "cmiframe_2"):
-                self.cmiframe_2.hide()
-            return
+        if self._current_user_role != ROLE_ADMIN and hasattr(self, "localagence_frame"):
+            self.localagence_frame.hide()
+            self.localagence_frame.setParent(None)
 
-        if self._restricted_role == ROLE_TPE_EMPLOYER:
+        if self._current_user_role == ROLE_CASHPLUS_EMPLOYER:
             if hasattr(self, "generalCard"):
                 self.generalCard.hide()
                 self.generalCard.setParent(None)
-
-            if hasattr(self, "cashPlusCard"):
-                self.cashPlusCard.hide()
-                self.cashPlusCard.setParent(None)
 
     # ──────────────────────────────────────────────────────────────────────────
     #  Icons

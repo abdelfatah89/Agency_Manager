@@ -5,17 +5,20 @@ import os
 from typing import Dict, List, Optional, Tuple
 
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy import select, text
 
 from .db_services.db_config import SessionLocal
 from .db_services.db_tables import User
-from sqlalchemy import select
+from .access_control import (
+    AuthenticatedUser,
+    ROLE_ADMIN,
+    normalize_role,
+)
 
 
 PBKDF2_PREFIX = "pbkdf2_sha256"
 PBKDF2_ITERATIONS = 390000
-ROLE_FULL_ACCESS = "full_access"
-ROLE_CASHPLUS_EMPLOYER = "cashplus_employer"
-ROLE_TPE_EMPLOYER = "tpe_employer"
+_ROLE_SCHEMA_READY = False
 
 
 def hash_password(password: str, iterations: int = PBKDF2_ITERATIONS) -> str:
@@ -57,23 +60,56 @@ def verify_password(plain_password: str, stored_password: str) -> bool:
     return hmac.compare_digest(plain_password, stored_password)
 
 
-def normalize_role(role: Optional[str]) -> str:
-    role_value = (role or "").strip().lower()
-    if role_value in {"full_access", "admin", "manager"}:
-        return ROLE_FULL_ACCESS
-    if role_value in {"tpe_employer", "tpe_eployer", "tpe", "tpe_operations"}:
-        return ROLE_TPE_EMPLOYER
-    if role_value in {"cashplus_employer", "cashplus_eployer", "employer", "user"}:
-        return ROLE_CASHPLUS_EMPLOYER
-    return ROLE_CASHPLUS_EMPLOYER
+def ensure_user_role_schema_and_data() -> None:
+    """Migration-safe normalization for users.role.
+
+    - Expands role column to VARCHAR to avoid enum lock-in.
+    - Migrates legacy role values to canonical roles.
+    """
+    global _ROLE_SCHEMA_READY
+    if _ROLE_SCHEMA_READY:
+        return
+
+    with SessionLocal() as session:
+        session.execute(
+            text(
+                "ALTER TABLE users "
+                "MODIFY COLUMN role VARCHAR(32) NOT NULL DEFAULT 'cashplus_employer'"
+            )
+        )
+
+        session.execute(
+            text(
+                "UPDATE users "
+                "SET role = 'admin' "
+                "WHERE LOWER(TRIM(role)) IN ('admin', 'full_access', 'manager')"
+            )
+        )
+        session.execute(
+            text(
+                "UPDATE users "
+                "SET role = 'tpe_employer' "
+                "WHERE LOWER(TRIM(role)) IN ('tpe_employer', 'tpe_eployer', 'tpe', 'tpe_operations')"
+            )
+        )
+        session.execute(
+            text(
+                "UPDATE users "
+                "SET role = 'cashplus_employer' "
+                "WHERE LOWER(TRIM(role)) IN ('cashplus_employer', 'cashplus_eployer', 'employer', 'user', '')"
+            )
+        )
+        session.commit()
+        _ROLE_SCHEMA_READY = True
 
 
-def authenticate_user(username: str, password: str) -> Tuple[Optional[Dict[str, object]], Optional[str]]:
+def authenticate_user(username: str, password: str) -> Tuple[Optional[AuthenticatedUser], Optional[str]]:
     """Authenticate by username + password.
 
     Returns: (User | None, error_message | None)
     """
     try:
+        ensure_user_role_schema_and_data()
         with SessionLocal() as session:
             user = session.execute(
                 select(User).where(User.username == username)
@@ -87,11 +123,11 @@ def authenticate_user(username: str, password: str) -> Tuple[Optional[Dict[str, 
                 user.password_hash = hash_password(password)
                 session.commit()
 
-            return {
-                "id": user.id,
-                "username": user.username,
-                "role": normalize_role(user.role),
-            }, None
+            return AuthenticatedUser(
+                id=user.id,
+                username=user.username,
+                role=normalize_role(user.role),
+            ), None
     except SQLAlchemyError:
         return None, "تعذر الاتصال بقاعدة البيانات"
 
@@ -105,14 +141,15 @@ def ensure_default_admin_user() -> Optional[Tuple[str, str]]:
     default_password = os.getenv("KONACH_DEFAULT_ADMIN_PASS", "developer123")
 
     try:
+        ensure_user_role_schema_and_data()
         with SessionLocal() as session:
             existing = session.execute(
                 select(User).where(User.username == default_username)
             ).scalar_one_or_none()
             if existing is not None:
                 changed = False
-                if normalize_role(existing.role) != ROLE_FULL_ACCESS:
-                    existing.role = ROLE_FULL_ACCESS
+                if normalize_role(existing.role) != ROLE_ADMIN:
+                    existing.role = ROLE_ADMIN
                     changed = True
                 if changed:
                     session.commit()
@@ -121,7 +158,7 @@ def ensure_default_admin_user() -> Optional[Tuple[str, str]]:
             user = User(
                 username=default_username,
                 password_hash=hash_password(default_password),
-                role=ROLE_FULL_ACCESS,
+                role=ROLE_ADMIN,
             )
             session.add(user)
             session.commit()
@@ -132,6 +169,7 @@ def ensure_default_admin_user() -> Optional[Tuple[str, str]]:
 
 def list_users() -> List[Dict[str, str]]:
     try:
+        ensure_user_role_schema_and_data()
         with SessionLocal() as session:
             rows = session.execute(select(User).order_by(User.username.asc())).scalars().all()
             return [
@@ -153,6 +191,7 @@ def upsert_user(username: str, role: str, password: Optional[str] = None) -> Tup
     normalized_role = normalize_role(role)
 
     try:
+        ensure_user_role_schema_and_data()
         with SessionLocal() as session:
             user = session.execute(select(User).where(User.username == username)).scalar_one_or_none()
 

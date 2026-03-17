@@ -7,13 +7,16 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QHeaderView
 
 from src.clients_review.func import setup_funcs
 from src.utils import asset_url
+from services.access_control import PERM_OPEN_CLIENTS_REVIEW, has_permission
 
 
 class ClientsReviewWindow(QMainWindow):
     """Customers review window loaded from clients_review.ui."""
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, current_user_role=None):
         super().__init__(parent)
+        if current_user_role and not has_permission(current_user_role, PERM_OPEN_CLIENTS_REVIEW):
+            raise PermissionError("User is not allowed to access clients review")
         loadUi(str(Path(__file__).parent / "clients_review.ui"), self)
         self._fix_widget_icons()
 

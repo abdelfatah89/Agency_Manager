@@ -81,7 +81,7 @@
          <property name="font">
           <font>
            <family>Tajawal</family>
-           <pointsize>1</pointsize>
+           <pointsize>-1</pointsize>
            <weight>62</weight>
            <bold>true</bold>
           </font>
@@ -132,7 +132,7 @@ QToolButton#Button_CloseWindow:pressed { background-color: #F3F4F6; }</string>
          <property name="font">
           <font>
            <family>Tajawal</family>
-           <pointsize>1</pointsize>
+           <pointsize>-1</pointsize>
            <weight>62</weight>
            <bold>true</bold>
           </font>
@@ -200,7 +200,7 @@ QToolButton#Button_Settings:pressed { background-color: #F3F4F6; }</string>
              <property name="font">
               <font>
                <family>Tajawal</family>
-               <pointsize>1</pointsize>
+               <pointsize>-1</pointsize>
                <weight>87</weight>
                <bold>true</bold>
               </font>
@@ -223,7 +223,7 @@ QToolButton#Button_Settings:pressed { background-color: #F3F4F6; }</string>
              <property name="font">
               <font>
                <family>Tajawal</family>
-               <pointsize>1</pointsize>
+               <pointsize>-1</pointsize>
                <weight>50</weight>
                <bold>false</bold>
               </font>
@@ -362,7 +362,7 @@ QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal { width: 0; bac
              <property name="font">
               <font>
                <family>Overpass</family>
-               <pointsize>1</pointsize>
+               <pointsize>-1</pointsize>
                <weight>75</weight>
                <bold>true</bold>
               </font>
@@ -394,7 +394,7 @@ QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal { width: 0; bac
              <property name="font">
               <font>
                <family>Tajawal</family>
-               <pointsize>1</pointsize>
+               <pointsize>-1</pointsize>
               </font>
              </property>
              <property name="layoutDirection">
@@ -444,7 +444,7 @@ QDateEdit#Input_TpeMounth::down-arrow { image: url(../../assets/calendar.svg); w
              <property name="font">
               <font>
                <family>Tajawal</family>
-               <pointsize>1</pointsize>
+               <pointsize>-1</pointsize>
               </font>
              </property>
              <property name="layoutDirection">
@@ -494,7 +494,7 @@ QDateEdit#Input_TpeDate::down-arrow { image: url(../../assets/calendar.svg); wid
              <property name="font">
               <font>
                <family>Tajawal</family>
-               <pointsize>1</pointsize>
+               <pointsize>-1</pointsize>
               </font>
              </property>
              <property name="toolTip">
@@ -564,7 +564,7 @@ QComboBox#ComboBox_TPEagence::down-arrow { image: url(../../assets/chevron_down.
              <property name="font">
               <font>
                <family>Tajawal</family>
-               <pointsize>1</pointsize>
+               <pointsize>-1</pointsize>
                <weight>62</weight>
                <bold>true</bold>
               </font>
@@ -612,7 +612,7 @@ QToolButton#Button_Reset:pressed { background-color: #F3F4F6; }</string>
              <property name="font">
               <font>
                <family>Tajawal</family>
-               <pointsize>1</pointsize>
+               <pointsize>-1</pointsize>
                <weight>75</weight>
                <bold>true</bold>
               </font>
@@ -630,6 +630,39 @@ QToolButton#Button_Reset:pressed { background-color: #F3F4F6; }</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="4">
+            <widget class="QPushButton" name="Button_FilterbyTotalDays">
+             <property name="font">
+              <font>
+               <family>Tajawal</family>
+               <pointsize>-1</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton#Button_FilterbyTotalDays {
+    background-color: #3B82F6;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 7px 18px;
+    min-height: 34px;
+    spacing: 6px;
+}
+QPushButton#Button_FilterbyTotalDays:hover { background-color: #2563EB; }
+QPushButton#Button_FilterbyTotalDays:pressed { background-color: #1D4ED8; }</string>
+             </property>
+             <property name="text">
+              <string>لائحة نهاية اليوم</string>
              </property>
             </widget>
            </item>
@@ -783,7 +816,7 @@ QHeaderView::section {
 }</string>
                   </property>
                   <property name="text">
-                   <string>16134.7</string>
+                   <string>0.00</string>
                   </property>
                  </widget>
                 </item>
@@ -798,7 +831,7 @@ QHeaderView::section {
 }</string>
                   </property>
                   <property name="text">
-                   <string>16300.35</string>
+                   <string>0.00</string>
                   </property>
                  </widget>
                 </item>
@@ -807,7 +840,7 @@ QHeaderView::section {
                   <property name="font">
                    <font>
                     <family>Tajawal</family>
-                    <pointsize>1</pointsize>
+                    <pointsize>-1</pointsize>
                     <weight>87</weight>
                     <bold>true</bold>
                    </font>
@@ -829,7 +862,7 @@ QHeaderView::section {
                   <property name="font">
                    <font>
                     <family>Tajawal</family>
-                    <pointsize>1</pointsize>
+                    <pointsize>-1</pointsize>
                     <weight>87</weight>
                     <bold>true</bold>
                    </font>
@@ -857,7 +890,7 @@ QHeaderView::section {
 }</string>
                   </property>
                   <property name="text">
-                   <string>165.65</string>
+                   <string>0.00</string>
                   </property>
                  </widget>
                 </item>
@@ -866,7 +899,7 @@ QHeaderView::section {
                   <property name="font">
                    <font>
                     <family>Tajawal</family>
-                    <pointsize>1</pointsize>
+                    <pointsize>-1</pointsize>
                     <weight>87</weight>
                     <bold>true</bold>
                    </font>
@@ -902,7 +935,7 @@ QHeaderView::section {
                   <property name="font">
                    <font>
                     <family>Tajawal</family>
-                    <pointsize>1</pointsize>
+                    <pointsize>-1</pointsize>
                     <weight>87</weight>
                     <bold>true</bold>
                    </font>

@@ -3,18 +3,12 @@ from pathlib import Path
 from PyQt5 import uic
 from PyQt5.QtWidgets import QDialog, QMessageBox
 
-from services.auth_service import (
-    ROLE_CASHPLUS_EMPLOYER,
-    ROLE_FULL_ACCESS,
-    ROLE_TPE_EMPLOYER,
-    ensure_default_admin_user,
-    list_users,
-    upsert_user,
-)
+from services.access_control import ROLE_ADMIN, ROLE_CASHPLUS_EMPLOYER, ROLE_TPE_EMPLOYER
+from services.auth_service import ensure_default_admin_user, list_users, upsert_user
 
 
 ROLE_ITEMS = [
-    ("صلاحية كاملة", ROLE_FULL_ACCESS),
+    ("مدير", ROLE_ADMIN),
     ("موظف كاش بلوس", ROLE_CASHPLUS_EMPLOYER),
     ("موظف TPE", ROLE_TPE_EMPLOYER),
 ]
@@ -47,7 +41,7 @@ class UserManagerDialog(QDialog):
         visible_usernames = [
             row["username"]
             for row in rows
-            if row.get("role") != ROLE_FULL_ACCESS
+            if row.get("role") != ROLE_ADMIN
         ]
 
         current = self.ComboUserName.currentText().strip()

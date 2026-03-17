@@ -61,7 +61,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; backgr
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>0</y>
+         <y>-294</y>
          <width>1223</width>
          <height>1911</height>
         </rect>
@@ -3084,6 +3084,158 @@ QLabel#cbTotalVal {
                 </size>
                </property>
               </spacer>
+             </item>
+             <item>
+              <widget class="QFrame" name="localagence_frame">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>65</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>65</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">/* The Container Frame */
+QFrame#localagence_frame {
+    background-color: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 15px; /* High radius for pill shape */
+    padding: 7px;
+}
+
+/* The Value Label */
+QLabel {
+    color: #475569; /* Dark charcoal */
+    font-weight: 500;
+    qproperty-alignment: 'AlignCenter';
+}</string>
+               </property>
+               <layout class="QVBoxLayout" name="cmiframe_4">
+                <property name="spacing">
+                 <number>6</number>
+                </property>
+                <property name="leftMargin">
+                 <number>4</number>
+                </property>
+                <property name="topMargin">
+                 <number>4</number>
+                </property>
+                <property name="rightMargin">
+                 <number>4</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>4</number>
+                </property>
+                <item>
+                 <layout class="QHBoxLayout" name="_6">
+                  <item>
+                   <spacer name="spacer_25">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                     <enum>QSizePolicy::Fixed</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>10</width>
+                      <height>10</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="lbl_cbCmiTam_2">
+                    <property name="styleSheet">
+                     <string notr="true">QLabel#lbl_cbCmiTam { color: #6B7280; font-size: 17px; }</string>
+                    </property>
+                    <property name="text">
+                     <string>رصيد الوكالة</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer>
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>10</width>
+                      <height>10</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="le_LocalAgency">
+                    <property name="minimumSize">
+                     <size>
+                      <width>150</width>
+                      <height>35</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>150</width>
+                      <height>35</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLineEdit {
+    color: #2c343f;               /* Professional dark charcoal text */
+    font-family: &quot;Arial&quot;; 
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #ffffff;    /* Solid white for contrast */
+    border-radius: 7px;
+    border: 1px solid #E5E7EB;    /* Light grey neutral border */
+    padding: 5px 10px;            /* Comfortable internal spacing */
+    qproperty-alignment: 'AlignCenter';
+}
+
+/* Hover State */
+QLineEdit:hover {
+    border: 1px solid #FACC15;    /* Soft gold border on hover */
+    background-color: #fff8c2;    /* Your main color: Light yellow tint */
+}
+
+/* Focus State (Active Typing) */
+QLineEdit:focus {
+    border: 2px solid #CA8A04;    /* Deeper amber border for high visibility */
+    background-color: #ffffff;    /* Clear white for typing */
+}
+
+/* Disabled/Read-Only State */
+QLineEdit:disabled {
+    background-color: #F9FAFB;
+    color: #9CA3AF;
+    border: 1px solid #E5E7EB;
+}</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                    <property name="placeholderText">
+                     <string>0.00</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
              </item>
              <item>
               <widget class="QFrame" name="cmiframe_2">

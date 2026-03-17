@@ -189,6 +189,15 @@ QFrame#emailInputFrame:focus-within {
           </property>
           <item>
            <widget class="QLineEdit" name="emailInput">
+            <property name="font">
+             <font>
+              <family>Overpass</family>
+              <pointsize>12</pointsize>
+              <weight>50</weight>
+              <italic>false</italic>
+              <bold>false</bold>
+             </font>
+            </property>
             <property name="layoutDirection">
              <enum>Qt::LeftToRight</enum>
             </property>
@@ -197,8 +206,6 @@ QFrame#emailInputFrame:focus-within {
     border: none;
     background-color: transparent;
     color: #374151;
-    font-size: 13px;
-    font-family: &quot;Almarai&quot;;
     padding: 4px 6px;
 }</string>
             </property>
@@ -363,12 +370,20 @@ QPushButton#eyeBtn:hover {
           </item>
           <item>
            <widget class="QLineEdit" name="passwordInput">
+            <property name="font">
+             <font>
+              <family>Overpass</family>
+              <pointsize>12</pointsize>
+              <weight>50</weight>
+              <italic>false</italic>
+              <bold>false</bold>
+             </font>
+            </property>
             <property name="styleSheet">
              <string notr="true">QLineEdit#passwordInput {
     border: none;
     background-color: transparent;
     color: #374151;
-    font-size: 14px;
     padding: 4px 6px;
     letter-spacing: 2px;
 }</string>

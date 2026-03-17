@@ -96,12 +96,22 @@ KONACH/
    ```
 
 4. **Configure database:**
+    - Canonical database name for this project is: `konach_new`
    - Edit `Configuration_Database/db_config.py` with your MySQL credentials
    - Import the database schema:
      ```bash
-     mysql -u root -p < Configuration_Database/konach.sql
+       mysql -u root -p < konach_new.sql
      ```
    - See `Configuration_Database/DATABASE_SETUP.md` for detailed instructions
+
+### RBAC + Role Migration Notes
+
+- Canonical roles are:
+   - `admin`
+   - `tpe_employer`
+   - `cashplus_employer`
+- On app startup/auth usage, legacy role values (`full_access`, `manager`, `user`, etc.) are migrated to canonical values automatically.
+- The `users.role` column is migrated to `VARCHAR(32)` if needed for forward-compatible role storage.
 
 5. **Test database connection:**
    ```bash

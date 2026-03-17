@@ -20,11 +20,19 @@ from src.login.compny_info import CompanyInfoDialog
 from src.login.user_manager import UserManagerDialog
 from src.utils.company_info import load_company_info
 from services.db_services.backup_service import run_backup_now
-from services.auth_service import (
-    ROLE_CASHPLUS_EMPLOYER,
-    ROLE_FULL_ACCESS,
-    ROLE_TPE_EMPLOYER,
-    normalize_role,
+from services.access_control import (
+    AuthenticatedUser,
+    BUTTON_PERMISSIONS,
+    PERM_OPEN_ACCOUNT_REVIEW,
+    PERM_OPEN_CLIENTS_REVIEW,
+    PERM_OPEN_CMI_TRANS,
+    PERM_OPEN_COMPANY_INFO,
+    PERM_OPEN_DAILY_BALANCE,
+    PERM_OPEN_DAILY_ENTRY,
+    PERM_OPEN_FACTURES,
+    PERM_OPEN_USER_MANAGER,
+    PERM_RUN_BACKUP,
+    has_permission,
 )
 
 class MainWindowDashboard(QMainWindow):
@@ -33,8 +41,8 @@ class MainWindowDashboard(QMainWindow):
     def __init__(self, parent=None, current_user: Optional[dict] = None):
         super().__init__(parent)
         loadUi(str(Path(__file__).parent / "dash_main.ui"), self)
-        self.current_user = current_user or {"username": "", "role": ROLE_FULL_ACCESS}
-        self.current_role = normalize_role(self.current_user.get("role"))
+        self.current_user = AuthenticatedUser.from_payload(current_user)
+        self.current_role = self.current_user.role
 
         self.account_review = None
         self.clients_review = None
@@ -64,43 +72,16 @@ class MainWindowDashboard(QMainWindow):
             self.logoutBtn.clicked.connect(self.close)
 
     def _apply_role_permissions(self):
-        # full_access: everything enabled
-        # cashplus_employer: daily_entry + daily_balance only
-        # tpe_employer: cmi_trans + daily_entry only
-        enabled_by_role = {
-            ROLE_FULL_ACCESS: {
-                "Button_AccountReview",
-                "Button_ClientsReview",
-                "Button_CMITrans",
-                "Button_DailyBalance",
-                "Button_DailyEntry",
-                "Button_Factures",
-                "InfoBtn",
-                "UserManagerBtn",
-            },
-            ROLE_CASHPLUS_EMPLOYER: {
-                "Button_DailyBalance",
-                "Button_DailyEntry",
-            },
-            ROLE_TPE_EMPLOYER: {
-                "Button_CMITrans",
-                "Button_DailyEntry",
-            },
-        }
-        allowed = enabled_by_role.get(self.current_role, enabled_by_role[ROLE_CASHPLUS_EMPLOYER])
-        for btn_name in [
-            "Button_AccountReview",
-            "Button_ClientsReview",
-            "Button_CMITrans",
-            "Button_DailyBalance",
-            "Button_DailyEntry",
-            "Button_Factures",
-            "InfoBtn",
-            "UserManagerBtn",
-        ]:
+        for btn_name, permission in BUTTON_PERMISSIONS.items():
             btn = getattr(self, btn_name, None)
             if btn is not None:
-                btn.setEnabled(btn_name in allowed)
+                btn.setEnabled(has_permission(self.current_role, permission))
+
+    def _ensure_permission(self, permission: str, denied_message: str = "ليس لديك صلاحية لهذا القسم") -> bool:
+        if has_permission(self.current_role, permission):
+            return True
+        QMessageBox.warning(self, "صلاحيات", denied_message)
+        return False
 
     @staticmethod
     def _clean_code(value: str, prefix: str) -> str:
@@ -126,6 +107,8 @@ class MainWindowDashboard(QMainWindow):
             self.footerRcLabel.setText(f"RC: {rc}")
 
     def _on_backup_clicked(self):
+        if not self._ensure_permission(PERM_RUN_BACKUP):
+            return
         ok, path, message = run_backup_now(reason="backup-button")
         if ok:
             QMessageBox.information(self, "Backup", f"تم إنشاء النسخة الاحتياطية بنجاح.\n{path}")
@@ -133,16 +116,14 @@ class MainWindowDashboard(QMainWindow):
             QMessageBox.warning(self, "Backup", f"فشل إنشاء النسخة الاحتياطية.\n{message}")
 
     def _open_company_info(self):
-        if self.current_role != ROLE_FULL_ACCESS:
-            QMessageBox.warning(self, "صلاحيات", "هذا القسم متاح فقط لصلاحية كاملة")
+        if not self._ensure_permission(PERM_OPEN_COMPANY_INFO):
             return
         dlg = CompanyInfoDialog(self)
         if dlg.exec_():
             self._load_company_footer()
 
     def _open_user_manager(self):
-        if self.current_role != ROLE_FULL_ACCESS:
-            QMessageBox.warning(self, "صلاحيات", "إدارة المستخدمين متاحة فقط لصلاحية كاملة")
+        if not self._ensure_permission(PERM_OPEN_USER_MANAGER):
             return
         dlg = UserManagerDialog(self)
         dlg.exec_()
@@ -178,46 +159,69 @@ QFrame#homeFrame {{
         self.homeFrame.setStyleSheet(self.homeFrame.styleSheet() + frame_style)
 
     def show_account_review(self):
+        if not self._ensure_permission(PERM_OPEN_ACCOUNT_REVIEW):
+            return
         if self.account_review is None:
-            self.account_review = AccountReviewWindow(self)
+            try:
+                self.account_review = AccountReviewWindow(self, current_user_role=self.current_role)
+            except PermissionError:
+                QMessageBox.warning(self, "صلاحيات", "ليس لديك صلاحية للوصول إلى مراجعة الحسابات")
+                return
         self.account_review.show()
 
     def show_clients_review(self):
+        if not self._ensure_permission(PERM_OPEN_CLIENTS_REVIEW):
+            return
         if self.clients_review is None:
-            self.clients_review = ClientsReviewWindow(self)
+            try:
+                self.clients_review = ClientsReviewWindow(self, current_user_role=self.current_role)
+            except PermissionError:
+                QMessageBox.warning(self, "صلاحيات", "ليس لديك صلاحية للوصول إلى مراجعة العملاء")
+                return
         self.clients_review.show()
 
     def show_cmi_trans(self):
+        if not self._ensure_permission(PERM_OPEN_CMI_TRANS):
+            return
         if self.cmi_trans is None:
-            self.cmi_trans = CMITransWindow(self)
+            try:
+                self.cmi_trans = CMITransWindow(self, current_user_role=self.current_role)
+            except PermissionError:
+                QMessageBox.warning(self, "صلاحيات", "ليس لديك صلاحية للوصول إلى معاملات CMI")
+                return
         self.cmi_trans.show()
 
     def show_daily_balance(self):
+        if not self._ensure_permission(PERM_OPEN_DAILY_BALANCE):
+            return
         if self.daily_balance is None:
-            self.daily_balance = DailyBalance(self, restricted_role=self.current_role)
+            try:
+                self.daily_balance = DailyBalance(self, current_user_role=self.current_role)
+            except PermissionError:
+                QMessageBox.warning(self, "صلاحيات", "ليس لديك صلاحية للوصول إلى الرصيد اليومي")
+                return
         self.daily_balance.show()
 
     def show_daily_entry(self):
+        if not self._ensure_permission(PERM_OPEN_DAILY_ENTRY):
+            return
         if self.daily_entry is None:
             self.daily_entry = TransactionManager(self)
         self.daily_entry.show()
 
     def show_factures(self):
+        if not self._ensure_permission(PERM_OPEN_FACTURES):
+            return
         if self.factures is None:
-            self.factures = FacturesWindow(self)
+            try:
+                self.factures = FacturesWindow(self, current_user_role=self.current_role)
+            except PermissionError:
+                QMessageBox.warning(self, "صلاحيات", "ليس لديك صلاحية للوصول إلى الفواتير")
+                return
         self.factures.show()
 
 
 
 if __name__ == "__main__":
-    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
-    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
-
-    app = QApplication(sys.argv)
-    app.setLayoutDirection(Qt.RightToLeft)
-
-    window = MainWindowDashboard()
-    window.show()
-
-    sys.exit(app.exec_())
+    raise SystemExit("Run main.py to start the authenticated application flow.")
 

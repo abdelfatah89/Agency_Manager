@@ -17,7 +17,7 @@ DB_CANDIDATES = []
 if _env_db_name:
     DB_CANDIDATES.append(_env_db_name)
 else:
-    DB_CANDIDATES.append("new_konach")
+    DB_CANDIDATES.append("konach_new")
 
 
 def _build_engine(db_name: str):
