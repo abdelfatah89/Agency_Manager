@@ -546,78 +546,64 @@ def calculate_balance(self, session=None):
     daily_session = _get_or_create_session_by_date(session, selected_date)
     daily_id = daily_session.id
 
+        # Opening balance from previous day’s cash or closing balance
     prev_session = session.execute(
         select(DailySession)
         .where(DailySession.session_date < selected_date)
         .order_by(desc(DailySession.session_date))
         .limit(1)
     ).scalar_one_or_none()
-
     opening_balance = 0.0
     if prev_session:
-        # First priority: previous day's total cash when it exists and is filled.
-        prev_cash = session.execute(
-            select(DailyCash).where(DailyCash.daily_id == prev_session.id)
-        ).scalar_one_or_none()
-
-        prev_cash_total = None
-        if prev_cash is not None and prev_cash.total_cash is not None:
-            prev_cash_total = parse_float(prev_cash.total_cash)
-
-        if prev_cash_total is not None:
-            opening_balance = prev_cash_total
+        prev_cash = session.execute(select(DailyCash).where(DailyCash.daily_id == prev_session.id)).scalar_one_or_none()
+        if prev_cash and prev_cash.total_cash is not None:
+            opening_balance = parse_float(prev_cash.total_cash)
         else:
-            # Fallback for legacy/incomplete rows.
-            prev_balance = session.execute(
-                select(DailyBalance).where(DailyBalance.daily_id == prev_session.id)
-            ).scalar_one_or_none()
-            if prev_balance and prev_balance.closing_balance is not None:
+            prev_balance = session.execute(select(DailyBalance).where(DailyBalance.daily_id == prev_session.id)).scalar_one_or_none()
+            if prev_balance:
                 opening_balance = parse_float(prev_balance.closing_balance)
-    # No previous session (first-time app usage): keep opening balance at 0.0.
 
-    opening_balance = get_value(self.cpBalanceFirstBadge)
-    cmi_tam_amount = get_value(self.le_cbCmiTam)
-    cmi_bank_net = cmi_tam_amount - (cmi_tam_amount * 0.02)
-    cashplus_operations_total = get_value(self.lbl_totalval)
+    # CMI amount and operations total from DailyOperationSummary
+    self.cpBalanceFirstBadge.setText(f"{opening_balance:,.2f}")
+    op_summary = session.execute(select(DailyOperationSummary).where(DailyOperationSummary.daily_id == daily_id)).scalar_one_or_none()
+    cmi_tam_amount = parse_float(op_summary.cmi_tamezmoute) if op_summary else 0.0
+    #cmi_bank_net = cmi_tam_amount - (cmi_tam_amount * 0.02)
+    operations_total = parse_float(op_summary.total_result) if op_summary else 0.0
+
+    # Sum transactions marked today_in/today_out directly from Transaction table
+    rows = session.execute(
+        select(Transaction).where(Transaction.daily_id == daily_id)
+    ).scalars().all()
+    def effective_value(tx):
+        amt, paid = parse_float(tx.amount), parse_float(tx.paid_amount)
+        return paid + amt
+
+    total_in = sum(effective_value(tx) for tx in rows if tx.today_in)
+    total_out = sum(effective_value(tx) for tx in rows if tx.today_out)
+
+    # Compute closing balance
+    closing = opening_balance + operations_total + total_in - total_out
+
+    self.cpLastDayVal.setText(f"{closing:,.2f}")
+    mizan = parse_float(self.cbTotalVal.text()) - closing
+    self.cbMizanVal.setText(f"{mizan:,.2f}")
+
     local_agency = get_value(self.le_LocalAgency) if hasattr(self, "le_LocalAgency") else 0.0
-    # Keep UI widget names unchanged; map them to semantic values for clarity.
-    # cpTotalInVal label = total payments (OUT), cpTotalOutVal label = total receipts (IN).
-    transactions_total_out = get_value(self.cpTotalOutVal)
-    transactions_total_in = get_value(self.cpTotalInVal)
-
-    closing_cashplus_balance = (
-        opening_balance
-        - cashplus_operations_total
-        - cmi_bank_net
-        + transactions_total_in
-        - transactions_total_out
-    )
-
-    self.cpBalanceFirstBadge.setText(f"{opening_balance:.2f}")
-    self.cbCmiBankBadge.setText(f"{cmi_bank_net:.2f}" if cmi_tam_amount > 0 else "0.00")
-    self.cpLastDayVal.setText(f"{closing_cashplus_balance:.2f}")
-
-    caisse_total_cash = get_value(self.cbTotalVal)
-    mizan_gap = caisse_total_cash - closing_cashplus_balance
-    self.cbMizanVal.setText(f"{mizan_gap:,.2f}")
-
     row = session.execute(select(DailyBalance).where(DailyBalance.daily_id == daily_id)).scalar_one_or_none()
+    payload = {
+        "opening_balance": float(opening_balance),
+        "total_output": float(total_out),
+        "total_input": float(total_in),
+        "local_agency_balance": float(local_agency),
+        "closing_balance": float(closing),
+    }
+
     if not row:
-        row = DailyBalance(
-            daily_id=daily_id,
-            opening_balance=float(opening_balance),
-            total_output=float(transactions_total_out),
-            total_input=float(transactions_total_in),
-            local_agency_balance=float(local_agency),
-            closing_balance=float(closing_cashplus_balance),
-        )
+        row = DailyBalance(daily_id=daily_id, **payload)
         session.add(row)
     else:
-        row.opening_balance = float(opening_balance)
-        row.total_output = float(transactions_total_out)
-        row.total_input = float(transactions_total_in)
-        row.local_agency_balance = float(local_agency)
-        row.closing_balance = float(closing_cashplus_balance)
+        for key, value in payload.items():
+            setattr(row, key, value)
 
 
 
@@ -633,7 +619,7 @@ def calculate_trans_in_out(self, session=None):
         amount = parse_float(tx.amount)
         paid = parse_float(tx.paid_amount)
         # For movement rows, paid_amount is often the real cash flow value.
-        return paid if paid != 0 else amount
+        return paid + amount
 
     total_in = sum(effective_value(t) for t in rows if bool(t.today_in))
     total_out = sum(effective_value(t) for t in rows if bool(t.today_out))
