@@ -114,8 +114,6 @@ class TransactionManager(QMainWindow):
 
         # Wire close button - keep in UI since it's simple
         self.Button_CloseWindow.clicked.connect(self.close)
-        # settingsBtn toggles light/dark
-        self.Button_OpenSettings.clicked.connect(self._on_toggle_theme)
 
     # ──────────────────────────────────────────────
     #  Icons & sizes  (all sourced from ICONS dict)
@@ -132,9 +130,6 @@ class TransactionManager(QMainWindow):
 
         from PyQt5.QtGui import QIcon
 
-        # Header settings button
-        self.Button_OpenSettings.setIcon(QIcon(ICONS["settings"]))
-        self.Button_OpenSettings.setIconSize(h)
 
         # Item-section action buttons
         self.Button_AddItem.setIcon(QIcon(ICONS["add"]))

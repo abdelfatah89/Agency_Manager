@@ -2,7 +2,7 @@ import gzip
 import os
 import shutil
 import subprocess
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 from typing import Optional, Tuple
 
@@ -18,7 +18,7 @@ except ImportError:
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 BACKUP_ROOT = Path(os.getenv("DB_BACKUP_DIR", str(PROJECT_ROOT / "backups" / "database")))
-BACKUP_RETENTION_DAYS = int(os.getenv("DB_BACKUP_RETENTION_DAYS", "30"))
+BACKUP_RETENTION_COUNT = 5
 BACKUP_ENABLED = os.getenv("DB_BACKUP_ENABLED", "1").strip() not in {"0", "false", "False"}
 MYSQLDUMP_PATH = os.getenv("MYSQLDUMP_PATH", "").strip()
 RCLONE_SYNC_ENABLED = os.getenv("DB_BACKUP_RCLONE_ENABLED", "0").strip() in {"1", "true", "True"}
@@ -58,7 +58,7 @@ def _run_rclone_sync() -> Tuple[bool, str]:
     source_dir.mkdir(parents=True, exist_ok=True)
 
     remote_target = f"{RCLONE_REMOTE_NAME}:{RCLONE_REMOTE_PATH}" if RCLONE_REMOTE_PATH else f"{RCLONE_REMOTE_NAME}:"
-    cmd = [rclone_bin, "sync", str(source_dir), remote_target]
+    cmd = [rclone_bin, "copy", str(source_dir), remote_target]
 
     try:
         proc = subprocess.run(cmd, capture_output=True, check=False)
@@ -94,14 +94,18 @@ def _has_backup_for_day(day: datetime) -> bool:
 
 
 def _cleanup_old_backups() -> None:
-    if BACKUP_RETENTION_DAYS <= 0:
+    if BACKUP_RETENTION_COUNT <= 0:
         return
 
-    cutoff = datetime.now() - timedelta(days=BACKUP_RETENTION_DAYS)
-    for file_path in BACKUP_ROOT.glob("*.sql.gz"):
+    backups = sorted(
+        BACKUP_ROOT.glob("*.sql.gz"),
+        key=lambda p: p.stat().st_mtime,
+        reverse=True,
+    )
+
+    for file_path in backups[BACKUP_RETENTION_COUNT:]:
         try:
-            if datetime.fromtimestamp(file_path.stat().st_mtime) < cutoff:
-                file_path.unlink(missing_ok=True)
+            file_path.unlink(missing_ok=True)
         except Exception as err:
             print(f"[Backup] Could not clean old backup '{file_path}': {err}")
 

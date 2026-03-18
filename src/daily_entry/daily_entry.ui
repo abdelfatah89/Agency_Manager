@@ -167,7 +167,7 @@
                 <property name="font">
                  <font>
                   <family>Tajawal</family>
-                  <pointsize>1</pointsize>
+                  <pointsize>-1</pointsize>
                   <weight>87</weight>
                   <bold>true</bold>
                  </font>
@@ -208,7 +208,7 @@
               <property name="font">
                <font>
                 <family>Tajawal</family>
-                <pointsize>1</pointsize>
+                <pointsize>-1</pointsize>
                 <weight>50</weight>
                 <bold>false</bold>
                </font>
@@ -278,7 +278,7 @@
               <property name="font">
                <font>
                 <family>Tajawal</family>
-                <pointsize>1</pointsize>
+                <pointsize>-1</pointsize>
                 <weight>75</weight>
                 <bold>true</bold>
                </font>
@@ -314,7 +314,7 @@ QToolButton#Button_ListTransactions:pressed { background-color: #1D4ED8; }</stri
               <property name="font">
                <font>
                 <family>Tajawal</family>
-                <pointsize>1</pointsize>
+                <pointsize>-1</pointsize>
                 <weight>75</weight>
                 <bold>true</bold>
                </font>
@@ -339,38 +339,6 @@ QPushButton#Button_AddTier:pressed { background-color: #1D4ED8; }</string>
               </property>
               <property name="text">
                <string>إضافة</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="Button_OpenSettings">
-              <property name="cursor">
-               <cursorShape>PointingHandCursor</cursorShape>
-              </property>
-              <property name="toolTip">
-               <string>الإعدادات</string>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QToolButton#Button_OpenSettings {
-    background: transparent;
-    border: none;
-    border-radius: 18px;
-    padding: 6px;
-    color: #6B7280;
-    min-width: 36px;
-    min-height: 36px;
-}
-QToolButton#Button_OpenSettings:hover { background-color: rgba(209, 213, 219, 0.55); }
-QToolButton::menu-indicator { image: none; }</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="toolButtonStyle">
-               <enum>Qt::ToolButtonIconOnly</enum>
-              </property>
-              <property name="autoRaise">
-               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -476,7 +444,7 @@ QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal { width: 0; bac
                 <property name="font">
                  <font>
                   <family>Tajawal</family>
-                  <pointsize>1</pointsize>
+                  <pointsize>-1</pointsize>
                  </font>
                 </property>
                 <property name="layoutDirection">
@@ -520,7 +488,7 @@ QDateEdit#Input_TransactionDate::down-arrow { image: url(../../assets/calendar.s
                 <property name="font">
                  <font>
                   <family>Tajawal</family>
-                  <pointsize>1</pointsize>
+                  <pointsize>-1</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -545,7 +513,9 @@ QDateEdit#Input_TransactionDate::down-arrow { image: url(../../assets/calendar.s
                 <property name="font">
                  <font>
                   <family>Tajawal</family>
-                  <pointsize>1</pointsize>
+                  <pointsize>12</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
                  </font>
                 </property>
                 <property name="layoutDirection">
@@ -557,7 +527,6 @@ QDateEdit#Input_TransactionDate::down-arrow { image: url(../../assets/calendar.s
     border: 1px solid #E5E7EB;
     border-radius: 8px;
     color: #374151;
-    font-size: 15px;
     padding: 6px 10px;
     min-height: 32px;
     selection-background-color: #DBEAFE;
@@ -586,7 +555,7 @@ QLineEdit#Input_CustomerName:disabled {
                 <property name="font">
                  <font>
                   <family>Tajawal</family>
-                  <pointsize>1</pointsize>
+                  <pointsize>-1</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -614,7 +583,7 @@ QLineEdit#Input_CustomerName:disabled {
                 <property name="font">
                  <font>
                   <family>Tajawal</family>
-                  <pointsize>1</pointsize>
+                  <pointsize>-1</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -645,7 +614,9 @@ QLineEdit#Input_CustomerName:disabled {
                 <property name="font">
                  <font>
                   <family>Tajawal</family>
-                  <pointsize>1</pointsize>
+                  <pointsize>12</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
                  </font>
                 </property>
                 <property name="toolTip">
@@ -660,7 +631,6 @@ QLineEdit#Input_CustomerName:disabled {
     border: 1px solid #E5E7EB;
     border-radius: 8px;
     color: #374151;
-    font-size: 15px;
     padding: 6px 10px;
     min-height: 32px;
     selection-background-color: #DBEAFE;
@@ -694,7 +664,7 @@ QComboBox#ComboBox_CustomerAccount::down-arrow { image: url(../../assets/chevron
                 <property name="font">
                  <font>
                   <family>Tajawal</family>
-                  <pointsize>1</pointsize>
+                  <pointsize>-1</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -719,7 +689,9 @@ QComboBox#ComboBox_CustomerAccount::down-arrow { image: url(../../assets/chevron
                 <property name="font">
                  <font>
                   <family>Tajawal</family>
-                  <pointsize>1</pointsize>
+                  <pointsize>12</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
                  </font>
                 </property>
                 <property name="toolTip">
@@ -734,7 +706,6 @@ QComboBox#ComboBox_CustomerAccount::down-arrow { image: url(../../assets/chevron
     border: 1px solid #E5E7EB;
     border-radius: 8px;
     color: #374151;
-    font-size: 15px;
     padding: 6px 10px;
 	text-align: left;
     min-height: 32px;
@@ -778,7 +749,7 @@ QComboBox#ComboBox_CustomerID::down-arrow { image: url(../../assets/chevron_down
                 <property name="font">
                  <font>
                   <family>Tajawal</family>
-                  <pointsize>1</pointsize>
+                  <pointsize>-1</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -868,7 +839,7 @@ QPushButton#Button_VerifyCustomer:pressed { background-color: #1D4ED8; }</string
                   <property name="font">
                    <font>
                     <family>Tajawal</family>
-                    <pointsize>1</pointsize>
+                    <pointsize>-1</pointsize>
                     <weight>75</weight>
                     <bold>true</bold>
                    </font>
@@ -893,7 +864,9 @@ QPushButton#Button_VerifyCustomer:pressed { background-color: #1D4ED8; }</string
                   <property name="font">
                    <font>
                     <family>Tajawal</family>
-                    <pointsize>1</pointsize>
+                    <pointsize>12</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
                    </font>
                   </property>
                   <property name="layoutDirection">
@@ -905,7 +878,6 @@ QPushButton#Button_VerifyCustomer:pressed { background-color: #1D4ED8; }</string
     border: 1px solid #E5E7EB;
     border-radius: 8px;
     color: #374151;
-    font-size: 15px;
     padding: 6px 10px;
     min-height: 32px;
     selection-background-color: #DBEAFE;
@@ -934,7 +906,9 @@ QLineEdit#Input_ItemUnitPrice:disabled {
                   <property name="font">
                    <font>
                     <family>Tajawal</family>
-                    <pointsize>1</pointsize>
+                    <pointsize>12</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
                    </font>
                   </property>
                   <property name="layoutDirection">
@@ -946,7 +920,6 @@ QLineEdit#Input_ItemUnitPrice:disabled {
     border: 1px solid #E5E7EB;
     border-radius: 8px;
     color: #374151;
-    font-size: 15px;
     padding: 6px 10px;
     min-height: 32px;
     selection-background-color: #DBEAFE;
@@ -972,7 +945,7 @@ QLineEdit#Input_ItemDescription:disabled {
                   <property name="font">
                    <font>
                     <family>Tajawal</family>
-                    <pointsize>1</pointsize>
+                    <pointsize>-1</pointsize>
                     <weight>75</weight>
                     <bold>true</bold>
                    </font>
@@ -997,7 +970,7 @@ QLineEdit#Input_ItemDescription:disabled {
                   <property name="font">
                    <font>
                     <family>Tajawal</family>
-                    <pointsize>1</pointsize>
+                    <pointsize>-1</pointsize>
                     <weight>75</weight>
                     <bold>true</bold>
                    </font>
@@ -1022,7 +995,9 @@ QLineEdit#Input_ItemDescription:disabled {
                   <property name="font">
                    <font>
                     <family>Tajawal</family>
-                    <pointsize>1</pointsize>
+                    <pointsize>-1</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
                    </font>
                   </property>
                   <property name="styleSheet">
@@ -1069,7 +1044,9 @@ QSpinBox#Input_ItemQuantity:disabled {
                   <property name="font">
                    <font>
                     <family>Tajawal</family>
-                    <pointsize>1</pointsize>
+                    <pointsize>12</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
                    </font>
                   </property>
                   <property name="layoutDirection">
@@ -1081,7 +1058,6 @@ QSpinBox#Input_ItemQuantity:disabled {
     border: 1px solid #E5E7EB;
     border-radius: 8px;
     color: #374151;
-    font-size: 15px;
     padding: 6px 10px;
     min-height: 32px;
     selection-background-color: #DBEAFE;
@@ -1110,7 +1086,7 @@ QLineEdit#Input_PaymentAmount:disabled {
                   <property name="font">
                    <font>
                     <family>Tajawal</family>
-                    <pointsize>1</pointsize>
+                    <pointsize>-1</pointsize>
                     <weight>75</weight>
                     <bold>true</bold>
                    </font>
@@ -1135,7 +1111,9 @@ QLineEdit#Input_PaymentAmount:disabled {
                   <property name="font">
                    <font>
                     <family>Tajawal</family>
-                    <pointsize>1</pointsize>
+                    <pointsize>12</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
                    </font>
                   </property>
                   <property name="layoutDirection">
@@ -1147,7 +1125,6 @@ QLineEdit#Input_PaymentAmount:disabled {
     border: 1px solid #E5E7EB;
     border-radius: 8px;
     color: #374151;
-    font-size: 15px;
     padding: 6px 10px;
     min-height: 32px;
     selection-background-color: #DBEAFE;
@@ -1176,7 +1153,7 @@ QLineEdit#Input_RemainingAmount:disabled {
                   <property name="font">
                    <font>
                     <family>Tajawal</family>
-                    <pointsize>1</pointsize>
+                    <pointsize>-1</pointsize>
                     <weight>75</weight>
                     <bold>true</bold>
                    </font>
@@ -1251,7 +1228,7 @@ QLineEdit#Input_RemainingAmount:disabled {
                   <property name="font">
                    <font>
                     <family>Tajawal</family>
-                    <pointsize>1</pointsize>
+                    <pointsize>-1</pointsize>
                     <weight>75</weight>
                     <bold>true</bold>
                    </font>
@@ -1287,7 +1264,7 @@ QToolButton#Button_AddItem:pressed { background-color: #1D4ED8; }</string>
                   <property name="font">
                    <font>
                     <family>Tajawal</family>
-                    <pointsize>1</pointsize>
+                    <pointsize>-1</pointsize>
                     <weight>62</weight>
                     <bold>true</bold>
                    </font>
@@ -1326,7 +1303,7 @@ QToolButton#Button_DeleteItem:hover {
                   <property name="font">
                    <font>
                     <family>Tajawal</family>
-                    <pointsize>1</pointsize>
+                    <pointsize>-1</pointsize>
                     <weight>62</weight>
                     <bold>true</bold>
                    </font>
@@ -1597,7 +1574,7 @@ QHeaderView::section {
                 <property name="font">
                  <font>
                   <family>Tajawal</family>
-                  <pointsize>1</pointsize>
+                  <pointsize>-1</pointsize>
                   <weight>62</weight>
                   <bold>true</bold>
                  </font>
@@ -1636,7 +1613,7 @@ QToolButton#Button_CloseWindow:pressed { background-color: #F3F4F6; }</string>
                 <property name="font">
                  <font>
                   <family>Tajawal</family>
-                  <pointsize>1</pointsize>
+                  <pointsize>-1</pointsize>
                   <weight>62</weight>
                   <bold>true</bold>
                  </font>
@@ -1675,7 +1652,7 @@ QToolButton#Button_PrintTransaction:pressed { background-color: #F3F4F6; }</stri
                 <property name="font">
                  <font>
                   <family>Tajawal</family>
-                  <pointsize>1</pointsize>
+                  <pointsize>-1</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -1773,7 +1750,7 @@ QToolButton#Button_NewTransaction:pressed { background-color: #1D4ED8; }</string
                    <property name="font">
                     <font>
                      <family>Tajawal</family>
-                     <pointsize>1</pointsize>
+                     <pointsize>-1</pointsize>
                      <weight>87</weight>
                      <bold>true</bold>
                     </font>
@@ -1798,7 +1775,7 @@ QToolButton#Button_NewTransaction:pressed { background-color: #1D4ED8; }</string
                    <property name="font">
                     <font>
                      <family>Courier New</family>
-                     <pointsize>1</pointsize>
+                     <pointsize>-1</pointsize>
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
@@ -1851,7 +1828,7 @@ QToolButton#Button_NewTransaction:pressed { background-color: #1D4ED8; }</string
                    <property name="font">
                     <font>
                      <family>Tajawal</family>
-                     <pointsize>1</pointsize>
+                     <pointsize>-1</pointsize>
                      <weight>87</weight>
                      <bold>true</bold>
                     </font>
@@ -1921,7 +1898,7 @@ QToolButton#Button_NewTransaction:pressed { background-color: #1D4ED8; }</string
                    <property name="font">
                     <font>
                      <family>Tajawal</family>
-                     <pointsize>1</pointsize>
+                     <pointsize>-1</pointsize>
                      <weight>87</weight>
                      <bold>true</bold>
                     </font>
@@ -2009,7 +1986,7 @@ QToolButton#Button_NewTransaction:pressed { background-color: #1D4ED8; }</string
                    <property name="font">
                     <font>
                      <family>Tajawal</family>
-                     <pointsize>1</pointsize>
+                     <pointsize>-1</pointsize>
                      <weight>87</weight>
                      <bold>true</bold>
                     </font>
@@ -2034,7 +2011,7 @@ QToolButton#Button_NewTransaction:pressed { background-color: #1D4ED8; }</string
                    <property name="font">
                     <font>
                      <family>Courier New</family>
-                     <pointsize>1</pointsize>
+                     <pointsize>-1</pointsize>
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
@@ -2087,7 +2064,7 @@ QToolButton#Button_NewTransaction:pressed { background-color: #1D4ED8; }</string
                    <property name="font">
                     <font>
                      <family>Tajawal</family>
-                     <pointsize>1</pointsize>
+                     <pointsize>-1</pointsize>
                      <weight>87</weight>
                      <bold>true</bold>
                     </font>
@@ -2112,7 +2089,7 @@ QToolButton#Button_NewTransaction:pressed { background-color: #1D4ED8; }</string
                    <property name="font">
                     <font>
                      <family>Courier New</family>
-                     <pointsize>1</pointsize>
+                     <pointsize>-1</pointsize>
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
