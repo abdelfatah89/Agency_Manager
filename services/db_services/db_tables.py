@@ -1,7 +1,18 @@
 from typing import Optional
 from decimal import Decimal
 
-from sqlalchemy import Date, DateTime, ForeignKey, Numeric, String, Text, func
+from sqlalchemy import (
+    Date,
+    DateTime,
+    ForeignKey,
+    Integer,
+    Numeric,
+    String,
+    Text,
+    UniqueConstraint,
+    Index,
+    func,
+)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -217,3 +228,135 @@ class GeneralBalance(Base):
     )
 
     daily_session: Mapped[DailySession] = relationship(back_populates="general_balance")
+
+
+class InvoiceNumberCounter(Base):
+    __tablename__ = "invoice_number_counters"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    period_key: Mapped[str] = mapped_column(String(6), unique=True, index=True)
+    sequence_value: Mapped[int] = mapped_column(Integer, default=0)
+    created_at: Mapped[Optional[DateTime]] = mapped_column(DateTime, server_default=func.current_timestamp())
+    updated_at: Mapped[Optional[DateTime]] = mapped_column(
+        DateTime,
+        server_default=func.current_timestamp(),
+        onupdate=func.current_timestamp(),
+    )
+
+
+class Invoice(Base):
+    __tablename__ = "invoices"
+    __table_args__ = (
+        UniqueConstraint("source_type", "idempotency_key", name="uq_invoice_source_idempotency"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    invoice_number: Mapped[str] = mapped_column(String(32), unique=True, index=True)
+    source_type: Mapped[str] = mapped_column(String(32), index=True)
+    idempotency_key: Mapped[str] = mapped_column(String(64), index=True)
+    issue_date: Mapped[Date] = mapped_column(Date, index=True)
+    period_key: Mapped[str] = mapped_column(String(6), index=True)
+    sequence_value: Mapped[int] = mapped_column(Integer)
+
+    client_name: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    account_name: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    date_from: Mapped[Optional[Date]] = mapped_column(Date, nullable=True)
+    date_to: Mapped[Optional[Date]] = mapped_column(Date, nullable=True)
+
+    total_amount: Mapped[Decimal] = mapped_column(Numeric(14, 2), default=0)
+    total_paid: Mapped[Decimal] = mapped_column(Numeric(14, 2), default=0)
+    total_vat: Mapped[Decimal] = mapped_column(Numeric(14, 2), default=0)
+    balance: Mapped[Decimal] = mapped_column(Numeric(14, 2), default=0)
+
+    status: Mapped[str] = mapped_column(String(16), default="reserved")
+    pdf_path: Mapped[Optional[str]] = mapped_column(String(512), nullable=True)
+    payload_json: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    error_message: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    created_at: Mapped[Optional[DateTime]] = mapped_column(DateTime, server_default=func.current_timestamp())
+    updated_at: Mapped[Optional[DateTime]] = mapped_column(
+        DateTime,
+        server_default=func.current_timestamp(),
+        onupdate=func.current_timestamp(),
+    )
+
+
+class SchemaMigration(Base):
+    __tablename__ = "schema_migrations"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    version: Mapped[int] = mapped_column(Integer, unique=True, index=True)
+    script_name: Mapped[str] = mapped_column(String(255))
+    checksum_sha256: Mapped[str] = mapped_column(String(64))
+    execution_ms: Mapped[int] = mapped_column(Integer, default=0)
+    applied_by: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
+    notes: Mapped[Optional[str]] = mapped_column(String(512), nullable=True)
+    applied_at: Mapped[Optional[DateTime]] = mapped_column(DateTime, server_default=func.current_timestamp())
+
+
+class LicensedMachine(Base):
+    __tablename__ = "licensed_machines"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    customer_name: Mapped[str] = mapped_column(String(255), index=True)
+    machine_name: Mapped[str] = mapped_column(String(255), index=True)
+    hardware_fingerprint: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    request_code: Mapped[str] = mapped_column(Text)
+    license_code: Mapped[str] = mapped_column(Text)
+    license_status: Mapped[str] = mapped_column(String(24), index=True, default="active")
+    issued_at: Mapped[DateTime] = mapped_column(DateTime)
+    expires_at: Mapped[Optional[DateTime]] = mapped_column(DateTime, nullable=True)
+    activated_at: Mapped[Optional[DateTime]] = mapped_column(DateTime, nullable=True)
+    last_seen_at: Mapped[Optional[DateTime]] = mapped_column(DateTime, nullable=True)
+    revoked_at: Mapped[Optional[DateTime]] = mapped_column(DateTime, nullable=True)
+    notes: Mapped[Optional[str]] = mapped_column(String(1024), nullable=True)
+    created_at: Mapped[Optional[DateTime]] = mapped_column(DateTime, server_default=func.current_timestamp())
+    updated_at: Mapped[Optional[DateTime]] = mapped_column(
+        DateTime,
+        server_default=func.current_timestamp(),
+        onupdate=func.current_timestamp(),
+    )
+
+
+class AppInstallation(Base):
+    __tablename__ = "app_installations"
+    __table_args__ = (
+        UniqueConstraint("licensed_machine_id", "install_path", name="uq_installation_machine_path"),
+        Index("idx_installation_machine_status_seen", "licensed_machine_id", "status", "last_seen_at"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    licensed_machine_id: Mapped[int] = mapped_column(ForeignKey("licensed_machines.id", ondelete="CASCADE", onupdate="CASCADE"), index=True)
+    app_version: Mapped[str] = mapped_column(String(64))
+    install_path: Mapped[str] = mapped_column(String(1024))
+    install_hash: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    machine_name: Mapped[str] = mapped_column(String(255))
+    first_seen_at: Mapped[Optional[DateTime]] = mapped_column(DateTime, server_default=func.current_timestamp())
+    last_seen_at: Mapped[Optional[DateTime]] = mapped_column(DateTime, server_default=func.current_timestamp())
+    status: Mapped[str] = mapped_column(String(24), default="active", index=True)
+    notes: Mapped[Optional[str]] = mapped_column(String(1024), nullable=True)
+
+
+class LicenseAuditLog(Base):
+    __tablename__ = "license_audit_log"
+    __table_args__ = (
+        Index("idx_audit_machine_time", "licensed_machine_id", "created_at"),
+        Index("idx_audit_installation_time", "app_installation_id", "created_at"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    licensed_machine_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("licensed_machines.id", ondelete="SET NULL", onupdate="CASCADE"),
+        nullable=True,
+        index=True,
+    )
+    app_installation_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("app_installations.id", ondelete="SET NULL", onupdate="CASCADE"),
+        nullable=True,
+        index=True,
+    )
+    event_type: Mapped[str] = mapped_column(String(64), index=True)
+    event_result: Mapped[str] = mapped_column(String(24), index=True)
+    event_message: Mapped[Optional[str]] = mapped_column(String(1024), nullable=True)
+    event_details_json: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    created_at: Mapped[Optional[DateTime]] = mapped_column(DateTime, server_default=func.current_timestamp())

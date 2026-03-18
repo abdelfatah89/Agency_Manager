@@ -156,6 +156,29 @@ def _resolve_current_session(session, self):
     return _get_or_create_session_by_date(session, self.day_date.date().toPyDate())
 
 
+def _get_opening_balance(session, selected_date):
+    """Opening balance is derived from previous day's persisted data."""
+    prev_session = session.execute(
+        select(DailySession)
+        .where(DailySession.session_date < selected_date)
+        .order_by(desc(DailySession.session_date))
+        .limit(1)
+    ).scalar_one_or_none()
+
+    if not prev_session:
+        return 0.0
+
+    prev_cash = session.execute(select(DailyCash).where(DailyCash.daily_id == prev_session.id)).scalar_one_or_none()
+    if prev_cash and prev_cash.total_cash is not None:
+        return parse_float(prev_cash.total_cash)
+
+    prev_balance = session.execute(select(DailyBalance).where(DailyBalance.daily_id == prev_session.id)).scalar_one_or_none()
+    if prev_balance:
+        return parse_float(prev_balance.closing_balance)
+
+    return 0.0
+
+
 def _load_current_session_data(self, session, daily_session):
     _set_current_session(self, daily_session)
     load_caisse_data(self, daily_session.id, session)
@@ -375,9 +398,9 @@ def load_balance_data(self, daily_id, session=None):
 
     if bal:
         self.cpBalanceFirstBadge.setText(f"{parse_float(bal.opening_balance):.2f}")
-        # UI labels: cpTotalInVal=إجمالي المدفوعات (OUT), cpTotalOutVal=إجمالي المقبوضات (IN)
-        self.cpTotalInVal.setText(f"{parse_float(bal.total_output):.2f}")
-        self.cpTotalOutVal.setText(f"{parse_float(bal.total_input):.2f}")
+        # Canonical semantics: IN=receipts, OUT=payments.
+        self.cpTotalInVal.setText(f"{parse_float(bal.total_input):.2f}")
+        self.cpTotalOutVal.setText(f"{parse_float(bal.total_output):.2f}")
 
         cmi_tam = parse_float(op.cmi_tamezmoute if op else 0)
         self.le_cbCmiTam.setText(f"{cmi_tam:.2f}")
@@ -463,7 +486,8 @@ def calculate_operations(self, session=None):
     expenses = values[6] + values[7] + values[8] + values[9] + values[10]
 
     total_result = total_in - total_out + expenses - local_agency
-    opening = get_value(self.cpBalanceFirstBadge)
+    opening = _get_opening_balance(session, selected_date)
+    self.cpBalanceFirstBadge.setText(f"{opening:,.2f}")
     rest_amount = opening + total_result
 
     self.lbl_totalval.setText(f"{total_result:.2f}")
@@ -546,28 +570,13 @@ def calculate_balance(self, session=None):
     daily_session = _get_or_create_session_by_date(session, selected_date)
     daily_id = daily_session.id
 
-        # Opening balance from previous day’s cash or closing balance
-    prev_session = session.execute(
-        select(DailySession)
-        .where(DailySession.session_date < selected_date)
-        .order_by(desc(DailySession.session_date))
-        .limit(1)
-    ).scalar_one_or_none()
-    opening_balance = 0.0
-    if prev_session:
-        prev_cash = session.execute(select(DailyCash).where(DailyCash.daily_id == prev_session.id)).scalar_one_or_none()
-        if prev_cash and prev_cash.total_cash is not None:
-            opening_balance = parse_float(prev_cash.total_cash)
-        else:
-            prev_balance = session.execute(select(DailyBalance).where(DailyBalance.daily_id == prev_session.id)).scalar_one_or_none()
-            if prev_balance:
-                opening_balance = parse_float(prev_balance.closing_balance)
+    opening_balance = _get_opening_balance(session, selected_date)
 
     # CMI amount and operations total from DailyOperationSummary
     self.cpBalanceFirstBadge.setText(f"{opening_balance:,.2f}")
     op_summary = session.execute(select(DailyOperationSummary).where(DailyOperationSummary.daily_id == daily_id)).scalar_one_or_none()
     cmi_tam_amount = parse_float(op_summary.cmi_tamezmoute) if op_summary else 0.0
-    #cmi_bank_net = cmi_tam_amount - (cmi_tam_amount * 0.02)
+    cmi_bank_net = cmi_tam_amount - (cmi_tam_amount * 0.02)
     operations_total = parse_float(op_summary.total_result) if op_summary else 0.0
 
     # Sum transactions marked today_in/today_out directly from Transaction table
@@ -581,11 +590,17 @@ def calculate_balance(self, session=None):
     total_in = sum(effective_value(tx) for tx in rows if tx.today_in)
     total_out = sum(effective_value(tx) for tx in rows if tx.today_out)
 
-    # Compute closing balance
+    # Canonical formula: closing = opening + operations + total_in - total_out - cmi
     closing = opening_balance + operations_total + total_in - total_out
 
+    self.cpTotalInVal.setText(f"{total_in:,.2f}")
+    self.cpTotalOutVal.setText(f"{total_out:,.2f}")
+    self.cbCmiBankBadge.setText(f"{cmi_bank_net:,.2f}" if cmi_tam_amount > 0 else "0.00")
+
     self.cpLastDayVal.setText(f"{closing:,.2f}")
-    mizan = parse_float(self.cbTotalVal.text()) - closing
+    cash_row = session.execute(select(DailyCash).where(DailyCash.daily_id == daily_id)).scalar_one_or_none()
+    current_cash_total = parse_float(cash_row.total_cash) if cash_row else 0.0
+    mizan = current_cash_total - closing
     self.cbMizanVal.setText(f"{mizan:,.2f}")
 
     local_agency = get_value(self.le_LocalAgency) if hasattr(self, "le_LocalAgency") else 0.0
@@ -625,7 +640,7 @@ def calculate_trans_in_out(self, session=None):
     total_out = sum(effective_value(t) for t in rows if bool(t.today_out))
     net_other_transactions = total_in - total_out
 
-    # Widget labels: cpTotalInVal = إجمالي المدفوعات, cpTotalOutVal = إجمالي المقبوضات.
+    # Canonical semantics: IN=receipts, OUT=payments.
     self.cpTotalInVal.setText(f"{total_in:,.2f}")
     self.cpTotalOutVal.setText(f"{total_out:,.2f}")
 
@@ -681,9 +696,7 @@ def calculate_genBalance(self, session=None):
         select(DailyOperationSummary).where(DailyOperationSummary.daily_id == daily_id)
     ).scalar_one_or_none()
     cmi_tam = parse_float(op_row.cmi_tamezmoute if op_row else 0)
-    cmi_bank_badge = get_value(self.cbCmiBankBadge)
-    if cmi_bank_badge == 0 and cmi_tam > 0:
-        cmi_bank_badge = cmi_tam - (cmi_tam * 0.02)
+    cmi_bank_badge = cmi_tam - (cmi_tam * 0.02) if cmi_tam > 0 else 0.0
     self.genCmiTpeVal.setText(f"{cmi_bank_badge:,.2f}")
 
     cashplus_balance = get_value(self.genCashPlusVal)
@@ -804,7 +817,7 @@ def setup_funcs(self):
         _connect_recalc(le)
 
     def _open_transactions_and_recalculate(_checked=False):
-        manager_window = open_transaction_manager()
+        manager_window = open_transaction_manager(current_user_role=getattr(self, "_current_user_role", None), parent=self)
         if manager_window is None:
             calculate_all(self)
             return

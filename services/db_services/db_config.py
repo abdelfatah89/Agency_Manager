@@ -1,9 +1,13 @@
 import os
+import logging
 from functools import wraps
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
+
+
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 
@@ -12,6 +16,9 @@ DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_HOST = os.getenv("DB_HOST")
 DB_PORT = int(os.getenv("DB_PORT") or 3306)
 _env_db_name = os.getenv("DB_NAME", "").strip()
+
+if not DB_USER or not DB_HOST:
+    logger.error("Missing required DB configuration values: DB_USER and DB_HOST must be set")
 
 DB_CANDIDATES = []
 if _env_db_name:
@@ -42,10 +49,10 @@ for _candidate in DB_CANDIDATES:
             conn.execute(text("SELECT 1"))
         engine = _engine
         DB_NAME = _candidate
-        print(f"Connected to database: {DB_NAME}")
+        logger.info("Connected to database: %s", DB_NAME)
         break
     except Exception as e:
-        print(f"Database connection failed for '{_candidate}': {e}")
+        logger.warning("Database connection failed for '%s': %s", _candidate, e)
 
 if engine is None:
     # Keep module importable; runtime DB operations will surface connection issues.

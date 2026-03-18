@@ -1,4 +1,5 @@
 import gzip
+import logging
 import os
 import shutil
 import subprocess
@@ -18,7 +19,7 @@ except ImportError:
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 BACKUP_ROOT = Path(os.getenv("DB_BACKUP_DIR", str(PROJECT_ROOT / "backups" / "database")))
-BACKUP_RETENTION_COUNT = 5
+BACKUP_RETENTION_COUNT = int(os.getenv("DB_BACKUP_RETENTION_COUNT", "5") or "5")
 BACKUP_ENABLED = os.getenv("DB_BACKUP_ENABLED", "1").strip() not in {"0", "false", "False"}
 MYSQLDUMP_PATH = os.getenv("MYSQLDUMP_PATH", "").strip()
 RCLONE_SYNC_ENABLED = os.getenv("DB_BACKUP_RCLONE_ENABLED", "0").strip() in {"1", "true", "True"}
@@ -26,6 +27,9 @@ RCLONE_PATH = os.getenv("RCLONE_PATH", "").strip()
 RCLONE_REMOTE_NAME = os.getenv("DB_BACKUP_RCLONE_REMOTE", "database_backup").strip()
 RCLONE_REMOTE_PATH = os.getenv("DB_BACKUP_RCLONE_REMOTE_PATH", "databases").strip()
 RCLONE_SOURCE_DIR = Path(os.getenv("DB_BACKUP_RCLONE_SOURCE_DIR", str(BACKUP_ROOT))).expanduser()
+
+
+logger = logging.getLogger(__name__)
 
 
 def _find_rclone() -> Optional[str]:
@@ -43,7 +47,7 @@ def _find_rclone() -> Optional[str]:
 
 
 def _run_rclone_sync() -> Tuple[bool, str]:
-    """Sync local backup folder to cloud using rclone sync."""
+    """Copy local backup folder to cloud using rclone."""
     if not RCLONE_SYNC_ENABLED:
         return True, "rclone sync disabled"
 
@@ -64,10 +68,11 @@ def _run_rclone_sync() -> Tuple[bool, str]:
         proc = subprocess.run(cmd, capture_output=True, check=False)
         if proc.returncode != 0:
             stderr = proc.stderr.decode("utf-8", errors="ignore").strip()
-            return False, f"rclone sync failed ({proc.returncode}): {stderr or 'unknown error'}"
-        return True, f"rclone sync completed to {remote_target}"
+            return False, f"rclone copy failed ({proc.returncode}): {stderr or 'unknown error'}"
+        return True, f"rclone copy completed to {remote_target}"
     except Exception as err:
-        return False, f"rclone sync exception: {err}"
+        logger.exception("rclone copy failed")
+        return False, f"rclone copy exception: {err}"
 
 
 def _ensure_backup_dir() -> None:
@@ -107,7 +112,7 @@ def _cleanup_old_backups() -> None:
         try:
             file_path.unlink(missing_ok=True)
         except Exception as err:
-            print(f"[Backup] Could not clean old backup '{file_path}': {err}")
+            logger.warning("Could not clean old backup '%s': %s", file_path, err)
 
 
 def run_backup_now(reason: str = "manual") -> Tuple[bool, Optional[Path], str]:
@@ -167,6 +172,6 @@ def run_backup_now(reason: str = "manual") -> Tuple[bool, Optional[Path], str]:
 if __name__ == "__main__":
     ok, path, message = run_backup_now(reason="direct-script")
     if ok:
-        print(f"[Backup] {message}: {path}")
+        logger.info("%s: %s", message, path)
     else:
-        print(f"[Backup] {message}")
+        logger.warning("%s", message)

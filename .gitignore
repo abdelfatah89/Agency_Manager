@@ -1,3 +1,16 @@
 .env
 __pycache__/
 z_trash/
+build/
+dist/
+release/
+logs/
+keys/
+backups/database/
+
+# Licensing secrets and local artifacts
+admin_license_tool/keys/
+admin_license_tool/*.json
+admin_license_tool/*.code
+**/license.json
+**/request_code.txt

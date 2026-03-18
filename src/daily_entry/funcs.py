@@ -4,6 +4,7 @@ Refactored to the new schema centered on daily_sessions.
 """
 
 import json
+import logging
 import sys
 from datetime import date as dt_date
 from pathlib import Path
@@ -28,6 +29,12 @@ from services import (
     DailySession,
     Transaction,
 )
+from services.access_control import PERM_OPEN_FACTURES, has_permission
+from services.invoice_service import (
+    reserve_invoice_number,
+    mark_invoice_generated,
+    mark_invoice_failed,
+)
 from src.utils import calculate_agency_balances, parse_float
 from src.utils.ui_helpers import apply_numeric_input_restrictions
 from src.new_tiers.new_tiers import NewTiers
@@ -36,6 +43,9 @@ from src.factures_generator.facture_generator import (
     extract_daily_invoice_data,
     generate_daily_invoice,
 )
+
+
+logger = logging.getLogger(__name__)
 
 
 def _selected_client_id(self):
@@ -77,6 +87,18 @@ def _get_or_create_daily_session(session, target_date):
 def _normalize_designation(text):
     raw = str(text or "").strip()
     return " ".join(raw.split())
+
+
+def _validate_required_transaction_fields(customer_name, account, client_id, designation):
+    if not customer_name:
+        return False, "الرجاء إدخال اسم الزبون!"
+    if not account or account == "-- اختر الحساب --":
+        return False, "الرجاء إدخال الحساب!"
+    if not client_id:
+        return False, "الرجاء إدخال الزبون!"
+    if not _normalize_designation(designation):
+        return False, "الرجاء إدخال وصف المعاملة!"
+    return True, ""
 
 
 def _collect_designation_suggestions(session, recent_limit=40, frequent_limit=40):
@@ -151,7 +173,7 @@ def load_clients(self, session=None):
         for i in range(self.ComboBox_CustomerID.count()):
             self.ComboBox_CustomerID.setItemData(i, Qt.AlignmentFlag.AlignLeft, Qt.ItemDataRole.TextAlignmentRole)
     except SQLAlchemyError as err:
-        print(f"[DB] Error loading clients: {err}")
+        logger.exception("Error loading clients")
 
 
 @with_session
@@ -176,7 +198,7 @@ def load_accounts(self, session=None):
         for i in range(self.ComboBox_CustomerAccount.count()):
             self.ComboBox_CustomerAccount.setItemData(i, Qt.AlignmentFlag.AlignCenter, Qt.ItemDataRole.TextAlignmentRole)
     except SQLAlchemyError as err:
-        print(f"[DB] Error loading accounts: {err}")
+        logger.exception("Error loading accounts")
 
 
 @with_session
@@ -240,7 +262,7 @@ def get_commission_and_cost(amount):
         commission = cost - amount * 0.01
         return commission, cost
     except Exception as err:
-        print(f"[CMI] Error getting commission/cost: {err}")
+        logger.exception("Error getting CMI commission/cost")
         return 0.0, 0.0
 
 
@@ -315,6 +337,10 @@ def save_transaction_to_db(self, session=None):
         for row in range(table.rowCount()):
             designation_item = table.item(row, 0)
             designation = designation_item.text() if designation_item else ""
+            is_valid, message = _validate_required_transaction_fields(customer_name, account, client_id, designation)
+            if not is_valid:
+                QMessageBox.warning(self, "تحذير", message)
+                return False
             trans_id = designation_item.data(Qt.UserRole) if designation_item else None
 
             qty = float(table.item(row, 1).text() if table.item(row, 1) else "1")
@@ -365,7 +391,7 @@ def save_transaction_to_db(self, session=None):
     except SQLAlchemyError as err:
         session.rollback()
         QMessageBox.critical(self, "Database Error", f"Failed to save transactions:\n{err}")
-        print(f"[DB] Error saving transactions: {err}")
+        logger.exception("Error saving transactions")
         return False
     except ValueError as err:
         session.rollback()
@@ -426,7 +452,7 @@ def load_transactions_for_date(self, session=None):
 
         update_totals(self)
     except SQLAlchemyError as err:
-        print(f"[DB] Error loading transactions: {err}")
+        logger.exception("Error loading transactions for date")
 
 
 @with_session
@@ -450,14 +476,9 @@ def save_single_transaction(
         account = self.ComboBox_CustomerAccount.currentText().strip()
         client_id = _selected_client_id(self)
 
-        if not customer_name:
-            QMessageBox.warning(self, "تحذير", "الرجاء إدخال اسم الزبون!")
-            return False
-        if not account or account == "-- اختر الحساب --":
-            QMessageBox.warning(self, "تحذير", "الرجاء إدخال الحساب!")
-            return False
-        if not client_id:
-            QMessageBox.warning(self, "تحذير", "الرجاء إدخال الزبون!")
+        is_valid, message = _validate_required_transaction_fields(customer_name, account, client_id, designation)
+        if not is_valid:
+            QMessageBox.warning(self, "تحذير", message)
             return False
 
         amount = float(unit_price) * float(qty)
@@ -500,7 +521,7 @@ def save_single_transaction(
     except SQLAlchemyError as err:
         session.rollback()
         QMessageBox.critical(self, "Database Error", f"فشل حفظ المعاملة:\n{err}")
-        print(f"[DB] Error saving transaction: {err}")
+        logger.exception("Error saving single transaction")
         return False
     except ValueError as err:
         session.rollback()
@@ -611,13 +632,13 @@ def on_customer_selected(self, index):
         set_clientname(self)
     else:
         self.Input_CustomerName.clear()
+    load_transactions_for_date(self)
     update_totals(self)
 
 
-@with_session
-def on_verify(self, session=None):
+def on_verify(self):
     if save_transaction_to_db(self):
-        print("[Transaction] All transactions saved successfully")
+        logger.info("All transactions saved successfully")
         load_transactions_for_date(self)
         refresh_description_suggestions(self)
 
@@ -711,7 +732,7 @@ def delete_transaction_from_db(self, trans_id, session=None):
     except SQLAlchemyError as err:
         session.rollback()
         QMessageBox.critical(self, "Database Error", f"فشل حذف المعاملة:\n{err}")
-        print(f"[DB] Error deleting transaction: {err}")
+        logger.exception("Error deleting transaction")
         return False
 
 
@@ -802,13 +823,43 @@ def on_print(self):
             self.Label_OverallRemainingValue,
             vat_label,
         )
-        pdf_path = generate_daily_invoice(data)
+
+        table_snapshot = []
+        for row in range(self.Table_TransactionsList.rowCount()):
+            row_data = []
+            for col in range(5):
+                item = self.Table_TransactionsList.item(row, col)
+                row_data.append(item.text().strip() if item and item.text() else "")
+            table_snapshot.append(row_data)
+
+        data["source_rows"] = table_snapshot
+
+        reservation = reserve_invoice_number(
+            source_type="daily_entry",
+            payload=data,
+            issue_date=self.Input_TransactionDate.date().toPyDate(),
+            client_name=data.get("client_name"),
+            account_name=data.get("account_name"),
+            date_from=self.Input_TransactionDate.date().toPyDate(),
+            date_to=self.Input_TransactionDate.date().toPyDate(),
+        )
+
+        data["invoice_no"] = reservation.invoice_number
+        pdf_path = generate_daily_invoice(data, invoice_number=reservation.invoice_number)
 
         if pdf_path:
+            mark_invoice_generated(reservation.id, pdf_path)
             QMessageBox.information(self, "نجاح", f"تم إنشاء ملف PDF وفتحه بنجاح!\nالملف: {pdf_path}")
         else:
+            mark_invoice_failed(reservation.id, "PDF generation returned no file path")
             QMessageBox.warning(self, "خطأ", "حدث خطأ أثناء إنشاء ملف PDF.")
     except Exception as err:
+        logger.exception("Daily entry invoice generation failed")
+        try:
+            if "reservation" in locals():
+                mark_invoice_failed(reservation.id, str(err))
+        except Exception:
+            logger.exception("Failed to persist invoice failure status")
         QMessageBox.critical(self, "خطأ", f"تعذر طباعة الفاتورة:\n{err}")
 
 
@@ -832,9 +883,13 @@ def open_new_tiers_dialog(self):
 
 def open_list_transactions(self):
     try:
+        current_role = getattr(self, "_current_user_role", None)
+        if not has_permission(current_role, PERM_OPEN_FACTURES):
+            raise PermissionError("ليس لديك صلاحية للوصول إلى الفواتير")
+
         window = getattr(self, "_factures_window", None)
         if window is None:
-            window = FacturesWindow(parent=self)
+            window = FacturesWindow(parent=self, current_user_role=current_role)
             self._factures_window = window
 
         window.show()
@@ -843,6 +898,7 @@ def open_list_transactions(self):
     except PermissionError as err:
         QMessageBox.warning(self, "صلاحيات غير كافية", str(err))
     except Exception as err:
+        logger.exception("Error while opening factures window from daily entry")
         QMessageBox.critical(self, "خطأ", f"تعذر فتح نافذة الفواتير:\n{err}")
 
 
@@ -860,8 +916,6 @@ def setup_funcs(self):
     load_accounts(self)
     refresh_description_suggestions(self)
 
-    self.Input_TransactionDate.dateChanged.connect(lambda date: load_transactions_for_date(self))
-    self.ComboBox_CustomerID.currentIndexChanged.connect(lambda: load_transactions_for_date(self))
     self.ComboBox_CustomerAccount.currentIndexChanged.connect(lambda: load_transactions_for_date(self))
 
     self.Button_VerifyCustomer.clicked.connect(lambda: on_verify(self))

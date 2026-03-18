@@ -1,8 +1,12 @@
+import logging
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QTableWidgetItem
 from sqlalchemy.exc import SQLAlchemyError
 
 from services import with_session, Client, Transaction, select
+
+
+logger = logging.getLogger(__name__)
 
 
 def add_transaction_row(self, name, total, total_paid, rest):
@@ -30,7 +34,7 @@ def calculate_total_rest(self, session=None):
         total_rest = sum(float(client.rest or 0) for client in clients)
         self.Label_TotalBalanceValue.setText(f"{total_rest:,.2f}")
     except SQLAlchemyError as err:
-        print(f"[DB] Error calculating balance: {err}")
+        logger.exception("Error calculating clients balance")
 
 
 @with_session
@@ -56,7 +60,7 @@ def calculate_and_load_balance(self, session=None):
 
         calculate_total_rest(self, session)
     except SQLAlchemyError as err:
-        print(f"[DB] Error calculating balance: {err}")
+        logger.exception("Error calculating filtered clients balance")
 
 
 @with_session
@@ -87,7 +91,7 @@ def filter_by_date(self, session=None):
 
         self.Label_TotalBalanceValue.setText(f"{total_rest:,.2f}")
     except SQLAlchemyError as err:
-        print(f"[DB] Error loading transactions: {err}")
+        logger.exception("Error loading clients transactions")
 
 
 def setup_funcs(self):

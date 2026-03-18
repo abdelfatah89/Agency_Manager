@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QHeaderView
 from theme.theme_manager import get_colored_icon
 from src.cmi_trans.func import setup_funcs
 from src.utils import asset_path, asset_url
-from services.access_control import PERM_OPEN_CMI_TRANS, has_permission
+from services.access_control import PERM_OPEN_CMI_TRANS, require_permission
 
 ICON_SIZE_SM = 18
 ICON_SIZE_MD = 22
@@ -30,8 +30,7 @@ class CMITransWindow(QMainWindow):
 
     def __init__(self, parent=None, current_user_role=None):
         super().__init__(parent)
-        if current_user_role and not has_permission(current_user_role, PERM_OPEN_CMI_TRANS):
-            raise PermissionError("User is not allowed to access CMI transactions")
+        self._current_user_role = require_permission(current_user_role, PERM_OPEN_CMI_TRANS, "cmi transactions")
         loadUi(str(Path(__file__).parent / "CMI_trans.ui"), self)
         self._fix_widget_icons()
         self._setup()
@@ -84,7 +83,8 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setLayoutDirection(Qt.RightToLeft)
 
-    window = CMITransWindow()
+    from services.access_control import ROLE_ADMIN
+    window = CMITransWindow(current_user_role=ROLE_ADMIN)
     window.show()
 
     sys.exit(app.exec_())

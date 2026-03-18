@@ -1,4 +1,5 @@
 import sys
+import logging
 from pathlib import Path
 
 from PyQt5.uic import loadUi
@@ -6,6 +7,9 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QDialog
 import json
 from src.utils.ui_helpers import apply_numeric_input_restrictions
+
+
+logger = logging.getLogger(__name__)
 
 
 class CostSettings(QDialog):
@@ -41,7 +45,7 @@ class CostSettings(QDialog):
             self.Input_1000cost.setText(str(cost_setting["le1000"]))
             self.Input_PercentCost.setText(str(cost_setting["g1000"]))
         except FileNotFoundError:
-            print("Cost setting file not found")
+            logger.warning("Cost setting file not found")
             return
 
     def save_cost_setting(self):
@@ -56,7 +60,7 @@ class CostSettings(QDialog):
             with open(str(Path(__file__).parent / "cost_setting.json"), "w") as f:
                 json.dump(cost_setting, f)
         except ValueError:
-            print("Invalid input")
+            logger.warning("Invalid input in cost settings")
             return
 
 if __name__ == "__main__":

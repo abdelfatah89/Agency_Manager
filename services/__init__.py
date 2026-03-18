@@ -1,4 +1,5 @@
 from .db_services.db_config import with_session
+from .access_control import require_permission
 from .db_services.db_tables import (
     Account,
     Agency,
@@ -9,6 +10,12 @@ from .db_services.db_tables import (
     DailyOperationSummary,
     DailySession,
     GeneralBalance,
+    LicensedMachine,
+    AppInstallation,
+    LicenseAuditLog,
+    SchemaMigration,
+    Invoice,
+    InvoiceNumberCounter,
     Transaction,
     User,
 )
@@ -16,6 +23,7 @@ from sqlalchemy import select, insert, delete, update, and_, or_, desc, extract
 
 __all__ = [
     "with_session",
+    "require_permission",
     "Account",
     "Agency",
     "Client",
@@ -25,6 +33,12 @@ __all__ = [
     "DailyOperationSummary",
     "DailySession",
     "GeneralBalance",
+    "LicensedMachine",
+    "AppInstallation",
+    "LicenseAuditLog",
+    "SchemaMigration",
+    "Invoice",
+    "InvoiceNumberCounter",
     "Transaction",
     "User",
     "select",

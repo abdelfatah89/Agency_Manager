@@ -1,3 +1,4 @@
+import logging
 from sqlalchemy.exc import SQLAlchemyError
 from services import with_session, Agency, CMITransaction, select, extract
 from PyQt5.QtCore import Qt
@@ -5,6 +6,9 @@ from PyQt5.QtWidgets import QTableWidgetItem, QMessageBox
 from src.cmi_trans.cost_settings import CostSettings
 from src.utils import parse_float
 from datetime import date, datetime
+
+
+logger = logging.getLogger(__name__)
 
 def open_cost_settings(self):
     self.cost_settings_window = CostSettings(self)
@@ -32,7 +36,7 @@ def fill_tpe_agence_combo(self, session=None):
             self.ComboBox_TPEagence.setItemData(i, Qt.AlignmentFlag.AlignCenter, Qt.ItemDataRole.TextAlignmentRole)
         
     except SQLAlchemyError as err:
-        print(f"[DB] Error loading accounts: {err}")
+        logger.exception("Error loading TPE agencies")
 
 def add_transaction_row(self, tx_date, amount, paid_amount, cost, commission, alimentation, designation):
     """Helper method to add a row to the transaction table with checkboxes."""
@@ -75,7 +79,7 @@ def calculate_balance(self, session=None):
         self.paidClientsValueLabel.setText(f"{total_paid_amount:,.2f}")
         self.costValueLabel.setText(f"{total_commission:,.2f}")
     except SQLAlchemyError as err:
-        print(f"[DB] Error calculating balance: {err}")
+        logger.exception("Error calculating CMI balance")
 
 def calculate_filtred_balance(self, transactions):
     try:
@@ -89,7 +93,7 @@ def calculate_filtred_balance(self, transactions):
         self.paidClientsValueLabel.setText(f"{total_paid_amount:,.2f}")
         self.costValueLabel.setText(f"{total_commission:,.2f}")
     except SQLAlchemyError as err:
-        print(f"[DB] Error calculating balance: {err}")
+        logger.exception("Error calculating filtered CMI balance")
 
 
 def _parse_tx_date(value):
@@ -191,7 +195,7 @@ def load_tpe_transactions(self, session=None):
 
 
     except SQLAlchemyError as err:
-        print(f"[DB] Error loading daily transactions: {err}")
+        logger.exception("Error loading CMI transactions")
 
 @with_session
 def filter_by_month(self, session=None):
@@ -225,7 +229,7 @@ def filter_by_month(self, session=None):
         calculate_filtred_balance(self, source_rows)
 
     except SQLAlchemyError as err:
-        print(f"[DB] Error loading daily transactions: {err}")
+        logger.exception("Error filtering CMI transactions by month")
 
 
 @with_session
@@ -234,7 +238,7 @@ def filter_by_date(self, session=None):
         self.transactionsTable.setRowCount(0)
 
         item_selected = self.ComboBox_TPEagence.currentText()
-        if item_selected == "-- اختر الحساب/الوكالة --" or "اختر الحساب/الوكالة" in item_selected:
+        if item_selected == "-- اختر وكالة TPE --" or "اختر وكالة TPE" in item_selected:
             return
         stmt = select(CMITransaction).where(
             CMITransaction.agency_name == item_selected,
@@ -255,7 +259,7 @@ def filter_by_date(self, session=None):
         calculate_filtred_balance(self, transactions)
 
     except SQLAlchemyError as err:
-        print(f"[DB] Error loading daily transactions: {err}")
+        logger.exception("Error filtering CMI transactions by date")
 
 def setup_funcs(self):
     fill_tpe_agence_combo(self)

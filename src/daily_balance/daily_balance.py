@@ -41,7 +41,7 @@ from services.access_control import (
     PERM_OPEN_DAILY_BALANCE,
     ROLE_ADMIN,
     ROLE_CASHPLUS_EMPLOYER,
-    has_permission,
+    require_permission,
 )
 
 # Import funcs module - must be after path setup
@@ -74,9 +74,7 @@ class DailyBalance(QMainWindow):
         super().__init__(parent)
         uic.loadUi(str(Path(__file__).parent / "daily_balance.ui"), self)
         self._current_page = 1
-        self._current_user_role = current_user_role
-        if self._current_user_role and not has_permission(self._current_user_role, PERM_OPEN_DAILY_BALANCE):
-            raise PermissionError("User is not allowed to access daily balance")
+        self._current_user_role = require_permission(current_user_role, PERM_OPEN_DAILY_BALANCE, "daily balance")
         self._setup()
         setup_funcs(self)
         self._apply_role_restrictions()
@@ -161,5 +159,6 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setLayoutDirection(Qt.RightToLeft)
 
-    window = DailyBalance()
+    window = DailyBalance(current_user_role=ROLE_ADMIN)
+    window.show()
     sys.exit(app.exec_())

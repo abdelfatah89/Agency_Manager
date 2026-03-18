@@ -74,15 +74,28 @@ def normalize_role(role: Optional[str]) -> str:
         "cashplus_eployer",
         "employer",
         "user",
-        "",
     }:
         return ROLE_CASHPLUS_EMPLOYER
-    return ROLE_CASHPLUS_EMPLOYER
+    return ""
 
 
 def has_permission(role: Optional[str], permission: str) -> bool:
+    if not role:
+        return False
     normalized_role = normalize_role(role)
+    if normalized_role not in ALL_ROLES:
+        return False
     return permission in ROLE_PERMISSIONS.get(normalized_role, set())
+
+
+def require_permission(role: Optional[str], permission: str, context: str) -> str:
+    """Return normalized role if permission is granted; otherwise raise PermissionError."""
+    normalized_role = normalize_role(role)
+    if normalized_role not in ALL_ROLES:
+        raise PermissionError(f"Missing or invalid role for {context}")
+    if permission not in ROLE_PERMISSIONS.get(normalized_role, set()):
+        raise PermissionError(f"Access denied for {context}")
+    return normalized_role
 
 
 @dataclass(frozen=True)
@@ -103,4 +116,4 @@ class AuthenticatedUser:
                 role=normalize_role(payload.get("role")),
             )
 
-        return cls(id=None, username="", role=ROLE_CASHPLUS_EMPLOYER)
+        return cls(id=None, username="", role="")

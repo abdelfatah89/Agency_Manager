@@ -22,6 +22,7 @@ from src.utils.company_info import load_company_info
 from services.db_services.backup_service import run_backup_now
 from services.access_control import (
     AuthenticatedUser,
+    ALL_ROLES,
     BUTTON_PERMISSIONS,
     PERM_OPEN_ACCOUNT_REVIEW,
     PERM_OPEN_CLIENTS_REVIEW,
@@ -43,6 +44,8 @@ class MainWindowDashboard(QMainWindow):
         loadUi(str(Path(__file__).parent / "dash_main.ui"), self)
         self.current_user = AuthenticatedUser.from_payload(current_user)
         self.current_role = self.current_user.role
+        if self.current_role not in ALL_ROLES:
+            raise PermissionError("Missing or invalid authenticated role for dashboard")
 
         self.account_review = None
         self.clients_review = None
@@ -206,7 +209,7 @@ QFrame#homeFrame {{
         if not self._ensure_permission(PERM_OPEN_DAILY_ENTRY):
             return
         if self.daily_entry is None:
-            self.daily_entry = TransactionManager(self)
+            self.daily_entry = TransactionManager(self, current_user_role=self.current_role)
         self.daily_entry.show()
 
     def show_factures(self):

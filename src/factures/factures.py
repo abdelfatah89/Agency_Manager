@@ -6,7 +6,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QMainWindow, QHeaderView
 from src.factures.func import setup_funcs
 from src.utils import asset_url
-from services.access_control import PERM_OPEN_FACTURES, has_permission
+from services.access_control import PERM_OPEN_FACTURES, require_permission
 
 
 class FacturesWindow(QMainWindow):
@@ -14,8 +14,7 @@ class FacturesWindow(QMainWindow):
 
     def __init__(self, parent=None, current_user_role=None):
         super().__init__(parent)
-        if current_user_role and not has_permission(current_user_role, PERM_OPEN_FACTURES):
-            raise PermissionError("User is not allowed to access factures")
+        self._current_user_role = require_permission(current_user_role, PERM_OPEN_FACTURES, "factures")
         loadUi(str(Path(__file__).parent / "factures.ui"), self)
         self._fix_widget_icons()
         self._setup()
@@ -60,13 +59,15 @@ class FacturesWindow(QMainWindow):
 
 
 if __name__ == "__main__":
+    from services.access_control import ROLE_ADMIN
+
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
     QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
 
     app = QApplication(sys.argv)
     app.setLayoutDirection(Qt.RightToLeft)
 
-    window = FacturesWindow()
+    window = FacturesWindow(current_user_role=ROLE_ADMIN)
     window.show()
 
     sys.exit(app.exec_())

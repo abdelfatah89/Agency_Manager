@@ -1,21 +1,24 @@
 from weasyprint import HTML, CSS
 from jinja2 import Environment, FileSystemLoader
 from datetime import datetime
-import random
 import sys
 import os
+import logging
 
 from sqlalchemy.exc import SQLAlchemyError
 from PyQt5.QtWidgets import QTableWidget, QComboBox, QDateEdit, QLabel, QWidget
 from src.utils.printing import open_pdf_file
 from src.utils.company_info import load_company_info, to_invoice_context
 
+
+logger = logging.getLogger(__name__)
+
 # Adjust Python path to allow absolute imports from 'services'
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 try:
     from services import with_session, Client, select
 except ImportError:
-    print("Warning: Could not import DB models from 'services'")
+    logger.warning("Could not import DB models from 'services'")
     with_session = lambda f: f  # mock decorator if missing
 
 
@@ -27,7 +30,7 @@ def extract_invoice_data(table, combo, date_widget_from, date_widget_to, lbl_tot
     """
     data = {
         **to_invoice_context(load_company_info()),
-        "invoice_no": f"FA{random.randint(10000, 99999)}",
+        "invoice_no": "",
     }
 
     # 1. Extract Date From/To
@@ -60,7 +63,7 @@ def extract_invoice_data(table, combo, date_widget_from, date_widget_to, lbl_tot
                 data["client_name"] = client.full_name
                 data["client_ice"] = client.ice if client.ice else "Ets"
         except SQLAlchemyError as err:
-            print(f"[DB] Error extracting client info for invoice: {err}")
+            logger.exception("Error extracting client info for invoice")
 
     # 3. Extract Table Items
     items = []
@@ -109,7 +112,7 @@ def extract_invoice_data(table, combo, date_widget_from, date_widget_to, lbl_tot
     return data
 
 
-def generate_invoice(data):
+def generate_invoice(data, invoice_number=None):
     """Generate PDF invoice and open it with the default system viewer."""
     # Get absolute path to current directory
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -123,24 +126,24 @@ def generate_invoice(data):
         # Add print date if not provided
         if 'print_date' not in data:
             data['print_date'] = datetime.now().strftime('%Y-%m-%d %H:%M')
+        if invoice_number:
+            data['invoice_no'] = invoice_number
     
         # Render HTML with data
         html_out = template.render(data)
         
         # Convert HTML to PDF with external CSS
-        pdf_path = os.path.join(current_dir, "facture_final.pdf")
-        HTML(string=html_out).write_pdf(
+        file_name = f"{data.get('invoice_no') or 'facture'}_facture.pdf"
+        pdf_path = os.path.join(current_dir, file_name)
+        HTML(string=html_out, base_url=current_dir).write_pdf(
             pdf_path,
             stylesheets=[CSS(os.path.join(current_dir, 'style.css'))]
         )
         open_pdf_file(pdf_path)
-        print("✓ تم إنشاء الفاتورة بنجاح!")
-        print(f"✓ الملف: {pdf_path}")
+        logger.info("Invoice generated: %s", pdf_path)
         return pdf_path
-    except Exception as e:
-        print(f"✗ حدث خطأ أثناء إنشاء الفاتورة: {str(e)}")
-        import traceback
-        traceback.print_exc()
+    except Exception:
+        logger.exception("Invoice generation failed")
         return None
 
 
@@ -162,7 +165,7 @@ def extract_daily_invoice_data(
     """
     data = {
         **to_invoice_context(load_company_info()),
-        "invoice_no": f"FA{random.randint(10000, 99999)}",
+        "invoice_no": "",
     }
 
     # 1. Extract Date
@@ -255,7 +258,7 @@ def extract_daily_invoice_data(
     return data
 
 
-def generate_daily_invoice(data):
+def generate_daily_invoice(data, invoice_number=None):
     """Generate daily PDF invoice and open it with the default system viewer."""
     # Get absolute path to current directory
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -269,23 +272,23 @@ def generate_daily_invoice(data):
         # Add print date if not provided
         if 'print_date' not in data:
             data['print_date'] = datetime.now().strftime('%Y-%m-%d %H:%M')
+        if invoice_number:
+            data['invoice_no'] = invoice_number
     
         # Render HTML with data
         html_out = template.render(data)
         
         # Convert HTML to PDF with external CSS
-        pdf_path = os.path.join(current_dir, "daily_entry_facture.pdf")
-        HTML(string=html_out).write_pdf(
+        file_name = f"{data.get('invoice_no') or 'daily_entry'}_facture.pdf"
+        pdf_path = os.path.join(current_dir, file_name)
+        HTML(string=html_out, base_url=current_dir).write_pdf(
             pdf_path,
             stylesheets=[CSS(os.path.join(current_dir, 'style.css'))]
         )
         open_pdf_file(pdf_path)
-        print("✓ تم إنشاء فاتورة اليومية بنجاح!")
-        print(f"✓ الملف: {pdf_path}")
+        logger.info("Daily invoice generated: %s", pdf_path)
         return pdf_path
-    except Exception as e:
-        print(f"✗ حدث خطأ أثناء إنشاء الفاتورة: {str(e)}")
-        import traceback
-        traceback.print_exc()
+    except Exception:
+        logger.exception("Daily invoice generation failed")
         return None
 

@@ -1,3 +1,4 @@
+import logging
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QTableWidgetItem
 from sqlalchemy.exc import SQLAlchemyError
@@ -5,6 +6,9 @@ from sqlalchemy.exc import SQLAlchemyError
 from services import with_session, Agency, Account, Transaction, CMITransaction, select
 from src.new_tiers.new_tiers import NewTiers
 from src.utils import calculate_agency_balances, parse_float
+
+
+logger = logging.getLogger(__name__)
 
 
 def get_accounts(self, session=None):
@@ -35,7 +39,7 @@ def fill_account_agence_combo(self, session=None):
         for i in range(self.ComboBox_AccAgenceName.count()):
             self.ComboBox_AccAgenceName.setItemData(i, Qt.AlignmentFlag.AlignCenter, Qt.ItemDataRole.TextAlignmentRole)
     except SQLAlchemyError as err:
-        print(f"[DB] Error loading accounts/agencies: {err}")
+        logger.exception("Error loading accounts/agencies")
 
 
 def add_transaction_row(self, tx_date, designation, amount, paid_amount):
@@ -73,7 +77,7 @@ def calculate_balance(self, session=None):
         total_paid = sum(float(row.paid_amount or 0) for row in rows)
         self.Label_TotalBalanceValue.setText(f"{total_amount - total_paid:,.2f}")
     except SQLAlchemyError as err:
-        print(f"[DB] Error calculating balance: {err}")
+        logger.exception("Error calculating account review balance")
 
 
 @with_session
@@ -109,7 +113,7 @@ def load_daily_transactions(self, session=None):
 
         calculate_balance(self, session)
     except SQLAlchemyError as err:
-        print(f"[DB] Error loading transactions: {err}")
+        logger.exception("Error loading account review transactions")
 
 
 @with_session
@@ -159,7 +163,7 @@ def filter_by_date(self, session=None):
 
         calculate_balance(self, session)
     except SQLAlchemyError as err:
-        print(f"[DB] Error filtering transactions: {err}")
+        logger.exception("Error filtering account review transactions")
 
 
 def open_new_tiers_dialog(self):

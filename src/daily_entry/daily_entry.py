@@ -19,6 +19,7 @@ Assets (place 24×24 px SVG icons in the assets/ folder):
 """
 
 import sys
+import logging
 from pathlib import Path
 
 # Add project root to path for imports
@@ -31,9 +32,13 @@ from PyQt5.QtGui import QPixmap
 from PyQt5 import uic
 from theme.theme_manager import ThemeManager, get_colored_icon
 from src.utils import asset_path, asset_url
+from services.access_control import PERM_OPEN_DAILY_ENTRY, require_permission
 
 # Import funcs module - must be after path setup
 from src.daily_entry.funcs import setup_funcs, clear_all
+
+
+logger = logging.getLogger(__name__)
 
 # ── Icon size control ─────────────────────────────────────
 # Change these two values to resize all button icons at once.
@@ -58,8 +63,9 @@ ICONS = {
 
 
 class TransactionManager(QMainWindow):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, current_user_role=None):
         super().__init__(parent)
+        self._current_user_role = require_permission(current_user_role, PERM_OPEN_DAILY_ENTRY, "daily entry")
         uic.loadUi(str(Path(__file__).parent / "daily_entry.ui"), self)
         self._fix_widget_icons()
         # Apply theme before showing the window
@@ -152,7 +158,7 @@ class TransactionManager(QMainWindow):
     # ──────────────────────────────────────────────
     def _on_toggle_theme(self):
         new_mode = ThemeManager.toggle(QApplication.instance())
-        print(f"[Theme] Switched to {new_mode}")
+        logger.info("Theme switched to %s", new_mode)
 
     # ──────────────────────────────────────────────
     #  Cleanup
@@ -162,16 +168,16 @@ class TransactionManager(QMainWindow):
         try:
             clear_all(self)
         except Exception as err:
-            print(f"[UI] Error while clearing transaction manager: {err}")
+            logger.exception("Error while clearing transaction manager")
 
         if hasattr(self, 'session') and self.session:
             self.session.close()
-            print("[DB] Database session closed")
+            logger.info("Transaction manager database session closed")
         event.accept()
 
 
 # ──────────────────────────────────────────────────────────
-def open_transaction_manager():
+def open_transaction_manager(current_user_role=None, parent=None):
     app = QApplication.instance()
 
     if app is None:
@@ -181,7 +187,7 @@ def open_transaction_manager():
         app = QApplication(sys.argv)
         app.setLayoutDirection(Qt.RightToLeft)
 
-    window = TransactionManager()
+    window = TransactionManager(parent=parent, current_user_role=current_user_role)
     window.show()
 
     return window

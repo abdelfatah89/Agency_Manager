@@ -265,7 +265,7 @@ Set these in your `.env` (optional):
 
 - `DB_BACKUP_ENABLED=1`
 - `DB_BACKUP_DIR=backups/database`
-- `DB_BACKUP_RETENTION_DAYS=30`
+- `DB_BACKUP_RETENTION_COUNT=5`
 - `MYSQLDUMP_PATH=C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe` (only if `mysqldump` is not in PATH)
 
 Optional cloud sync with `rclone` right after each successful backup:
@@ -279,7 +279,7 @@ Optional cloud sync with `rclone` right after each successful backup:
 With the values above, the backup service will run the equivalent of:
 
 ```powershell
-rclone sync D:\.Code\KONACH\backups\database database_backup:databases
+rclone copy D:\.Code\KONACH\backups\database database_backup:databases
 ```
 
 ### Run Backup Manually
@@ -315,9 +315,209 @@ If you also want backups when the app is not opened, you can still add a Task Sc
 2. Configure remote once:
    - `rclone config`
 3. Add a second scheduled task:
-   - `rclone sync D:\.Code\KONACH\backups\database remote:KONACH_Backups --transfers 2`
+   - `rclone copy D:\.Code\KONACH\backups\database remote:KONACH_Backups --transfers 2`
 
 Tip: keep local backups + cloud copies together for better protection.
+
+## 🗄️ MySQL/MariaDB Production Deployment
+
+### Why MySQL/MariaDB for this project
+
+- Strong transactional guarantees (InnoDB) needed for finance and invoice numbering.
+- Mature Windows service operation and silent MSI installers.
+- Good fit for SQLAlchemy + PyMySQL stack already used by KONACH.
+- Supports online schema evolution via ordered SQL migration scripts.
+
+### Professional Windows Install/Upgrade Workflow
+
+Use **Inno Setup** with scripted deployment steps:
+
+1. Install app binaries.
+2. Install MariaDB silently.
+3. Ensure DB service auto-start.
+4. Create DB and least-privilege app user.
+5. Write `.env` with runtime DB credentials.
+6. Run ordered SQL migrations.
+7. Start app and enforce machine-locked license validation.
+
+Reference files:
+
+- `deployment/windows/inno/AgencyManager.iss`
+- `deployment/windows/scripts/install_mariadb.ps1`
+- `deployment/windows/scripts/configure_app_database.ps1`
+- `deployment/windows/scripts/apply_sql_updates.ps1`
+- `scripts/bootstrap_database.py`
+- `scripts/run_sql_migrations.py`
+- `scripts/run_sql_migrations_with_root.py`
+
+### Upgrade behavior (existing database)
+
+- Do not recreate or drop the existing database.
+- Run migration runner only.
+- Runner checks `schema_migrations` and applies only missing scripts in order.
+- If a migration fails, setup aborts and logs the exact failed script/version.
+
+## 🧱 SQL Migration Strategy
+
+Versioned SQL files are stored in `sql/` and applied in numeric order:
+
+- `sql/001_initial_schema.sql`
+- `sql/002_add_invoice_tables.sql`
+- `sql/003_add_license_tables.sql`
+- `sql/004_add_license_indexes.sql`
+
+Migration tracking table:
+
+- `schema_migrations`
+   - `version`
+   - `script_name`
+   - `checksum_sha256`
+   - `applied_at`
+   - `execution_ms`
+   - `applied_by`
+
+Runtime component:
+
+- `services/db_services/sql_migration_runner.py`
+
+## 🔐 Machine-Locked Licensing
+
+### Fingerprint design
+
+Fingerprint is built from multiple identifiers (with fallback handling):
+
+- BIOS/board UUID
+- Primary disk serial
+- Windows MachineGuid
+- MAC address
+- Machine name
+
+Identifiers are normalized, composed into canonical JSON, then SHA-256 hashed.
+
+Reference:
+
+- `services/licensing/fingerprint.py`
+
+### License architecture
+
+Professional choice used here: **signed JSON license (Ed25519)**.
+
+- Client app contains only public key (verification only).
+- Admin tool holds private key (signing only, never shipped).
+- License payload includes machine fingerprint, issue time, status, and optional expiry.
+
+Client-side modules:
+
+- `services/licensing/license_codec.py`
+- `services/licensing/license_service.py`
+
+### Startup behavior
+
+- On first run without license:
+   - generate request code
+   - show request code and prompt for signed license JSON
+- On every startup:
+   - verify signature
+   - verify machine fingerprint match
+   - verify status and expiry
+   - write audit event to DB when available
+
+Handled states:
+
+- missing license
+- corrupted/invalid signature
+- expired license
+- revoked/inactive status
+- hardware mismatch
+- database unavailable (app still validates local signed license and logs DB errors)
+
+## 🧭 Admin Tool Isolation
+
+Admin licensing tool is intentionally separate:
+
+- `admin_license_tool/` (private/internal)
+- not packaged in customer installer
+- private key ignored via `.gitignore`
+
+Admin tool files:
+
+- `admin_license_tool/generate_keys.py`
+- `admin_license_tool/issue_license.py`
+- `admin_license_tool/README.md`
+
+Client vs Admin separation:
+
+- **Client app contains**: fingerprint collection, request generation, signature verification, license import.
+- **Admin tool contains**: private signing key and license issuance logic.
+- **Never ship**: `admin_license_tool/keys/private_key.pem`.
+
+## 🧩 Licensing Tables (DB)
+
+- `licensed_machines`
+- `app_installations`
+- `license_audit_log`
+- `schema_migrations`
+
+These are separate from business/invoice tables and intended for operational security/audit concerns.
+
+## 🧾 Invoice Numbering (Production)
+
+Invoice numbers are now database-backed and generated by a dedicated service layer.
+
+- Source of truth: database table `invoices`
+- Number format: `FA-YYYYMM-XXXXXX` (example: `FA-202603-000123`)
+- Concurrency-safe allocation: atomic counter increment in MySQL table `invoice_number_counters`
+- Retry safety: idempotency key by source + payload prevents duplicate numbers for the same print action
+
+### Schema Update
+
+Run once per environment (or include in deploy scripts):
+
+```powershell
+D:/.Code/KONACH/.venv/Scripts/python.exe scripts/apply_invoice_schema_update.py
+```
+
+The app also attempts schema initialization at startup.
+
+### Service Layer Entry Points
+
+- `services/invoice_service.py`
+   - `reserve_invoice_number(...)`
+   - `mark_invoice_generated(...)`
+   - `mark_invoice_failed(...)`
+   - `ensure_invoice_schema_ready()`
+
+## 📦 Executable Packaging (PyInstaller)
+
+This project includes a production spec file:
+
+- `AgencyManager.spec`
+
+### Build Steps
+
+1. Create and activate a clean virtual environment
+2. Install runtime dependencies:
+
+```powershell
+pip install -r requirements.txt
+pip install pyinstaller
+```
+
+3. Build one-file executable:
+
+```powershell
+pyinstaller --clean --noconfirm AgencyManager.spec
+```
+
+4. Output executable:
+
+- `dist/AgencyManager.exe`
+
+### Packaging Notes
+
+- The spec includes app resources (`assets`, `src`, `theme`, `services`) and runtime config (`.env` when present).
+- Hidden imports for SQLAlchemy, PyMySQL, dotenv, Jinja2, WeasyPrint, and `PyQt5.QtSvg` are included.
+- Build on the same OS target as deployment (Windows for Windows `.exe`).
 
 ## 📄 License
 
@@ -333,4 +533,4 @@ For issues and questions, please [contact information or issue tracker]
 
 ---
 
-**Last Updated:** March 2, 2026
+**Last Updated:** March 18, 2026

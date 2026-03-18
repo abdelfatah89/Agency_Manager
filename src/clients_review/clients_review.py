@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QHeaderView
 
 from src.clients_review.func import setup_funcs
 from src.utils import asset_url
-from services.access_control import PERM_OPEN_CLIENTS_REVIEW, has_permission
+from services.access_control import PERM_OPEN_CLIENTS_REVIEW, require_permission
 
 
 class ClientsReviewWindow(QMainWindow):
@@ -15,8 +15,7 @@ class ClientsReviewWindow(QMainWindow):
 
     def __init__(self, parent=None, current_user_role=None):
         super().__init__(parent)
-        if current_user_role and not has_permission(current_user_role, PERM_OPEN_CLIENTS_REVIEW):
-            raise PermissionError("User is not allowed to access clients review")
+        self._current_user_role = require_permission(current_user_role, PERM_OPEN_CLIENTS_REVIEW, "clients review")
         loadUi(str(Path(__file__).parent / "clients_review.ui"), self)
         self._fix_widget_icons()
 
@@ -63,7 +62,8 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setLayoutDirection(Qt.RightToLeft)
 
-    window = ClientsReviewWindow()
+    from services.access_control import ROLE_ADMIN
+    window = ClientsReviewWindow(current_user_role=ROLE_ADMIN)
     window.show()
 
     sys.exit(app.exec_())
