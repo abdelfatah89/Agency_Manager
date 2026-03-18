@@ -494,7 +494,9 @@ QDateEdit#Input_TpeDate::down-arrow { image: url(../../assets/calendar.svg); wid
              <property name="font">
               <font>
                <family>Tajawal</family>
-               <pointsize>-1</pointsize>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
               </font>
              </property>
              <property name="toolTip">
@@ -509,7 +511,6 @@ QDateEdit#Input_TpeDate::down-arrow { image: url(../../assets/calendar.svg); wid
     border: 1px solid #E5E7EB;
     border-radius: 8px;
     color: #374151;
-    font-size: 15px;
     padding: 6px 10px;
     min-height: 32px;
     selection-background-color: #DBEAFE;

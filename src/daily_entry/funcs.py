@@ -8,8 +8,10 @@ import sys
 from datetime import date as dt_date
 from pathlib import Path
 
-from PyQt5.QtCore import QDate, Qt
+from PyQt5.QtCore import QDate, Qt, QStringListModel
+from PyQt5.QtWidgets import QCompleter
 from PyQt5.QtWidgets import QMessageBox, QTableWidgetItem
+from sqlalchemy import func as sql_func
 from sqlalchemy.exc import SQLAlchemyError
 
 BASE_DIR = Path(__file__).parent.parent.parent
@@ -29,6 +31,7 @@ from services import (
 from src.utils import calculate_agency_balances, parse_float
 from src.utils.ui_helpers import apply_numeric_input_restrictions
 from src.new_tiers.new_tiers import NewTiers
+from src.factures.factures import FacturesWindow
 from src.factures_generator.facture_generator import (
     extract_daily_invoice_data,
     generate_daily_invoice,
@@ -69,6 +72,67 @@ def _get_or_create_daily_session(session, target_date):
     session.add(row)
     session.flush()
     return row
+
+
+def _normalize_designation(text):
+    raw = str(text or "").strip()
+    return " ".join(raw.split())
+
+
+def _collect_designation_suggestions(session, recent_limit=40, frequent_limit=40):
+    suggestions = []
+    seen = set()
+
+    recent_rows = session.execute(
+        select(Transaction.designation)
+        .where(
+            Transaction.designation.isnot(None),
+            Transaction.designation != "",
+        )
+        .order_by(desc(Transaction.id))
+        .limit(recent_limit)
+    ).all()
+
+    frequent_rows = session.execute(
+        select(Transaction.designation)
+        .where(
+            Transaction.designation.isnot(None),
+            Transaction.designation != "",
+        )
+        .group_by(Transaction.designation)
+        .order_by(sql_func.count(Transaction.id).desc(), desc(sql_func.max(Transaction.id)))
+        .limit(frequent_limit)
+    ).all()
+
+    for row in recent_rows + frequent_rows:
+        value = _normalize_designation(row[0] if row else "")
+        key = value.casefold()
+        if not value or key in seen:
+            continue
+        seen.add(key)
+        suggestions.append(value)
+
+    return suggestions
+
+
+def _apply_description_completer(self, suggestions):
+    completer = getattr(self, "_item_description_completer", None)
+    if completer is None:
+        completer = QCompleter(self)
+        completer.setCaseSensitivity(Qt.CaseInsensitive)
+        completer.setFilterMode(Qt.MatchContains)
+        completer.setCompletionMode(QCompleter.PopupCompletion)
+        self.Input_ItemDescription.setCompleter(completer)
+        self._item_description_completer = completer
+
+    model = QStringListModel(suggestions, completer)
+    completer.setModel(model)
+
+
+@with_session
+def refresh_description_suggestions(self, session=None):
+    suggestions = _collect_designation_suggestions(session)
+    _apply_description_completer(self, suggestions)
 
 
 @with_session
@@ -555,6 +619,7 @@ def on_verify(self, session=None):
     if save_transaction_to_db(self):
         print("[Transaction] All transactions saved successfully")
         load_transactions_for_date(self)
+        refresh_description_suggestions(self)
 
 
 def on_table_row_clicked(self, row, column):
@@ -612,6 +677,7 @@ def on_add_item(self):
 
     if success:
         load_transactions_for_date(self)
+        refresh_description_suggestions(self)
         on_cancel(self)
 
 
@@ -764,6 +830,22 @@ def open_new_tiers_dialog(self):
     load_accounts(self)
 
 
+def open_list_transactions(self):
+    try:
+        window = getattr(self, "_factures_window", None)
+        if window is None:
+            window = FacturesWindow(parent=self)
+            self._factures_window = window
+
+        window.show()
+        window.raise_()
+        window.activateWindow()
+    except PermissionError as err:
+        QMessageBox.warning(self, "صلاحيات غير كافية", str(err))
+    except Exception as err:
+        QMessageBox.critical(self, "خطأ", f"تعذر فتح نافذة الفواتير:\n{err}")
+
+
 def setup_funcs(self):
     apply_numeric_input_restrictions(
         self,
@@ -776,6 +858,7 @@ def setup_funcs(self):
 
     load_clients(self)
     load_accounts(self)
+    refresh_description_suggestions(self)
 
     self.Input_TransactionDate.dateChanged.connect(lambda date: load_transactions_for_date(self))
     self.ComboBox_CustomerID.currentIndexChanged.connect(lambda: load_transactions_for_date(self))
@@ -798,6 +881,7 @@ def setup_funcs(self):
     self.Table_TransactionsList.itemChanged.connect(lambda: update_totals(self))
 
     self.Button_AddTier.clicked.connect(lambda: open_new_tiers_dialog(self))
+    self.Button_ListTransactions.clicked.connect(lambda: open_list_transactions(self))
 
     self.CheckBox_TransactionIn.stateChanged.connect(lambda: on_checkbox(self, "CheckBox_TransactionIn"))
     self.CheckBox_TransactionOut.stateChanged.connect(lambda: on_checkbox(self, "CheckBox_TransactionOut"))
