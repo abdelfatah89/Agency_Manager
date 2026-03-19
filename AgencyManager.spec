@@ -52,10 +52,11 @@ pyz = PYZ(a.pure)
 exe = EXE(
     pyz,
     a.scripts,
-    a.binaries,
-    a.datas,
+    [],
     [],
     name="KONACH",
+    exclude_binaries=True,
+    icon=str(project_root / "assets" / "icons" / "exe_icon.ico"),
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -68,5 +69,14 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    onefile=True,
+)
+
+coll = COLLECT(
+    exe,
+    a.binaries,
+    a.datas,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    name="KONACH",
 )

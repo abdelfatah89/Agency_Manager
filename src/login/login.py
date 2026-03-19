@@ -13,6 +13,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from services.auth_service import authenticate_user, ensure_default_admin_user
 from src.main_window.main_window import MainWindowDashboard
+from src.utils import resource_path
 
 
 # ── Base directory (works both frozen and as script) ─────────────────────────
@@ -201,7 +202,7 @@ class LoginWindow(QtWidgets.QMainWindow):
         self.loginBtn.__class__ = _CenteredToolButton
 
         # Window icon
-        icon_path = _find_asset("logo.svg", "logo.png")
+        icon_path = resource_path("assets/icons/window_icon.ico")
         if os.path.exists(icon_path):
             self.setWindowIcon(QIcon(icon_path))
 

@@ -1,5 +1,6 @@
 import sys
 import logging
+import os
 from PyQt5.QtWidgets import (
     QApplication,
     QDialog,
@@ -10,11 +11,13 @@ from PyQt5.QtWidgets import (
     QTextEdit,
     QVBoxLayout,
 )
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QIcon, QFontDatabase
 
 from src.login.login import LoginWindow
+from src.utils import resource_path
 from services.app_logging import configure_logging
 from services.db_services.backup_service import run_backup_now
+from services.db_services.db_config import initialize_database_connection
 from services.license.license_service import (
     import_license_blob,
     validate_current_license,
@@ -24,10 +27,37 @@ from services.license.license_service import (
 logger = logging.getLogger(__name__)
 
 
+def _configure_app_fonts(app: QApplication) -> None:
+    fonts_dir = resource_path("assets/fonts")
+    selected_family = ""
+
+    if os.path.isdir(fonts_dir):
+        for name in sorted(os.listdir(fonts_dir)):
+            if not name.lower().endswith((".ttf", ".otf")):
+                continue
+            font_file = os.path.join(fonts_dir, name)
+            font_id = QFontDatabase.addApplicationFont(font_file)
+            if font_id < 0:
+                continue
+            families = QFontDatabase.applicationFontFamilies(font_id)
+            if families:
+                selected_family = families[0]
+                break
+
+    if selected_family:
+        app.setFont(QFont(selected_family, 10))
+        logger.info("Loaded bundled font family: %s", selected_family)
+        return
+
+    logger.warning("No bundled font file found in assets/fonts; falling back to Segoe UI")
+    app.setFont(QFont("Segoe UI", 10))
+
+
 class LicenseActivationDialog(QDialog):
     def __init__(self, reason: str, machine_fingerprint: str, request_code: str, parent=None):
         super().__init__(parent)
         self.setWindowTitle("KONACH License Required")
+        self.setWindowIcon(QApplication.windowIcon())
         self.resize(760, 620)
 
         root = QVBoxLayout(self)
@@ -123,17 +153,27 @@ def main() -> None:
     configure_logging()
 
     app = QApplication(sys.argv)
-    app.setFont(QFont("Tajawal", 10))
+    app.setWindowIcon(QIcon(resource_path("assets/icons/window_icon.ico")))
+    _configure_app_fonts(app)
     
     # Set application metadata
     app.setApplicationName("KONACH")
     app.setOrganizationName("KONACH")
+
+    if not initialize_database_connection():
+        QMessageBox.critical(
+            None,
+            "Database Error",
+            "Unable to connect to database and automatic setup failed. Check .env MySQL credentials.",
+        )
+        sys.exit(3)
 
     if not _enforce_license():
         sys.exit(2)
 
     # Start with login screen.
     window = LoginWindow()
+    window.setWindowIcon(app.windowIcon())
     window.show()
 
     # Execute application

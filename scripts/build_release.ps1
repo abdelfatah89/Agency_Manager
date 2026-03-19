@@ -32,6 +32,12 @@ Invoke-And-Assert -Script { & $python -m compileall main.py services src scripts
 Get-Process -Name "KONACH" -ErrorAction SilentlyContinue | Stop-Process -Force
 Get-Process -Name "LicenseAdminTool" -ErrorAction SilentlyContinue | Stop-Process -Force
 
+if (Test-Path (Join-Path $repoRoot "dist\KONACH")) {
+    Remove-Item -Path (Join-Path $repoRoot "dist\KONACH") -Recurse -Force -ErrorAction SilentlyContinue
+}
+if (Test-Path (Join-Path $repoRoot "dist\LicenseAdminTool")) {
+    Remove-Item -Path (Join-Path $repoRoot "dist\LicenseAdminTool") -Recurse -Force -ErrorAction SilentlyContinue
+}
 if (Test-Path (Join-Path $repoRoot "dist\KONACH.exe")) {
     Remove-Item -Path (Join-Path $repoRoot "dist\KONACH.exe") -Force -ErrorAction SilentlyContinue
 }
@@ -63,14 +69,10 @@ $null = New-Item -ItemType Directory -Force -Path (Join-Path $clientPath "config
 $null = New-Item -ItemType Directory -Force -Path (Join-Path $clientPath "logs")
 $null = New-Item -ItemType Directory -Force -Path (Join-Path $adminPath "config")
 
-Copy-Item -Path (Join-Path $repoRoot "dist\KONACH.exe") -Destination (Join-Path $clientPath "KONACH.exe")
-Copy-Item -Path (Join-Path $repoRoot "dist\LicenseAdminTool.exe") -Destination (Join-Path $adminPath "LicenseAdminTool.exe")
+Copy-Item -Path (Join-Path $repoRoot "dist\KONACH\*") -Destination $clientPath -Recurse
+Copy-Item -Path (Join-Path $repoRoot "dist\LicenseAdminTool\*") -Destination $adminPath -Recurse
 
 Copy-Item -Path (Join-Path $repoRoot "deployment\windows\inno\AgencyManager.iss") -Destination $installPath
-Copy-Item -Path (Join-Path $repoRoot "deployment\windows\scripts\*.ps1") -Destination $installPath
-Copy-Item -Path (Join-Path $repoRoot "scripts\bootstrap_database.py") -Destination $installPath
-Copy-Item -Path (Join-Path $repoRoot "scripts\run_sql_migrations.py") -Destination $installPath
-Copy-Item -Path (Join-Path $repoRoot "scripts\run_sql_migrations_with_root.py") -Destination $installPath
 Copy-Item -Path (Join-Path $repoRoot "sql\*.sql") -Destination (Join-Path $clientPath "sql")
 Copy-Item -Path (Join-Path $repoRoot ".env.example") -Destination (Join-Path $clientPath "config\.env.example")
 Copy-Item -Path (Join-Path $repoRoot "config\license_public_key.pem") -Destination (Join-Path $clientPath "config\license_public_key.pem")
@@ -88,8 +90,8 @@ Write-Host "[5/5] Writing release manifest..."
 @"
 KONACH Release Version: $Version
 Generated At: $(Get-Date -Format o)
-Client EXE: client_app/KONACH.exe
-Admin EXE: admin_license_tool/LicenseAdminTool.exe
+Client EXE: client_app/KONACH.exe (onedir)
+Admin EXE: admin_license_tool/LicenseAdminTool.exe (onedir)
 "@ | Set-Content -Path (Join-Path $releasePath "RELEASE_MANIFEST.txt") -Encoding UTF8
 
 Write-Host "Release completed at: $releasePath"
