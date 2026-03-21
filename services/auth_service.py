@@ -1,6 +1,7 @@
 import base64
 import hashlib
 import hmac
+import logging
 import os
 from typing import Dict, List, Optional, Tuple
 
@@ -19,6 +20,7 @@ from .access_control import (
 PBKDF2_PREFIX = "pbkdf2_sha256"
 PBKDF2_ITERATIONS = 390000
 _ROLE_SCHEMA_READY = False
+logger = logging.getLogger(__name__)
 
 
 def hash_password(password: str, iterations: int = PBKDF2_ITERATIONS) -> str:
@@ -137,22 +139,15 @@ def ensure_default_admin_user() -> Optional[Tuple[str, str]]:
 
     Returns created credentials (username, password) only when a new user is created.
     """
-    default_username = os.getenv("KONACH_DEFAULT_ADMIN_USER", "developer").strip() or "developer"
-    default_password = os.getenv("KONACH_DEFAULT_ADMIN_PASS", "developer123")
+    default_username = os.getenv("KONACH_DEFAULT_ADMIN_USER", "admin").strip() or "admin"
+    default_password = os.getenv("KONACH_DEFAULT_ADMIN_PASS", "admin123")
 
     try:
         ensure_user_role_schema_and_data()
         with SessionLocal() as session:
-            existing = session.execute(
-                select(User).where(User.username == default_username)
-            ).scalar_one_or_none()
-            if existing is not None:
-                changed = False
-                if normalize_role(existing.role) != ROLE_ADMIN:
-                    existing.role = ROLE_ADMIN
-                    changed = True
-                if changed:
-                    session.commit()
+            users_count = session.execute(select(User.id)).first()
+            if users_count is not None:
+                logger.info("Users table already populated; skipping default admin creation")
                 return None
 
             user = User(
@@ -162,8 +157,10 @@ def ensure_default_admin_user() -> Optional[Tuple[str, str]]:
             )
             session.add(user)
             session.commit()
+            logger.info("Default admin user created")
             return default_username, default_password
     except SQLAlchemyError:
+        logger.exception("Failed to ensure default admin user")
         return None
 
 

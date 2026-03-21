@@ -698,7 +698,7 @@ QTableWidget#transactionsTable::item {
 QTableWidget#transactionsTable::item:hover { background-color: rgba(239, 246, 255, 0.55); }
 QTableWidget#transactionsTable::item:selected { background-color: #DBEAFE; color: #1E40AF; }
 QHeaderView::section {
-    background-color: rgba(249, 250, 251, 0.85);
+    background-color: rgba(255, 197, 21, 0.25);
     color: #374151;
 	font-family: &quot;Tajawal&quot;;
     font-size: 12px;

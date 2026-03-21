@@ -100,7 +100,7 @@ QFrame#headerFrame {
          <property name="font">
           <font>
            <family>Tajawal</family>
-           <pointsize>1</pointsize>
+           <pointsize>-1</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -161,7 +161,7 @@ QToolButton#Button_AddAccount:pressed { background-color: #1D4ED8; }</string>
            <property name="font">
             <font>
              <family>Tajawal</family>
-             <pointsize>1</pointsize>
+             <pointsize>-1</pointsize>
              <weight>87</weight>
              <bold>true</bold>
             </font>
@@ -184,7 +184,7 @@ QToolButton#Button_AddAccount:pressed { background-color: #1D4ED8; }</string>
            <property name="font">
             <font>
              <family>Tajawal</family>
-             <pointsize>1</pointsize>
+             <pointsize>-1</pointsize>
              <weight>50</weight>
              <bold>false</bold>
             </font>
@@ -327,7 +327,7 @@ QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal { width: 0; bac
              <property name="font">
               <font>
                <family>Tajawal</family>
-               <pointsize>1</pointsize>
+               <pointsize>-1</pointsize>
                <weight>75</weight>
                <bold>true</bold>
               </font>
@@ -373,7 +373,7 @@ QToolButton#Button_Filter:pressed { background-color: #1D4ED8; }</string>
              <property name="font">
               <font>
                <family>Tajawal</family>
-               <pointsize>1</pointsize>
+               <pointsize>-1</pointsize>
                <weight>75</weight>
                <bold>true</bold>
               </font>
@@ -411,7 +411,7 @@ QToolButton#Button_Filter:pressed { background-color: #1D4ED8; }</string>
              <property name="font">
               <font>
                <family>Tajawal</family>
-               <pointsize>1</pointsize>
+               <pointsize>-1</pointsize>
               </font>
              </property>
              <property name="layoutDirection">
@@ -455,7 +455,7 @@ QDateEdit#Input_ToDate::down-arrow { image: url(../../assets/calendar.svg); widt
              <property name="font">
               <font>
                <family>Tajawal</family>
-               <pointsize>1</pointsize>
+               <pointsize>-1</pointsize>
                <weight>75</weight>
                <bold>true</bold>
               </font>
@@ -487,7 +487,7 @@ QDateEdit#Input_ToDate::down-arrow { image: url(../../assets/calendar.svg); widt
              <property name="font">
               <font>
                <family>Tajawal</family>
-               <pointsize>1</pointsize>
+               <pointsize>-1</pointsize>
                <weight>75</weight>
                <bold>true</bold>
               </font>
@@ -525,7 +525,7 @@ QDateEdit#Input_ToDate::down-arrow { image: url(../../assets/calendar.svg); widt
              <property name="font">
               <font>
                <family>Tajawal</family>
-               <pointsize>1</pointsize>
+               <pointsize>-1</pointsize>
               </font>
              </property>
              <property name="layoutDirection">
@@ -575,7 +575,7 @@ QDateEdit#Input_FromDate::down-arrow { image: url(../../assets/calendar.svg); wi
              <property name="font">
               <font>
                <family>Tajawal</family>
-               <pointsize>1</pointsize>
+               <pointsize>-1</pointsize>
               </font>
              </property>
              <property name="toolTip">
@@ -652,7 +652,7 @@ QComboBox#ComboBox_AccAgenceName::down-arrow { image: url(../../assets/chevron_d
              <property name="font">
               <font>
                <family>Tajawal</family>
-               <pointsize>1</pointsize>
+               <pointsize>-1</pointsize>
                <weight>62</weight>
                <bold>true</bold>
               </font>
@@ -763,7 +763,7 @@ QTableWidget#Table_journal::item {
 QTableWidget#Table_journal::item:hover { background-color: rgba(239, 246, 255, 0.55); }
 QTableWidget#Table_journal::item:selected { background-color: #DBEAFE; color: #1E40AF; }
 QHeaderView::section {
-    background-color: rgba(249, 250, 251, 0.85);
+    background-color: rgba(255, 197, 21, 0.25);
     color: #374151;
 	font-family: &quot;Tajawal&quot;;
     font-size: 12px;
@@ -793,12 +793,12 @@ QHeaderView::section {
              </column>
              <column>
               <property name="text">
-               <string>المبلغ (OUT)</string>
+               <string>دخول (IN)</string>
               </property>
              </column>
              <column>
               <property name="text">
-               <string>دخول (IN)</string>
+               <string>المبلغ (OUT)</string>
               </property>
              </column>
             </widget>
@@ -899,7 +899,7 @@ QHeaderView::section {
                 <property name="font">
                  <font>
                   <family>Tajawal</family>
-                  <pointsize>1</pointsize>
+                  <pointsize>-1</pointsize>
                   <weight>87</weight>
                   <bold>true</bold>
                  </font>
@@ -924,7 +924,7 @@ QHeaderView::section {
                 <property name="font">
                  <font>
                   <family>Courier New</family>
-                  <pointsize>1</pointsize>
+                  <pointsize>-1</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -978,7 +978,7 @@ QHeaderView::section {
            <property name="font">
             <font>
              <family>Tajawal</family>
-             <pointsize>1</pointsize>
+             <pointsize>-1</pointsize>
              <weight>62</weight>
              <bold>true</bold>
             </font>

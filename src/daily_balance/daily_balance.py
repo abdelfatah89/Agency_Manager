@@ -82,6 +82,8 @@ class DailyBalance(QMainWindow):
     # ──────────────────────────────────────────────────────────────────────────
     def _setup(self):
         header = self.transactionsTable.horizontalHeader()
+        # PyQt5 expects a concrete resize mode value, not the enum type.
+        #header.setSectionResizeMode(QHeaderView.ResizeToContents)
         header.setSectionResizeMode(QHeaderView.Stretch)
         self.transactionsTable.verticalHeader().setVisible(False)
 

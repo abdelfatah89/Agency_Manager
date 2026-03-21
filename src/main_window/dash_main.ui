@@ -320,8 +320,6 @@ QToolButton#UserManagerBtn {
     color: #6366F1;               /* Primary Indigo text */
     border: none;
     border-radius: 20px;          /* Pill shape */
-    padding: 5px;
-    font-weight: 600;
 }
 
 /* Hover State */
@@ -333,8 +331,6 @@ QToolButton#UserManagerBtn:hover {
 /* Pressed State */
 QToolButton#UserManagerBtn:pressed {
     background-color: #C7D2FE;    /* Medium Indigo for click */
-    padding-top: 10px;            /* Tactile sink effect */
-    padding-bottom: 6px;
 }
 
 /* Disabled State */

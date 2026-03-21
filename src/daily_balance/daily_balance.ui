@@ -61,7 +61,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; backgr
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>-294</y>
+         <y>-954</y>
          <width>1223</width>
          <height>1911</height>
         </rect>
@@ -4643,7 +4643,7 @@ QLabel {
              </property>
              <property name="styleSheet">
               <string notr="true">QTableWidget#transactionsTable { background-color: transparent; border: none; gridline-color: transparent; alternate-background-color: rgba(249,250,251,0.80); outline: none; selection-background-color: #DBEAFE; selection-color: #1E40AF; }
-QTableWidget#transactionsTable QHeaderView::section { background-color: #F9FAFB; color: #6B7280; font-size: 13px; font-weight: 600; font-family: Tajawal;  padding: 10px 16px; border: none; border-bottom: 1px solid #E5E7EB; }
+QTableWidget#transactionsTable QHeaderView::section { background-color: rgba(255, 197, 21, 0.35); color: #600000; font-size: 13px; font-weight: 600; font-family: Tajawal;  padding: 10px 16px; border: none; border-bottom: 1px solid #E5E7EB; }
 QTableWidget#transactionsTable::item { padding: 8px 16px; color: #374151; border-bottom: 1px solid rgba(229,231,235,0.50); }
 QTableWidget#transactionsTable::item:selected { background-color: #DBEAFE; color: #1E40AF; }</string>
              </property>

@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pymysql
 
-from services.db_services.sql_migration_runner import run_sql_migrations
+from services.db_services.sql_migration_runner import run_sql_migrations, split_sql_statements
 
 
 logger = logging.getLogger(__name__)
@@ -29,6 +29,23 @@ def _sql_dir() -> Path:
     return candidates[0]
 
 
+def _table_exists(connection: pymysql.Connection, table_name: str) -> bool:
+    with connection.cursor() as cursor:
+        cursor.execute("SHOW TABLES LIKE %s", (table_name,))
+        return cursor.fetchone() is not None
+
+
+def _apply_sql_file(connection: pymysql.Connection, sql_path: Path) -> None:
+    sql_text = sql_path.read_text(encoding="utf-8")
+    statements = split_sql_statements(sql_text)
+    with connection.cursor() as cursor:
+        for statement in statements:
+            stmt = statement.strip()
+            if not stmt:
+                continue
+            cursor.execute(stmt)
+
+
 def setup_database() -> bool:
     """Simple DB bootstrap for AppServ-managed MySQL.
 
@@ -36,7 +53,8 @@ def setup_database() -> bool:
     1) connect with MySQL root credentials from .env
     2) create DB/user/grants
     3) apply 001 schema
-    4) apply migrations
+    4) apply full business schema when core tables are missing
+    5) apply migrations
     """
     root_user = _env("MYSQL_ROOT_USER", "root")
     root_password = _env("MYSQL_ROOT_PASSWORD")
@@ -97,24 +115,34 @@ def setup_database() -> bool:
         app_conn.close()
 
         sql_dir = _sql_dir()
-        schema_file = sql_dir / "001_initial_schema.sql"
-        if schema_file.exists():
-            logger.info("Applying base schema: %s", schema_file)
-            schema_sql = schema_file.read_text(encoding="utf-8")
-            conn_db = pymysql.connect(
-                host=host,
-                port=port,
-                user=app_user,
-                password=app_password,
-                database=db_name,
-                autocommit=True,
-            )
-            try:
-                with conn_db.cursor() as cursor:
-                    for statement in [s.strip() for s in schema_sql.split(";") if s.strip()]:
-                        cursor.execute(statement)
-            finally:
-                conn_db.close()
+        base_schema_file = sql_dir / "001_initial_schema.sql"
+        business_schema_file = sql_dir / "002_business_schema.sql"
+
+        conn_db = pymysql.connect(
+            host=host,
+            port=port,
+            user=app_user,
+            password=app_password,
+            database=db_name,
+            autocommit=True,
+        )
+        try:
+            if base_schema_file.exists():
+                logger.info("Applying base schema: %s", base_schema_file)
+                _apply_sql_file(conn_db, base_schema_file)
+
+            core_tables = ("users", "agencies", "clients", "daily_sessions", "transactions")
+            has_all_core_tables = all(_table_exists(conn_db, table_name) for table_name in core_tables)
+            if not has_all_core_tables:
+                if business_schema_file.exists():
+                    logger.info("Core tables missing; applying full business schema: %s", business_schema_file)
+                    _apply_sql_file(conn_db, business_schema_file)
+                else:
+                    logger.warning("Core tables missing but business schema file not found: %s", business_schema_file)
+            else:
+                logger.info("Business schema already present; skipping full schema bootstrap")
+        finally:
+            conn_db.close()
 
         logger.info("Running SQL migrations from: %s", sql_dir)
         db_url = f"mysql+pymysql://{app_user}:{app_password}@{host}:{port}/{db_name}"

@@ -2,10 +2,11 @@ import gzip
 import logging
 import os
 import shutil
-import subprocess
 from datetime import datetime
 from pathlib import Path
 from typing import Optional, Tuple
+
+from services.subprocess_utils import run_hidden_subprocess
 
 try:
     from .db_config import DB_CONFIG
@@ -65,7 +66,7 @@ def _run_rclone_sync() -> Tuple[bool, str]:
     cmd = [rclone_bin, "copy", str(source_dir), remote_target]
 
     try:
-        proc = subprocess.run(cmd, capture_output=True, check=False)
+        proc = run_hidden_subprocess(cmd, capture_output=True, check=False)
         if proc.returncode != 0:
             stderr = proc.stderr.decode("utf-8", errors="ignore").strip()
             return False, f"rclone copy failed ({proc.returncode}): {stderr or 'unknown error'}"
@@ -153,7 +154,7 @@ def run_backup_now(reason: str = "manual") -> Tuple[bool, Optional[Path], str]:
     ]
 
     try:
-        proc = subprocess.run(cmd, capture_output=True, check=False)
+        proc = run_hidden_subprocess(cmd, capture_output=True, check=False)
         if proc.returncode != 0:
             stderr = proc.stderr.decode("utf-8", errors="ignore").strip()
             return False, None, f"mysqldump failed ({proc.returncode}): {stderr or 'unknown error'}"

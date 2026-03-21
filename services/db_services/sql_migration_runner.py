@@ -12,6 +12,7 @@ from sqlalchemy.engine import Engine
 logger = logging.getLogger(__name__)
 
 _MIGRATION_FILE_PATTERN = re.compile(r"^(\d{3,})_.*\.sql$")
+_BOOTSTRAP_ONLY_FILES = {"002_business_schema.sql"}
 
 
 def _compute_checksum(content: str) -> str:
@@ -21,6 +22,8 @@ def _compute_checksum(content: str) -> str:
 def _discover_migration_files(migrations_dir: Path) -> List[Tuple[int, Path]]:
     files: List[Tuple[int, Path]] = []
     for path in migrations_dir.glob("*.sql"):
+        if path.name in _BOOTSTRAP_ONLY_FILES:
+            continue
         match = _MIGRATION_FILE_PATTERN.match(path.name)
         if not match:
             continue
@@ -129,6 +132,10 @@ def _split_sql_statements(script: str) -> List[str]:
         statements.append(tail)
 
     return statements
+
+
+def split_sql_statements(script: str) -> List[str]:
+    return _split_sql_statements(script)
 
 
 def _apply_script(connection, version: int, path: Path, applied_by: Optional[str]) -> None:

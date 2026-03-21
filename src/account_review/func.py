@@ -42,7 +42,7 @@ def fill_account_agence_combo(self, session=None):
         logger.exception("Error loading accounts/agencies")
 
 
-def add_transaction_row(self, tx_date, designation, amount, paid_amount):
+def add_transaction_row(self, tx_date, designation, in_amount, out_amount):
     table = self.Table_journal
     table.blockSignals(True)
     row = table.rowCount()
@@ -55,8 +55,8 @@ def add_transaction_row(self, tx_date, designation, amount, paid_amount):
 
     table.setItem(row, 0, cell(tx_date, Qt.AlignCenter | Qt.AlignVCenter))
     table.setItem(row, 1, cell(designation, Qt.AlignCenter | Qt.AlignVCenter))
-    table.setItem(row, 2, cell(f"{amount:,.2f}", Qt.AlignCenter | Qt.AlignVCenter))
-    table.setItem(row, 3, cell(f"{paid_amount:,.2f}", Qt.AlignCenter | Qt.AlignVCenter))
+    table.setItem(row, 2, cell(f"{out_amount:,.2f}", Qt.AlignCenter | Qt.AlignVCenter))
+    table.setItem(row, 3, cell(f"{in_amount:,.2f}", Qt.AlignCenter | Qt.AlignVCenter))
 
     table.blockSignals(False)
 
@@ -98,7 +98,7 @@ def load_daily_transactions(self, session=None):
                     row.transaction_date,
                     row.designation,
                     float(row.amount or 0),
-                    float(row.paid_amount or 0),
+                    float(row.alimentation or 0),
                 )
         else:
             rows = session.execute(select(Transaction).where(Transaction.account_name == selected)).scalars().all()
@@ -142,7 +142,7 @@ def filter_by_date(self, session=None):
                     row.transaction_date,
                     row.designation,
                     float(row.amount or 0),
-                    float(row.paid_amount or 0),
+                    float(row.alimentaion or 0),
                 )
         else:
             rows = session.execute(
@@ -171,10 +171,13 @@ def open_new_tiers_dialog(self):
     dialog.exec_()
     fill_account_agence_combo(self)
 
+def fill_load(self):
+    fill_account_agence_combo(self)
+    load_daily_transactions(self)
 
 def setup_funcs(self):
     fill_account_agence_combo(self)
     self.ComboBox_AccAgenceName.currentIndexChanged.connect(lambda: load_daily_transactions(self))
     self.Button_Filter.clicked.connect(lambda: filter_by_date(self))
-    self.Button_Reset.clicked.connect(lambda: load_daily_transactions(self))
+    self.Button_Reset.clicked.connect(lambda: fill_load(self))
     self.Button_AddAccount.clicked.connect(lambda: open_new_tiers_dialog(self))

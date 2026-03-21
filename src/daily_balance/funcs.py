@@ -591,7 +591,7 @@ def calculate_balance(self, session=None):
     total_out = sum(effective_value(tx) for tx in rows if tx.today_out)
 
     # Canonical formula: closing = opening + operations + total_in - total_out - cmi
-    closing = opening_balance + operations_total + total_in - total_out
+    closing = opening_balance + operations_total + total_in - total_out - cmi_bank_net
 
     self.cpTotalInVal.setText(f"{total_in:,.2f}")
     self.cpTotalOutVal.setText(f"{total_out:,.2f}")

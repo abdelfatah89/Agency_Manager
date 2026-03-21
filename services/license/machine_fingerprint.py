@@ -3,10 +3,11 @@ import json
 import logging
 import os
 import re
-import subprocess
 import uuid
 from dataclasses import dataclass
 from typing import Dict
+
+from services.subprocess_utils import run_hidden_subprocess
 
 
 logger = logging.getLogger(__name__)
@@ -31,7 +32,7 @@ def _normalize(value: str) -> str:
 
 def _run_powershell(command: str, timeout: int = 8) -> str:
     try:
-        completed = subprocess.run(
+        completed = run_hidden_subprocess(
             [
                 "powershell",
                 "-NoProfile",

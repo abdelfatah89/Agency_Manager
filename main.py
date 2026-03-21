@@ -16,6 +16,7 @@ from PyQt5.QtGui import QFont, QIcon, QFontDatabase
 from src.login.login import LoginWindow
 from src.utils import resource_path
 from services.app_logging import configure_logging
+from services.auth_service import ensure_default_admin_user
 from services.db_services.backup_service import run_backup_now
 from services.db_services.db_config import initialize_database_connection
 from services.license.license_service import (
@@ -168,8 +169,15 @@ def main() -> None:
         )
         sys.exit(3)
 
-    if not _enforce_license():
-        sys.exit(2)
+    created_admin = ensure_default_admin_user()
+    if created_admin:
+        username, _ = created_admin
+        logger.info("Default admin user created: %s", username)
+    else:
+        logger.info("Default admin user already exists or users table is populated")
+
+    #if not _enforce_license():
+    #    sys.exit(2)
 
     # Start with login screen.
     window = LoginWindow()

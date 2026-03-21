@@ -9,7 +9,7 @@ import sys
 from datetime import date as dt_date
 from pathlib import Path
 
-from PyQt5.QtCore import QDate, Qt, QStringListModel
+from PyQt5.QtCore import QDate, Qt, QStringListModel, QTimer
 from PyQt5.QtWidgets import QCompleter
 from PyQt5.QtWidgets import QMessageBox, QTableWidgetItem
 from sqlalchemy import func as sql_func
@@ -46,6 +46,25 @@ from src.factures_generator.facture_generator import (
 
 
 logger = logging.getLogger(__name__)
+
+
+def _update_customer_combo_display_text(self):
+    combo = self.ComboBox_CustomerID
+    line_edit = combo.lineEdit()
+    if line_edit is None:
+        return
+
+    client_id = combo.currentData()
+    if client_id is None:
+        line_edit.clear()
+        return
+
+    line_edit.setText(str(client_id))
+
+
+def _defer_customer_combo_display_update(self):
+    # Defer to next event-loop tick so Qt does not overwrite our id-only text.
+    QTimer.singleShot(0, lambda: _update_customer_combo_display_text(self))
 
 
 def _selected_client_id(self):
@@ -168,10 +187,28 @@ def load_clients(self, session=None):
         for client in clients:
             self.ComboBox_CustomerID.addItem(f"{client.id} - {client.full_name}", client.id)
 
+        # Keep popup entries as "id - name", but show only id in selected field.
+        self.ComboBox_CustomerID.setEditable(True)
+        self.ComboBox_CustomerID.lineEdit().setReadOnly(True)
+        self.ComboBox_CustomerID.lineEdit().setStyleSheet(
+            """
+            font-family: Overpass;
+            font-size: 15px;
+            font-weight: 600;
+            background-color: #FFFFFF;
+            color: #374151;
+            text-align: left;
+            selection-background-color: #DBEAFE;
+            selection-color: #1E40AF;
+            """
+        )
+
         self.ComboBox_CustomerID.view().setRowHidden(0, True)
         self.ComboBox_CustomerID.setCurrentIndex(0)
         for i in range(self.ComboBox_CustomerID.count()):
             self.ComboBox_CustomerID.setItemData(i, Qt.AlignmentFlag.AlignLeft, Qt.ItemDataRole.TextAlignmentRole)
+
+        _defer_customer_combo_display_update(self)
     except SQLAlchemyError as err:
         logger.exception("Error loading clients")
 
@@ -547,6 +584,9 @@ def add_transaction_row(self, designation, qty, unit_price, payment, remaining, 
     def create_checkbox_cell(checked=False):
         checkbox = QCheckBox()
         checkbox.setChecked(checked)
+        # Table checkboxes are display-only; edit through form controls.
+        checkbox.setEnabled(False)
+        checkbox.setFocusPolicy(Qt.NoFocus)
         widget = QWidget()
         layout = QHBoxLayout(widget)
         layout.addWidget(checkbox)
@@ -586,6 +626,62 @@ def recalculate(self):
         self.Input_RemainingAmount.setText(f"{remaining:,.2f}")
     except ValueError:
         self.Input_RemainingAmount.clear()
+
+
+def _sync_amount_payment_constraints(self, changed_field=None, show_warning=False):
+    amount = parse_float(self.Input_ItemUnitPrice.text())
+    paid = parse_float(self.Input_PaymentAmount.text())
+    in_out_marked = self.CheckBox_TransactionIn.isChecked() or self.CheckBox_TransactionOut.isChecked()
+
+    if not in_out_marked:
+        self.Input_ItemUnitPrice.setEnabled(True)
+        self.Input_PaymentAmount.setEnabled(True)
+        return
+
+    if amount > 0 and paid > 0:
+        # Keep only the last edited non-zero field when IN/OUT mode is active.
+        if changed_field == "amount":
+            self.Input_PaymentAmount.blockSignals(True)
+            self.Input_PaymentAmount.setText("")
+            self.Input_PaymentAmount.blockSignals(False)
+            paid = 0.0
+        elif changed_field == "paid":
+            self.Input_ItemUnitPrice.blockSignals(True)
+            self.Input_ItemUnitPrice.setText("")
+            self.Input_ItemUnitPrice.blockSignals(False)
+            amount = 0.0
+        else:
+            self.Input_PaymentAmount.blockSignals(True)
+            self.Input_PaymentAmount.setText("")
+            self.Input_PaymentAmount.blockSignals(False)
+            paid = 0.0
+
+        if show_warning:
+            QMessageBox.warning(
+                self,
+                "تحذير",
+                "عند تحديد IN أو OUT يمكن إدخال مبلغ واحد فقط.\nالقيمة 0 تعتبر فارغة.",
+            )
+
+    if amount > 0:
+        self.Input_ItemUnitPrice.setEnabled(True)
+        self.Input_PaymentAmount.setEnabled(False)
+    elif paid > 0:
+        self.Input_PaymentAmount.setEnabled(True)
+        self.Input_ItemUnitPrice.setEnabled(False)
+    else:
+        self.Input_ItemUnitPrice.setEnabled(True)
+        self.Input_PaymentAmount.setEnabled(True)
+
+
+def on_unit_price_changed(self):
+    _sync_amount_payment_constraints(self, changed_field="amount", show_warning=True)
+    recalculate(self)
+
+
+def on_payment_amount_changed(self):
+    _sync_amount_payment_constraints(self, changed_field="paid", show_warning=True)
+    recalculate(self)
 
 
 def update_totals(self):
@@ -628,6 +724,8 @@ def on_date_changed(self):
 
 
 def on_customer_selected(self, index):
+    _defer_customer_combo_display_update(self)
+
     if index > 0:
         set_clientname(self)
     else:
@@ -865,13 +963,13 @@ def on_print(self):
 
 def on_checkbox(self, box):
     checkbox = getattr(self, box)
-    unit_price = parse_float(self.Input_ItemUnitPrice.text())
-    payment = parse_float(self.Input_PaymentAmount.text())
+    if box == "CheckBox_TransactionIn" and checkbox.isChecked() and self.CheckBox_TransactionOut.isChecked():
+        self.CheckBox_TransactionOut.setChecked(False)
+    elif box == "CheckBox_TransactionOut" and checkbox.isChecked() and self.CheckBox_TransactionIn.isChecked():
+        self.CheckBox_TransactionIn.setChecked(False)
 
-    # Treat 0 / 0.00 as empty for this validation.
-    if unit_price > 0 and payment > 0 and checkbox.checkState():
-        QMessageBox.warning(self, "تحذير", "لا يمكن ملأ خانتا الدفع والمبلغ\nفي حالة تحديد IN او OUT في سجل واحد")
-        checkbox.setCheckState(False)
+    _sync_amount_payment_constraints(self, show_warning=True)
+    recalculate(self)
 
 
 def open_new_tiers_dialog(self):
@@ -928,9 +1026,10 @@ def setup_funcs(self):
     self.Table_TransactionsList.cellClicked.connect(lambda row, col: on_table_row_clicked(self, row, col))
     self.Input_TransactionDate.dateChanged.connect(lambda date: on_date_changed(self))
     self.ComboBox_CustomerID.currentIndexChanged.connect(lambda index: on_customer_selected(self, index))
+    self.ComboBox_CustomerID.activated.connect(lambda _: _defer_customer_combo_display_update(self))
 
-    self.Input_ItemUnitPrice.textChanged.connect(lambda: recalculate(self))
-    self.Input_PaymentAmount.textChanged.connect(lambda: recalculate(self))
+    self.Input_ItemUnitPrice.textChanged.connect(lambda: on_unit_price_changed(self))
+    self.Input_PaymentAmount.textChanged.connect(lambda: on_payment_amount_changed(self))
     self.Input_ItemQuantity.valueChanged.connect(lambda: recalculate(self))
     self.Table_TransactionsList.itemChanged.connect(lambda: update_totals(self))
 
