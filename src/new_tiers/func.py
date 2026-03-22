@@ -288,14 +288,11 @@ def save_info(self, session=None):
                 QMessageBox.warning(self, "تحذير", "يرجى إدخال اسم العميل!")
                 return
             if not cin:
-                QMessageBox.warning(self, "تحذير", "يرجى إدخال رقم البطاقة الوطنية!")
-                return
+                cin = ""
             if not tel_number:
-                QMessageBox.warning(self, "تحذير", "يرجى إدخال رقم الهاتف!")
-                return
+                tel_number = ""
             if not adresse:
-                QMessageBox.warning(self, "تحذير", "يرجى إدخال العنوان!")
-                return
+                adresse = ""
 
             if _tier_name_exists("client", name, exclude_id=editing_id):
                 QMessageBox.warning(self, "تحذير", "اسم الزبون موجود مسبقاً. لا يمكن إضافة عنصر مكرر.")

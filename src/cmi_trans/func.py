@@ -6,9 +6,21 @@ from PyQt5.QtWidgets import QTableWidgetItem, QMessageBox
 from src.cmi_trans.cost_settings import CostSettings
 from src.utils import parse_float
 from datetime import date, datetime
+from sqlalchemy import desc
 
 
 logger = logging.getLogger(__name__)
+
+
+def _prepare_cmi_table(table):
+    table.setSortingEnabled(False)
+    table.setRowCount(0)
+
+
+def _finalize_cmi_table(table):
+    table.setSortingEnabled(True)
+    table.horizontalHeader().setSortIndicatorShown(True)
+    table.sortItems(0, Qt.DescendingOrder)
 
 def open_cost_settings(self):
     self.cost_settings_window = CostSettings(self)
@@ -117,8 +129,8 @@ def _parse_tx_date(value):
 
 
 def _render_daily_summary_rows(self, daily_summaries):
-    self.transactionsTable.setRowCount(0)
-    for day in sorted(daily_summaries.keys()):
+    _prepare_cmi_table(self.transactionsTable)
+    for day in sorted(daily_summaries.keys(), reverse=True):
         daily = daily_summaries[day]
         add_transaction_row(
             self,
@@ -130,10 +142,12 @@ def _render_daily_summary_rows(self, daily_summaries):
             daily["alimentation"],
             "ملخص يومي",
         )
+    _finalize_cmi_table(self.transactionsTable)
 
 
 def _clear_cmi_summary(self):
-    self.transactionsTable.setRowCount(0)
+    _prepare_cmi_table(self.transactionsTable)
+    _finalize_cmi_table(self.transactionsTable)
     self.Label_ReccentBalanceVal.setText("0.00")
     self.bankValueLabel.setText("0.00")
     self.paidClientsValueLabel.setText("0.00")
@@ -173,12 +187,16 @@ def _month_grouped_transactions(transactions, selected_year, selected_month):
 @with_session
 def load_tpe_transactions(self, session=None):
     try:
-        self.transactionsTable.setRowCount(0)
+        _prepare_cmi_table(self.transactionsTable)
 
         item_selected = self.ComboBox_TPEagence.currentText()
         if item_selected == "-- اختر وكالة TPE --" or "اختر وكالة TPE" in item_selected:
             return
-        stmt = select(CMITransaction).where(CMITransaction.agency_name == item_selected)
+        stmt = (
+            select(CMITransaction)
+            .where(CMITransaction.agency_name == item_selected)
+            .order_by(desc(CMITransaction.transaction_date), desc(CMITransaction.id))
+        )
         transactions = session.execute(stmt).scalars().all()
         for transaction in transactions:
             add_transaction_row(
@@ -191,6 +209,7 @@ def load_tpe_transactions(self, session=None):
                 float(transaction.alimentation or 0),
                 transaction.designation,
             )
+        _finalize_cmi_table(self.transactionsTable)
         calculate_balance(self, session)
 
 
@@ -235,7 +254,7 @@ def filter_by_month(self, session=None):
 @with_session
 def filter_by_date(self, session=None):
     try:
-        self.transactionsTable.setRowCount(0)
+        _prepare_cmi_table(self.transactionsTable)
 
         item_selected = self.ComboBox_TPEagence.currentText()
         if item_selected == "-- اختر وكالة TPE --" or "اختر وكالة TPE" in item_selected:
@@ -243,7 +262,7 @@ def filter_by_date(self, session=None):
         stmt = select(CMITransaction).where(
             CMITransaction.agency_name == item_selected,
             CMITransaction.transaction_date == self.Input_TpeDate.date().toPyDate(),
-        )
+        ).order_by(desc(CMITransaction.transaction_date), desc(CMITransaction.id))
         transactions = session.execute(stmt).scalars().all()
         for transaction in transactions:
             add_transaction_row(
@@ -256,6 +275,7 @@ def filter_by_date(self, session=None):
                 float(transaction.alimentation or 0),
                 transaction.designation,
             )
+        _finalize_cmi_table(self.transactionsTable)
         calculate_filtred_balance(self, transactions)
 
     except SQLAlchemyError as err:

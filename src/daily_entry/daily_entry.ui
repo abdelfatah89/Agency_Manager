@@ -1399,7 +1399,7 @@ QToolButton#Button_CancelItem:hover {
                  <string notr="true">QTableWidget#Table_TransactionsList {
     background-color: rgba(221, 223, 225, 125);
     border: none;
-    gridline-color: rgba(243, 244, 246, 0.90);
+    gridline-color: rgba(243, 244, 246, 0.9);
 	font-family: &quot;Tajawal&quot;;
     alternate-background-color: #F8FAFC;
     outline: none;

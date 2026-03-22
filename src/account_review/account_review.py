@@ -62,6 +62,9 @@ class AccountReviewWindow(QMainWindow):
         self.Table_journal.horizontalHeader().setDefaultAlignment(
             Qt.AlignCenter | Qt.AlignVCenter
         )
+        self.Table_journal.setSortingEnabled(True)
+        self.Table_journal.horizontalHeader().setSortIndicatorShown(True)
+        self.Table_journal.horizontalHeader().setSortIndicator(0, Qt.DescendingOrder)
 
         self.Button_CloseWindow.clicked.connect(self.close)
 

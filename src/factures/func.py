@@ -1,7 +1,7 @@
 import logging
 from sqlalchemy.exc import SQLAlchemyError
 from services import with_session, Client, Transaction, select
-from sqlalchemy import asc
+from sqlalchemy import desc
 from services.invoice_service import (
     reserve_invoice_number,
     mark_invoice_generated,
@@ -16,6 +16,17 @@ from src.factures_generator.facture_generator import (
 
 
 logger = logging.getLogger(__name__)
+
+
+def _prepare_factures_table(table):
+    table.setSortingEnabled(False)
+    table.setRowCount(0)
+
+
+def _finalize_factures_table(table):
+    table.setSortingEnabled(True)
+    table.horizontalHeader().setSortIndicatorShown(True)
+    table.sortItems(0, Qt.DescendingOrder)
 
 def add_transaction_row(self, date, designation, amount, paid_amount, transaction_id=None):
     """Helper method to add a row to the transaction table with checkboxes."""
@@ -90,7 +101,7 @@ def calculate_balance(self, transactions):
 @with_session
 def load_daily_transactions(self, session=None):
     try:
-        self.FacturesTable.setRowCount(0)
+        _prepare_factures_table(self.FacturesTable)
 
         item_selected = self.ComboBox_CustomerAccount.currentText()
         if not item_selected or item_selected == "-- اختر العميل --" or "اختر العميل" in item_selected:
@@ -100,7 +111,7 @@ def load_daily_transactions(self, session=None):
         stmt = (
             select(Transaction)
             .where(Transaction.client_name == item_selected)
-            .order_by(asc(Transaction.transaction_date), asc(Transaction.id))
+            .order_by(desc(Transaction.transaction_date), desc(Transaction.id))
         )
         transactions = session.execute(stmt).scalars().all()
         self._current_factures_transactions = [
@@ -122,6 +133,7 @@ def load_daily_transactions(self, session=None):
                 float(transaction.paid_amount or 0),
                 int(transaction.id),
             )
+        _finalize_factures_table(self.FacturesTable)
         calculate_balance(self, transactions)
 
 
@@ -131,7 +143,7 @@ def load_daily_transactions(self, session=None):
 @with_session
 def filter_by_date(self, session=None):
     try:
-        self.FacturesTable.setRowCount(0)
+        _prepare_factures_table(self.FacturesTable)
 
         item_selected = self.ComboBox_CustomerAccount.currentText()
         if not item_selected or item_selected == "-- اختر العميل --" or "اختر العميل" in item_selected:
@@ -141,7 +153,7 @@ def filter_by_date(self, session=None):
         stmt = select(Transaction).where(
             Transaction.client_name == item_selected,
             Transaction.transaction_date.between(self.Input_FromDate.date().toPyDate(), self.Input_ToDate.date().toPyDate()),
-        ).order_by(asc(Transaction.transaction_date), asc(Transaction.id))
+        ).order_by(desc(Transaction.transaction_date), desc(Transaction.id))
         transactions = session.execute(stmt).scalars().all()
         self._current_factures_transactions = [
             {
@@ -162,6 +174,7 @@ def filter_by_date(self, session=None):
                 float(transaction.paid_amount or 0),
                 int(transaction.id),
             )
+        _finalize_factures_table(self.FacturesTable)
         calculate_balance(self, transactions)
 
     except SQLAlchemyError as err:

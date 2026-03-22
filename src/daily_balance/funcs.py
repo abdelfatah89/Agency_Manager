@@ -5,7 +5,7 @@ from pathlib import Path
 
 from PyQt5.QtCore import QDate, Qt
 from PyQt5.QtWidgets import QTableWidgetItem
-from sqlalchemy import text
+from sqlalchemy import text, true
 from sqlalchemy.exc import IntegrityError, OperationalError
 
 BASE_DIR = Path(__file__).parent.parent.parent
@@ -21,11 +21,15 @@ from services import (
     DailySession,
     GeneralBalance,
     Transaction,
+    Agency
 )
 from src.daily_entry.daily_entry import open_transaction_manager
 from src.utils import calculate_agency_balances, compute_diff_percent, parse_float
 from src.utils.ui_helpers import create_readonly_checkbox_cell, apply_numeric_input_restrictions
 
+def get_agencies(self, session=None):
+    rows = session.execute(select(Agency).order_by(Agency.id)).scalars().all()
+    return [row.agency_name for row in rows if bool(row.is_active)]
 
 def _ensure_local_agency_column(session):
     """Ensure daily_balance has local agency column, preserving existing typo-based schema."""
@@ -192,7 +196,7 @@ def _add_transactions_row(self, transaction, row_index):
     table = self.transactionsTable
     table.insertRow(row_index)
 
-    tx_date = transaction.transaction_date.strftime("%d/%m/%Y") if transaction.transaction_date else ""
+    tx_date = transaction.transaction_date.strftime("%Y-%m-%d") if transaction.transaction_date else ""
     account_name = transaction.account_name or ""
     client_name = transaction.client_name or ""
     amount = parse_float(transaction.amount)
@@ -425,6 +429,7 @@ def load_balance_data(self, daily_id, session=None):
 
 def load_transactions_table(self, daily_id, session=None):
     table = self.transactionsTable
+    table.setSortingEnabled(False)
     table.setRowCount(0)
 
     rows = session.execute(
@@ -433,11 +438,15 @@ def load_transactions_table(self, daily_id, session=None):
             Transaction.daily_id == daily_id,
             (Transaction.today_in.is_(True)) | (Transaction.today_out.is_(True)),
         )
-        .order_by(Transaction.id)
+        .order_by(desc(Transaction.transaction_date), desc(Transaction.id))
     ).scalars().all()
 
     for row_idx, transaction in enumerate(rows):
         _add_transactions_row(self, transaction, row_idx)
+
+    table.setSortingEnabled(True)
+    table.horizontalHeader().setSortIndicatorShown(True)
+    table.sortItems(0, Qt.DescendingOrder)
 
 
 @with_session
@@ -625,9 +634,11 @@ def calculate_balance(self, session=None):
 def calculate_trans_in_out(self, session=None):
     selected_date = self.day_date.date().toPyDate()
     daily_session = _get_or_create_session_by_date(session, selected_date)
+    agencies = get_agencies(self, session)
 
+    name_filter = ~Transaction.account_name.in_(agencies) if agencies else true()
     rows = session.execute(
-        select(Transaction).where(Transaction.daily_id == daily_session.id)
+        select(Transaction).where((Transaction.daily_id == daily_session.id) & name_filter)
     ).scalars().all()
 
     def effective_value(tx):
@@ -670,10 +681,6 @@ def calculate_genBalance(self, session=None):
         return
 
     current_gen = session.execute(select(GeneralBalance).where(GeneralBalance.daily_id == daily_id)).scalar_one_or_none()
-
-    if current_gen:
-        self.genCashPlusVal.setText(f"{parse_float(current_gen.cashplus_balance):,.2f}")
-        self.genBankVal.setText(f"{parse_float(current_gen.bank_balance):,.2f}")
 
     prev_gen = session.execute(
         select(GeneralBalance)
@@ -778,8 +785,6 @@ def setup_funcs(self):
         self.le_cpPhoneTopup,
         self.le_LocalAgency,
         self.le_cbCmiTam,
-        self.genCashPlusVal,
-        self.genBankVal,
     ]
 
     genbalance_widgets = [

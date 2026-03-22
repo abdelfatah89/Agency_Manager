@@ -2,6 +2,7 @@ import logging
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QTableWidgetItem
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy import desc
 
 from services import with_session, Agency, Account, Transaction, CMITransaction, select
 from src.new_tiers.new_tiers import NewTiers
@@ -9,6 +10,17 @@ from src.utils import calculate_agency_balances, parse_float
 
 
 logger = logging.getLogger(__name__)
+
+
+def _prepare_journal_table(table):
+    table.setSortingEnabled(False)
+    table.setRowCount(0)
+
+
+def _finalize_journal_table(table):
+    table.setSortingEnabled(True)
+    table.horizontalHeader().setSortIndicatorShown(True)
+    table.sortItems(0, Qt.DescendingOrder)
 
 
 def get_accounts(self, session=None):
@@ -83,7 +95,7 @@ def calculate_balance(self, session=None):
 @with_session
 def load_daily_transactions(self, session=None):
     try:
-        self.Table_journal.setRowCount(0)
+        _prepare_journal_table(self.Table_journal)
 
         selected = self.ComboBox_AccAgenceName.currentText()
         if selected == "-- اختر الحساب/الوكالة --" or "اختر الحساب/الوكالة" in selected:
@@ -91,7 +103,11 @@ def load_daily_transactions(self, session=None):
 
         agency = session.execute(select(Agency).where(Agency.agency_name == selected)).scalar_one_or_none()
         if agency and (agency.agency_type or "").lower() == "tpe":
-            rows = session.execute(select(CMITransaction).where(CMITransaction.agency_name == selected)).scalars().all()
+            rows = session.execute(
+                select(CMITransaction)
+                .where(CMITransaction.agency_name == selected)
+                .order_by(desc(CMITransaction.transaction_date), desc(CMITransaction.id))
+            ).scalars().all()
             for row in rows:
                 add_transaction_row(
                     self,
@@ -101,7 +117,11 @@ def load_daily_transactions(self, session=None):
                     float(row.alimentation or 0),
                 )
         else:
-            rows = session.execute(select(Transaction).where(Transaction.account_name == selected)).scalars().all()
+            rows = session.execute(
+                select(Transaction)
+                .where(Transaction.account_name == selected)
+                .order_by(desc(Transaction.transaction_date), desc(Transaction.id))
+            ).scalars().all()
             for row in rows:
                 add_transaction_row(
                     self,
@@ -111,6 +131,7 @@ def load_daily_transactions(self, session=None):
                     float(row.paid_amount or 0),
                 )
 
+            _finalize_journal_table(self.Table_journal)
         calculate_balance(self, session)
     except SQLAlchemyError as err:
         logger.exception("Error loading account review transactions")
@@ -119,7 +140,7 @@ def load_daily_transactions(self, session=None):
 @with_session
 def filter_by_date(self, session=None):
     try:
-        self.Table_journal.setRowCount(0)
+        _prepare_journal_table(self.Table_journal)
 
         selected = self.ComboBox_AccAgenceName.currentText()
         if selected == "-- اختر الحساب/الوكالة --" or "اختر الحساب/الوكالة" in selected:
@@ -135,6 +156,7 @@ def filter_by_date(self, session=None):
                     CMITransaction.agency_name == selected,
                     CMITransaction.transaction_date.between(from_date, to_date),
                 )
+                .order_by(desc(CMITransaction.transaction_date), desc(CMITransaction.id))
             ).scalars().all()
             for row in rows:
                 add_transaction_row(
@@ -150,6 +172,7 @@ def filter_by_date(self, session=None):
                     Transaction.account_name == selected,
                     Transaction.transaction_date.between(from_date, to_date),
                 )
+                .order_by(desc(Transaction.transaction_date), desc(Transaction.id))
             ).scalars().all()
 
             for row in rows:
@@ -161,6 +184,7 @@ def filter_by_date(self, session=None):
                     float(row.paid_amount or 0),
                 )
 
+            _finalize_journal_table(self.Table_journal)
         calculate_balance(self, session)
     except SQLAlchemyError as err:
         logger.exception("Error filtering account review transactions")

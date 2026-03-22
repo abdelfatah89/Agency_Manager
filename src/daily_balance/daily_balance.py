@@ -86,6 +86,9 @@ class DailyBalance(QMainWindow):
         #header.setSectionResizeMode(QHeaderView.ResizeToContents)
         header.setSectionResizeMode(QHeaderView.Stretch)
         self.transactionsTable.verticalHeader().setVisible(False)
+        self.transactionsTable.setSortingEnabled(True)
+        self.transactionsTable.horizontalHeader().setSortIndicatorShown(True)
+        self.transactionsTable.horizontalHeader().setSortIndicator(0, Qt.DescendingOrder)
 
         self._apply_icons()
 

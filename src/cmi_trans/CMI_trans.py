@@ -64,6 +64,7 @@ class CMITransWindow(QMainWindow):
     def _setup(self):
         # Set today as the default date
         self.Input_TpeDate.setDate(QDate.currentDate())
+        self.Input_TpeMounth.setDate(QDate.currentDate())
 
         # Stretch table columns to fill available width
         header = self.transactionsTable.horizontalHeader()
@@ -74,6 +75,9 @@ class CMITransWindow(QMainWindow):
         self.transactionsTable.horizontalHeader().setDefaultAlignment(
             Qt.AlignCenter | Qt.AlignVCenter
         )
+        self.transactionsTable.setSortingEnabled(True)
+        self.transactionsTable.horizontalHeader().setSortIndicatorShown(True)
+        self.transactionsTable.horizontalHeader().setSortIndicator(0, Qt.DescendingOrder)
 
 
 if __name__ == "__main__":

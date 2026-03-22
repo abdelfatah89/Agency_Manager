@@ -439,6 +439,7 @@ def save_transaction_to_db(self, session=None):
 @with_session
 def load_transactions_for_date(self, session=None):
     try:
+        self.Table_TransactionsList.setSortingEnabled(False)
         self.Table_TransactionsList.setRowCount(0)
 
         client_name = self.Input_CustomerName.text().strip()
@@ -470,7 +471,7 @@ def load_transactions_for_date(self, session=None):
                 Transaction.client_name == client_name,
                 Transaction.account_name == account,
             )
-            .order_by(Transaction.id)
+            .order_by(desc(Transaction.id))
         )
         transactions = session.execute(stmt).scalars().all()
 
@@ -487,6 +488,8 @@ def load_transactions_for_date(self, session=None):
                 trans_id=trans.id,
             )
 
+        self.Table_TransactionsList.setSortingEnabled(True)
+        self.Table_TransactionsList.horizontalHeader().setSortIndicatorShown(True)
         update_totals(self)
     except SQLAlchemyError as err:
         logger.exception("Error loading transactions for date")

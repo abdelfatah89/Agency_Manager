@@ -108,18 +108,60 @@ class TransactionManager(QMainWindow):
         # Apply icons and sizes from the ICONS dict / constants above
         self._apply_icons()
 
-        # Stretch table columns to fill available width
-        header = self.Table_TransactionsList.horizontalHeader()
-        header.setSectionResizeMode(QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(0, QHeaderView.Stretch)
+        self._configure_transactions_table_columns()
         self.Table_TransactionsList.verticalHeader().setDefaultSectionSize(35)
         self.Table_TransactionsList.verticalHeader().setVisible(False)
         self.Table_TransactionsList.horizontalHeader().setDefaultAlignment(
             Qt.AlignCenter | Qt.AlignVCenter
         )
+        self.Table_TransactionsList.setSortingEnabled(True)
+        self.Table_TransactionsList.horizontalHeader().setSortIndicatorShown(True)
 
         # Wire close button - keep in UI since it's simple
         self.Button_CloseWindow.clicked.connect(self.close)
+
+    def _configure_transactions_table_columns(self):
+        """Configure default widths and enforce max width constraints per column."""
+        table = self.Table_TransactionsList
+        header = table.horizontalHeader()
+
+        header.setSectionResizeMode(QHeaderView.Interactive)
+        header.setStretchLastSection(False)
+        header.setMinimumSectionSize(60)
+        header.setMaximumSectionSize(500)
+
+        column_count = table.columnCount()
+
+        # Keep a compact quantity column and consistent widths for data columns.
+        self._max_col_widths = {0: 220, 1: 80}
+        for col in range(2, column_count):
+            self._max_col_widths[col] = 120
+
+        for col in range(1, column_count):
+            table.setColumnWidth(col, self._max_col_widths.get(col, 120))
+
+        if column_count > 0:
+            header.setSectionResizeMode(0, QHeaderView.Stretch)
+
+        try:
+            header.sectionResized.disconnect(self._on_transactions_section_resized)
+        except TypeError:
+            # Signal was not connected yet.
+            pass
+        header.sectionResized.connect(self._on_transactions_section_resized)
+
+    def _on_transactions_section_resized(self, logical_index, _old_size, new_size):
+        if logical_index <= 0:
+            return
+
+        max_w = self._max_col_widths.get(logical_index)
+        if max_w is None or new_size <= max_w:
+            return
+
+        header = self.Table_TransactionsList.horizontalHeader()
+        header.blockSignals(True)
+        self.Table_TransactionsList.setColumnWidth(logical_index, max_w)
+        header.blockSignals(False)
 
     # ──────────────────────────────────────────────
     #  Icons & sizes  (all sourced from ICONS dict)

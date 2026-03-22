@@ -56,6 +56,9 @@ class FacturesWindow(QMainWindow):
         self.FacturesTable.horizontalHeader().setDefaultAlignment(
             Qt.AlignCenter | Qt.AlignVCenter
         )
+        self.FacturesTable.setSortingEnabled(True)
+        self.FacturesTable.horizontalHeader().setSortIndicatorShown(True)
+        self.FacturesTable.horizontalHeader().setSortIndicator(0, Qt.DescendingOrder)
 
 
 if __name__ == "__main__":
