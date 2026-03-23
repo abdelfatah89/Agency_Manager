@@ -815,15 +815,31 @@ def delete_transaction_from_db(self, trans_id, session=None):
             return False
 
         if _is_tpe_agency(session, transaction.account_name):
+            # Prefer an exact CMI match. A looser key (date/agency/designation only)
+            # can delete the wrong row when duplicate designations exist on same day.
             cmi_match = session.execute(
                 select(CMITransaction)
                 .where(
                     CMITransaction.transaction_date == transaction.transaction_date,
                     CMITransaction.agency_name == transaction.account_name,
                     CMITransaction.designation == transaction.designation,
+                    CMITransaction.amount == transaction.amount,
+                    CMITransaction.alimentation == transaction.paid_amount,
                 )
                 .order_by(desc(CMITransaction.id))
             ).scalars().first()
+
+            if cmi_match is None:
+                cmi_match = session.execute(
+                    select(CMITransaction)
+                    .where(
+                        CMITransaction.transaction_date == transaction.transaction_date,
+                        CMITransaction.agency_name == transaction.account_name,
+                        CMITransaction.designation == transaction.designation,
+                    )
+                    .order_by(desc(CMITransaction.id))
+                ).scalars().first()
+
             if cmi_match:
                 session.delete(cmi_match)
 

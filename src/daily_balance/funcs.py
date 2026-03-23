@@ -196,7 +196,7 @@ def _add_transactions_row(self, transaction, row_index):
     table = self.transactionsTable
     table.insertRow(row_index)
 
-    tx_date = transaction.transaction_date.strftime("%Y-%m-%d") if transaction.transaction_date else ""
+    tx_date = transaction.transaction_date.strftime("%d/%m/%Y") if transaction.transaction_date else ""
     account_name = transaction.account_name or ""
     client_name = transaction.client_name or ""
     amount = parse_float(transaction.amount)
@@ -429,7 +429,6 @@ def load_balance_data(self, daily_id, session=None):
 
 def load_transactions_table(self, daily_id, session=None):
     table = self.transactionsTable
-    table.setSortingEnabled(False)
     table.setRowCount(0)
 
     rows = session.execute(
@@ -438,15 +437,11 @@ def load_transactions_table(self, daily_id, session=None):
             Transaction.daily_id == daily_id,
             (Transaction.today_in.is_(True)) | (Transaction.today_out.is_(True)),
         )
-        .order_by(desc(Transaction.transaction_date), desc(Transaction.id))
+        .order_by(Transaction.id)
     ).scalars().all()
 
     for row_idx, transaction in enumerate(rows):
         _add_transactions_row(self, transaction, row_idx)
-
-    table.setSortingEnabled(True)
-    table.horizontalHeader().setSortIndicatorShown(True)
-    table.sortItems(0, Qt.DescendingOrder)
 
 
 @with_session
