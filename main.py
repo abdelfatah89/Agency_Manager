@@ -176,8 +176,8 @@ def main() -> None:
     else:
         logger.info("Default admin user already exists or users table is populated")
 
-    if not _enforce_license():
-        sys.exit(2)
+    #if not _enforce_license():
+    #    sys.exit(2)
 
     # Start with login screen.
     window = LoginWindow()
