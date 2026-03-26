@@ -23,6 +23,14 @@ def _finalize_journal_table(table):
     table.sortItems(0, Qt.DescendingOrder)
 
 
+def _is_placeholder_selection(selected_text: str) -> bool:
+    return selected_text == "-- اختر الحساب/الوكالة --" or "اختر الحساب/الوكالة" in selected_text
+
+
+def _is_tpe_agency(agency) -> bool:
+    return bool(agency) and (agency.agency_type or "").lower() == "tpe"
+
+
 def get_accounts(self, session=None):
     rows = session.execute(select(Account).order_by(Account.id)).scalars().all()
     return [row.account_name for row in rows if bool(row.is_active)]
@@ -54,7 +62,7 @@ def fill_account_agence_combo(self, session=None):
         logger.exception("Error loading accounts/agencies")
 
 
-def add_transaction_row(self, tx_date, designation, in_amount, out_amount):
+def add_transaction_row(self, tx_date, costumer, designation, in_amount, out_amount):
     table = self.Table_journal
     table.blockSignals(True)
     row = table.rowCount()
@@ -66,9 +74,10 @@ def add_transaction_row(self, tx_date, designation, in_amount, out_amount):
         return item
 
     table.setItem(row, 0, cell(tx_date, Qt.AlignCenter | Qt.AlignVCenter))
-    table.setItem(row, 1, cell(designation, Qt.AlignCenter | Qt.AlignVCenter))
-    table.setItem(row, 2, cell(f"{out_amount:,.2f}", Qt.AlignCenter | Qt.AlignVCenter))
-    table.setItem(row, 3, cell(f"{in_amount:,.2f}", Qt.AlignCenter | Qt.AlignVCenter))
+    table.setItem(row, 1, cell(costumer, Qt.AlignCenter | Qt.AlignVCenter))
+    table.setItem(row, 2, cell(designation, Qt.AlignCenter | Qt.AlignVCenter))
+    table.setItem(row, 3, cell(f"{out_amount:,.2f}", Qt.AlignCenter | Qt.AlignVCenter))
+    table.setItem(row, 4, cell(f"{in_amount:,.2f}", Qt.AlignCenter | Qt.AlignVCenter))
 
     table.blockSignals(False)
 
@@ -76,6 +85,10 @@ def add_transaction_row(self, tx_date, designation, in_amount, out_amount):
 def calculate_balance(self, session=None):
     try:
         selected = self.ComboBox_AccAgenceName.currentText()
+        if _is_placeholder_selection(selected):
+            self.Label_TotalBalanceValue.setText("0.00")
+            return
+
         agency = session.execute(select(Agency).where(Agency.agency_name == selected)).scalar_one_or_none()
 
         if agency:
@@ -84,9 +97,20 @@ def calculate_balance(self, session=None):
             self.Label_TotalBalanceValue.setText(f"{parse_float(agency.balance):,.2f}")
             return
 
-        rows = session.execute(select(Transaction).where(Transaction.account_name == selected)).scalars().all()
-        total_amount = sum(float(row.amount or 0) for row in rows)
-        total_paid = sum(float(row.paid_amount or 0) for row in rows)
+        is_tpe_agency = _is_tpe_agency(agency)
+        if is_tpe_agency:
+            rows = session.execute(
+                select(CMITransaction)
+                .where(CMITransaction.agency_name == selected)
+                ).scalars().all()
+        else:
+            rows = session.execute(
+                select(Transaction)
+                .where(Transaction.account_name == selected)
+            ).scalars().all()
+
+        total_amount = sum(parse_float(row.amount if not is_tpe_agency else row.amount_paid) for row in rows)
+        total_paid = sum(parse_float(row.paid_amount if not is_tpe_agency else row.alimentation) for row in rows)
         self.Label_TotalBalanceValue.setText(f"{total_amount - total_paid:,.2f}")
     except SQLAlchemyError as err:
         logger.exception("Error calculating account review balance")
@@ -95,43 +119,39 @@ def calculate_balance(self, session=None):
 @with_session
 def load_daily_transactions(self, session=None):
     try:
-        _prepare_journal_table(self.Table_journal)
-
         selected = self.ComboBox_AccAgenceName.currentText()
-        if selected == "-- اختر الحساب/الوكالة --" or "اختر الحساب/الوكالة" in selected:
+        if _is_placeholder_selection(selected):
+            _prepare_journal_table(self.Table_journal)
+            _finalize_journal_table(self.Table_journal)
             return
 
+        _prepare_journal_table(self.Table_journal)
+
         agency = session.execute(select(Agency).where(Agency.agency_name == selected)).scalar_one_or_none()
-        if agency and (agency.agency_type or "").lower() == "tpe":
-            rows = session.execute(
-                select(CMITransaction)
-                .where(CMITransaction.agency_name == selected)
-                .order_by(desc(CMITransaction.transaction_date), desc(CMITransaction.id))
-            ).scalars().all()
-            for row in rows:
-                add_transaction_row(
-                    self,
-                    row.transaction_date,
-                    row.designation,
-                    float(row.amount or 0),
-                    float(row.alimentation or 0),
-                )
+        is_tpe_agency = _is_tpe_agency(agency)
+
+        if is_tpe_agency:
+            tpe = select(CMITransaction).where(CMITransaction.agency_name == selected).order_by(desc(CMITransaction.transaction_date), desc(CMITransaction.id))
+            rows = session.execute(tpe).scalars().all()
         else:
             rows = session.execute(
                 select(Transaction)
                 .where(Transaction.account_name == selected)
                 .order_by(desc(Transaction.transaction_date), desc(Transaction.id))
             ).scalars().all()
-            for row in rows:
-                add_transaction_row(
-                    self,
-                    row.transaction_date,
-                    row.designation,
-                    float(row.amount or 0),
-                    float(row.paid_amount or 0),
-                )
 
-            _finalize_journal_table(self.Table_journal)
+        for row in rows:
+            out_column_value = parse_float(row.paid_amount) if is_tpe_agency else parse_float(row.amount)
+            add_transaction_row(
+                self,
+                row.transaction_date,
+                row.client_name if not is_tpe_agency else row.customer_name or "",
+                row.designation,
+                out_column_value,
+                parse_float(row.paid_amount if not is_tpe_agency else row.alimentation),
+            )
+
+        _finalize_journal_table(self.Table_journal)
         calculate_balance(self, session)
     except SQLAlchemyError as err:
         logger.exception("Error loading account review transactions")
@@ -140,17 +160,23 @@ def load_daily_transactions(self, session=None):
 @with_session
 def filter_by_date(self, session=None):
     try:
+        selected = self.ComboBox_AccAgenceName.currentText()
+        if _is_placeholder_selection(selected):
+            _prepare_journal_table(self.Table_journal)
+            _finalize_journal_table(self.Table_journal)
+            return
+
         _prepare_journal_table(self.Table_journal)
 
-        selected = self.ComboBox_AccAgenceName.currentText()
-        if selected == "-- اختر الحساب/الوكالة --" or "اختر الحساب/الوكالة" in selected:
-            return
+        agency = session.execute(select(Agency).where(Agency.agency_name == selected)).scalar_one_or_none()
+        is_tpe_agency = _is_tpe_agency(agency)
 
         from_date = self.Input_FromDate.date().toPyDate()
         to_date = self.Input_ToDate.date().toPyDate()
-        agency = session.execute(select(Agency).where(Agency.agency_name == selected)).scalar_one_or_none()
+        if from_date > to_date:
+            from_date, to_date = to_date, from_date
 
-        if agency and (agency.agency_type or "").lower() == "tpe":
+        if is_tpe_agency:
             rows = session.execute(
                 select(CMITransaction).where(
                     CMITransaction.agency_name == selected,
@@ -158,14 +184,6 @@ def filter_by_date(self, session=None):
                 )
                 .order_by(desc(CMITransaction.transaction_date), desc(CMITransaction.id))
             ).scalars().all()
-            for row in rows:
-                add_transaction_row(
-                    self,
-                    row.transaction_date,
-                    row.designation,
-                    float(row.amount or 0),
-                    float(row.alimentaion or 0),
-                )
         else:
             rows = session.execute(
                 select(Transaction).where(
@@ -175,16 +193,18 @@ def filter_by_date(self, session=None):
                 .order_by(desc(Transaction.transaction_date), desc(Transaction.id))
             ).scalars().all()
 
-            for row in rows:
-                add_transaction_row(
-                    self,
-                    row.transaction_date,
-                    row.designation,
-                    float(row.amount or 0),
-                    float(row.paid_amount or 0),
-                )
+        for row in rows:
+            out_column_value = parse_float(row.paid_amount) if is_tpe_agency else parse_float(row.amount)
+            add_transaction_row(
+                self,
+                row.transaction_date,
+                row.client_name if not is_tpe_agency else row.customer_name or "",
+                row.designation,
+                out_column_value,
+                parse_float(row.paid_amount if not is_tpe_agency else row.alimentation),
+            )
 
-            _finalize_journal_table(self.Table_journal)
+        _finalize_journal_table(self.Table_journal)
         calculate_balance(self, session)
     except SQLAlchemyError as err:
         logger.exception("Error filtering account review transactions")

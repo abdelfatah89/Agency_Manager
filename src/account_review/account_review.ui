@@ -788,6 +788,11 @@ QHeaderView::section {
              </column>
              <column>
               <property name="text">
+               <string>العميل</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
                <string>البيان</string>
               </property>
              </column>

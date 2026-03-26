@@ -56,7 +56,7 @@ class AccountReviewWindow(QMainWindow):
         header = self.Table_journal.horizontalHeader()
         #header.setSectionResizeMode(QHeaderView.Stretch)
         header.setSectionResizeMode(QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(1, QHeaderView.Stretch)
+        header.setSectionResizeMode(2, QHeaderView.Stretch)
         self.Table_journal.verticalHeader().setDefaultSectionSize(35)
         self.Table_journal.verticalHeader().setVisible(False)
         self.Table_journal.horizontalHeader().setDefaultAlignment(

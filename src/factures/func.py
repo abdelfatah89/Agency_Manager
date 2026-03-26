@@ -46,8 +46,8 @@ def add_transaction_row(self, date, designation, amount, paid_amount, transactio
     # Add text cells
     table.setItem(row, 0, cell(date,                        Qt.AlignCenter   | Qt.AlignVCenter, transaction_id))
     table.setItem(row, 1, cell(designation,                 Qt.AlignCenter   | Qt.AlignVCenter))
-    table.setItem(row, 2, cell(f"{amount:,.2f}",       Qt.AlignCenter   | Qt.AlignVCenter))
-    table.setItem(row, 3, cell(f"{paid_amount:,.2f}",    Qt.AlignCenter   | Qt.AlignVCenter))  
+    table.setItem(row, 2, cell(f"{paid_amount:,.2f}",    Qt.AlignCenter   | Qt.AlignVCenter))  
+    table.setItem(row, 3, cell(f"{amount:,.2f}",       Qt.AlignCenter   | Qt.AlignVCenter))
     
     table.blockSignals(False)
 

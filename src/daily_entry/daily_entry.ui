@@ -845,177 +845,6 @@ QPushButton#Button_VerifyCustomer:pressed { background-color: #1D4ED8; }</string
                 <property name="verticalSpacing">
                  <number>5</number>
                 </property>
-                <item row="1" column="3">
-                 <widget class="QLineEdit" name="Input_ItemUnitPrice">
-                  <property name="font">
-                   <font>
-                    <family>Tajawal</family>
-                    <pointsize>12</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="layoutDirection">
-                   <enum>Qt::LeftToRight</enum>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLineEdit#Input_ItemUnitPrice {
-    background-color: #FFFFFF;
-    border: 1px solid #E5E7EB;
-    border-radius: 8px;
-    color: #374151;
-    padding: 6px 10px;
-    min-height: 32px;
-    selection-background-color: #DBEAFE;
-    selection-color: #1E40AF;
-}
-QLineEdit#Input_ItemUnitPrice:focus {
-    border: 2px solid #3B82F6;
-    background-color: #FFFFFF;
-}
-QLineEdit#Input_ItemUnitPrice:hover { border-color: #93C5FD; }
-QLineEdit#Input_ItemUnitPrice:disabled {
-    background-color: #F3F4F6;
-    color: #9CA3AF;
-}</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                  <property name="placeholderText">
-                   <string>0.00</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLineEdit" name="Input_ItemDescription">
-                  <property name="font">
-                   <font>
-                    <family>Tajawal</family>
-                    <pointsize>12</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="layoutDirection">
-                   <enum>Qt::LeftToRight</enum>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLineEdit#Input_ItemDescription {
-    background-color: #FFFFFF;
-    border: 1px solid #E5E7EB;
-    border-radius: 8px;
-    color: #374151;
-    padding: 6px 10px;
-    min-height: 32px;
-    selection-background-color: #DBEAFE;
-    selection-color: #1E40AF;
-}
-QLineEdit#Input_ItemDescription:focus {
-    border: 2px solid #3B82F6;
-    background-color: #FFFFFF;
-}
-QLineEdit#Input_ItemDescription:hover { border-color: #93C5FD; }
-QLineEdit#Input_ItemDescription:disabled {
-    background-color: #F3F4F6;
-    color: #9CA3AF;
-}</string>
-                  </property>
-                  <property name="placeholderText">
-                   <string>وصف الصنف</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="7">
-                 <widget class="QCheckBox" name="CheckBox_TransactionOut">
-                  <property name="font">
-                   <font>
-                    <family>Overpass</family>
-                    <pointsize>10</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>OUT</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="4" alignment="Qt::AlignLeft">
-                 <widget class="QLabel" name="Label_ItemPayment">
-                  <property name="font">
-                   <font>
-                    <family>Tajawal</family>
-                    <pointsize>-1</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel#Label_ItemPayment {
-    color: #6B7280;
-    font-size: 13px;
-    font-weight: 600;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>الدفع</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="3" alignment="Qt::AlignLeft">
-                 <widget class="QLabel" name="Label_ItemUnitPrice">
-                  <property name="font">
-                   <font>
-                    <family>Tajawal</family>
-                    <pointsize>-1</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel#Label_ItemUnitPrice {
-    color: #6B7280;
-    font-size: 13px;
-    font-weight: 600;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>المبلغ</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="5" alignment="Qt::AlignLeft">
-                 <widget class="QLabel" name="Label_RemainingAmountTitle">
-                  <property name="font">
-                   <font>
-                    <family>Tajawal</family>
-                    <pointsize>-1</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel#Label_RemainingAmountTitle {
-    color: #6B7280;
-    font-size: 13px;
-    font-weight: 600;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>الباقي</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
                 <item row="1" column="4">
                  <widget class="QLineEdit" name="Input_PaymentAmount">
                   <property name="font">
@@ -1100,56 +929,6 @@ QLineEdit#Input_RemainingAmount:disabled {
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="1" alignment="Qt::AlignLeft">
-                 <widget class="QLabel" name="Label_ItemQuantity">
-                  <property name="font">
-                   <font>
-                    <family>Tajawal</family>
-                    <pointsize>-1</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel#Label_ItemQuantity {
-    color: #6B7280;
-    font-size: 13px;
-    font-weight: 600;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>الكمية</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="0" alignment="Qt::AlignLeft">
-                 <widget class="QLabel" name="Label_ItemDescription">
-                  <property name="font">
-                   <font>
-                    <family>Tajawal</family>
-                    <pointsize>-1</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel#Label_ItemDescription {
-    color: #6B7280;
-    font-size: 13px;
-    font-weight: 600;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>البيان</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
                 <item row="1" column="1">
                  <widget class="QSpinBox" name="Input_ItemQuantity">
                   <property name="font">
@@ -1199,7 +978,153 @@ QSpinBox#Input_ItemQuantity:disabled {
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="6">
+                <item row="0" column="1" alignment="Qt::AlignLeft">
+                 <widget class="QLabel" name="Label_ItemQuantity">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>-1</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#Label_ItemQuantity {
+    color: #6B7280;
+    font-size: 13px;
+    font-weight: 600;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>الكمية</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="3">
+                 <widget class="QLineEdit" name="Input_ItemUnitPrice">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>12</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="layoutDirection">
+                   <enum>Qt::LeftToRight</enum>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLineEdit#Input_ItemUnitPrice {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    color: #374151;
+    padding: 6px 10px;
+    min-height: 32px;
+    selection-background-color: #DBEAFE;
+    selection-color: #1E40AF;
+}
+QLineEdit#Input_ItemUnitPrice:focus {
+    border: 2px solid #3B82F6;
+    background-color: #FFFFFF;
+}
+QLineEdit#Input_ItemUnitPrice:hover { border-color: #93C5FD; }
+QLineEdit#Input_ItemUnitPrice:disabled {
+    background-color: #F3F4F6;
+    color: #9CA3AF;
+}</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                  <property name="placeholderText">
+                   <string>0.00</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLineEdit" name="Input_ItemDescription">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>12</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="layoutDirection">
+                   <enum>Qt::LeftToRight</enum>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLineEdit#Input_ItemDescription {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    color: #374151;
+    padding: 6px 10px;
+    min-height: 32px;
+    selection-background-color: #DBEAFE;
+    selection-color: #1E40AF;
+}
+QLineEdit#Input_ItemDescription:focus {
+    border: 2px solid #3B82F6;
+    background-color: #FFFFFF;
+}
+QLineEdit#Input_ItemDescription:hover { border-color: #93C5FD; }
+QLineEdit#Input_ItemDescription:disabled {
+    background-color: #F3F4F6;
+    color: #9CA3AF;
+}</string>
+                  </property>
+                  <property name="placeholderText">
+                   <string>وصف الصنف</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="4" alignment="Qt::AlignLeft">
+                 <widget class="QLabel" name="Label_ItemPayment">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>-1</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#Label_ItemPayment {
+    color: #6B7280;
+    font-size: 13px;
+    font-weight: 600;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>الدفع</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="8">
+                 <widget class="QCheckBox" name="CheckBox_TransactionOut">
+                  <property name="font">
+                   <font>
+                    <family>Overpass</family>
+                    <pointsize>10</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>OUT</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="7">
                  <widget class="QCheckBox" name="CheckBox_TransactionIn">
                   <property name="font">
                    <font>
@@ -1211,6 +1136,96 @@ QSpinBox#Input_ItemQuantity:disabled {
                   </property>
                   <property name="text">
                    <string>IN</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="3" alignment="Qt::AlignLeft">
+                 <widget class="QLabel" name="Label_ItemUnitPrice">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>-1</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#Label_ItemUnitPrice {
+    color: #6B7280;
+    font-size: 13px;
+    font-weight: 600;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>المبلغ</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="5" alignment="Qt::AlignLeft">
+                 <widget class="QLabel" name="Label_RemainingAmountTitle">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>-1</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#Label_RemainingAmountTitle {
+    color: #6B7280;
+    font-size: 13px;
+    font-weight: 600;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>الباقي</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0" alignment="Qt::AlignLeft">
+                 <widget class="QLabel" name="Label_ItemDescription">
+                  <property name="font">
+                   <font>
+                    <family>Tajawal</family>
+                    <pointsize>-1</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel#Label_ItemDescription {
+    color: #6B7280;
+    font-size: 13px;
+    font-weight: 600;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>البيان</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="6">
+                 <widget class="QCheckBox" name="CheckBox_CMI">
+                  <property name="font">
+                   <font>
+                    <family>Overpass</family>
+                    <pointsize>10</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>CMI</string>
                   </property>
                  </widget>
                 </item>

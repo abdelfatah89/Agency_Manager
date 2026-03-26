@@ -20,12 +20,12 @@ def create_readonly_checkbox_cell(checked: bool) -> QWidget:
 def apply_numeric_input_restrictions(container, force_numeric_names=None):
     """Apply numeric-only validation on line edits.
 
-    - Accepts digits with optional decimal part (dot or comma), up to 2 decimals.
+    - Accepts optional leading minus and decimal part (dot or comma), up to 2 decimals.
     - Skips non-editable/read-only fields.
     - When force_numeric_names is provided, only those object names are targeted.
     """
     force_names = set(force_numeric_names or [])
-    numeric_pattern = QRegularExpression(r"^\d*(?:[\.,]\d{0,2})?$")
+    numeric_pattern = QRegularExpression(r"^-?\d*(?:[\.,]\d{0,2})?$")
 
     for line_edit in container.findChildren(QLineEdit):
         if not line_edit.isEnabled() or line_edit.isReadOnly():

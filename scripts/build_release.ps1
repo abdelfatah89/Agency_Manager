@@ -67,6 +67,7 @@ $null = New-Item -ItemType Directory -Force -Path $installPath
 $null = New-Item -ItemType Directory -Force -Path (Join-Path $clientPath "sql")
 $null = New-Item -ItemType Directory -Force -Path (Join-Path $clientPath "config")
 $null = New-Item -ItemType Directory -Force -Path (Join-Path $clientPath "logs")
+$null = New-Item -ItemType Directory -Force -Path (Join-Path $clientPath "rclone")
 $null = New-Item -ItemType Directory -Force -Path (Join-Path $adminPath "config")
 
 Copy-Item -Path (Join-Path $repoRoot "dist\KONACH\*") -Destination $clientPath -Recurse
@@ -75,9 +76,11 @@ Copy-Item -Path (Join-Path $repoRoot "dist\LicenseAdminTool\*") -Destination $ad
 Copy-Item -Path (Join-Path $repoRoot "deployment\windows\inno\AgencyManager.iss") -Destination $installPath
 Copy-Item -Path (Join-Path $repoRoot "sql\*.sql") -Destination (Join-Path $clientPath "sql")
 Copy-Item -Path (Join-Path $repoRoot ".env.example") -Destination (Join-Path $clientPath "config\.env.example")
+Copy-Item -Path (Join-Path $repoRoot "release_assets\.env.production.template") -Destination (Join-Path $clientPath "config\.env.production.template")
 Copy-Item -Path (Join-Path $repoRoot "config\license_public_key.pem") -Destination (Join-Path $clientPath "config\license_public_key.pem")
 Copy-Item -Path (Join-Path $repoRoot "admin_license_tool\requirements.txt") -Destination (Join-Path $adminPath "config\requirements.txt")
 Copy-Item -Path (Join-Path $repoRoot "config\license_public_key.pem") -Destination (Join-Path $adminPath "config\license_public_key.pem")
+Copy-Item -Path (Join-Path $repoRoot "rclone\*") -Destination (Join-Path $clientPath "rclone") -Recurse
 
 Copy-Item -Path (Join-Path $repoRoot "release_assets\README_AR_EN.md") -Destination (Join-Path $clientPath "README_AR_EN.md")
 Copy-Item -Path (Join-Path $repoRoot "release_assets\README_ADMIN_TOOL.md") -Destination (Join-Path $adminPath "README_ADMIN_TOOL.md")

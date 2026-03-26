@@ -61,7 +61,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; backgr
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>-954</y>
+         <y>-517</y>
          <width>1223</width>
          <height>1911</height>
         </rect>
@@ -397,6 +397,77 @@ font-family:   &quot;Overpass&quot;;}
                </widget>
               </item>
              </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="Button_refresh">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>44</width>
+               <height>44</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>44</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Tajawal</family>
+               <pointsize>-1</pointsize>
+               <weight>62</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QToolButton#Button_refresh {
+    background-color: transparent;
+    border: none;
+    border-radius: 22px;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 500;
+    spacing: 6px;
+}
+QToolButton#Button_refresh:hover {
+    background-color: #F9FAFB;
+    border-color: #9CA3AF;
+}
+QToolButton#Button_refresh:pressed { background-color: #F3F4F6; }</string>
+             </property>
+             <property name="text">
+              <string>إعادة ضبط</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>../../assets/icons8-refresh.svg</normaloff>../../assets/icons8-refresh.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>26</width>
+               <height>27</height>
+              </size>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonIconOnly</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>false</bool>
+             </property>
+             <property name="arrowType">
+              <enum>Qt::NoArrow</enum>
+             </property>
             </widget>
            </item>
           </layout>
@@ -3025,8 +3096,8 @@ QLabel#lbl_cbTotal {
 QLabel#cbTotalVal {
     color: #10B981;              /* Primary green color */
     font-family: &quot;Segoe UI&quot;, &quot;Arial&quot;;
-    font-size: 30px;             /* Larger size for the amount */
-    font-weight: 800;            /* Extra Bold */
+    font-size: 25px;             /* Larger size for the amount */
+    font-weight: 650;            /* Extra Bold */
     background: transparent;
 }</string>
                </property>
@@ -3519,8 +3590,9 @@ QLineEdit:disabled {
                 <item alignment="Qt::AlignHCenter">
                  <widget class="QLabel" name="cbMizanVal">
                   <property name="styleSheet">
-                   <string notr="true">QLabel#cbMizanVal { color: #3B82F6; font-size: 27px; font-weight: 800; font-family: 'Liberation Mono';
+                                     <string notr="true">QLabel#cbMizanVal { color: #3B82F6; font-size: 27px; font-weight: 800; font-family: 'Liberation Mono';
  }
+QLabel#cbMizanVal[negative="true"] { color: #DC2626; }
 </string>
                   </property>
                   <property name="text">
@@ -3794,7 +3866,12 @@ QLabel {
                    </size>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true"/>
+                   <string notr="true">QFrame#genFirstBalFrame {
+	border-radius: 16px;
+	background-color: rgba(52, 255, 120, 50);
+	padding: 5px;
+	border: 1px solid rgb(52, 255, 120)
+}</string>
                   </property>
                   <layout class="QHBoxLayout">
                    <item>
@@ -3836,6 +3913,48 @@ QLabel {
                        <width>150</width>
                        <height>35</height>
                       </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLineEdit {
+    color: #2c343f;               
+    font-family: &quot;Overpass&quot;; 
+    font-size: 17px;
+    font-weight: 700;
+    background-color: #ffffff;    
+    border-radius: 7px;
+    border: 1px solid #E5E7EB;    
+    padding: 5px 10px;            
+}
+
+/* Hover State - Soft Blue Glow */
+QLineEdit:hover {
+    border: 1px solid #3B82F6;    /* Primary Blue border */
+    background-color: #eff6ff;    /* Extremely light blue wash (Blue-50) */
+}
+
+/* Focus State - Active Typing */
+QLineEdit:focus {
+    border: 2px solid #3B82F6;    /* Thicker blue border */
+    background-color: #ffffff;    
+    outline: none;                
+}
+
+/* Disabled State */
+QLineEdit:disabled {
+    background-color: #f8fafc;    /* Very light slate/grey */
+    color: #94a3b8;
+    border: 1px solid #e2e8f0;
+}
+
+/* Read-Only State (Added for consistency with your previous requests) */
+QLineEdit[readOnly=&quot;true&quot;] {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}</string>
+                     </property>
+                     <property name="text">
+                      <string/>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
@@ -4217,91 +4336,6 @@ QLabel {
                  </widget>
                 </item>
                 <item>
-                 <widget class="QFrame" name="genDailyFrame">
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>50</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>65</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true"/>
-                  </property>
-                  <layout class="QHBoxLayout">
-                   <item>
-                    <widget class="QLabel" name="lbl_othertrans">
-                     <property name="styleSheet">
-                      <string notr="true">QLabel#lbl_genLastBal { color: #6B7280; font-size: 16px; font-weight: 400; }</string>
-                     </property>
-                     <property name="text">
-                      <string>عمليات يومية</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <spacer>
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>10</width>
-                       <height>10</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                   <item>
-                    <widget class="QLineEdit" name="otherTransactionVal">
-                     <property name="minimumSize">
-                      <size>
-                       <width>150</width>
-                       <height>35</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>150</width>
-                       <height>35</height>
-                      </size>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
-                     </property>
-                     <property name="placeholderText">
-                      <string>0.00</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <spacer name="spacer_20">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                     <property name="sizeType">
-                      <enum>QSizePolicy::Fixed</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>10</width>
-                       <height>10</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item>
                  <widget class="QFrame" name="genDailyFrame_2">
                   <property name="minimumSize">
                    <size>
@@ -4325,7 +4359,7 @@ QLabel {
                       <string notr="true">QLabel#lbl_genLastBal { color: #6B7280; font-size: 16px; font-weight: 400; }</string>
                      </property>
                      <property name="text">
-                      <string>الرصيد اليومي</string>
+                      <string>رصيد الصندوق</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
@@ -4391,17 +4425,60 @@ QLabel {
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
-                    <height>50</height>
+                    <height>75</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
                     <width>16777215</width>
-                    <height>65</height>
+                    <height>75</height>
                    </size>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true"/>
+                   <string notr="true">QFrame#genFinalFrame {
+	border-radius: 16px;
+	background-color: rgba(255, 160, 151, 0.3);
+	padding: 5px;
+	border: 1px solid rgb(255, 0, 0);
+}
+
+QLineEdit {
+    color: #ff0000;               
+    font-family: &quot;Overpass&quot;; 
+    font-size: 17px;
+    font-weight: 800;
+    background-color: #ffffff;    
+    border-radius: 7px;
+    border: 1px solid #E5E7EB;    
+    padding: 5px 10px;            
+}
+
+/* Hover State - Soft Blue Glow */
+QLineEdit:hover {
+    border: 1px solid #3B82F6;    /* Primary Blue border */
+    background-color: #eff6ff;    /* Extremely light blue wash (Blue-50) */
+}
+
+/* Focus State - Active Typing */
+QLineEdit:focus {
+    border: 2px solid #3B82F6;    /* Thicker blue border */
+    background-color: #ffffff;    
+    outline: none;                
+}
+
+/* Disabled State */
+QLineEdit:disabled {
+    background-color: #f8fafc;    /* Very light slate/grey */
+    color: #94a3b8;
+    border: 1px solid #e2e8f0;
+}
+
+/* Read-Only State (Added for consistency with your previous requests) */
+QLineEdit[readOnly=&quot;true&quot;] {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}</string>
                   </property>
                   <layout class="QHBoxLayout" name="_4">
                    <item>
@@ -4444,6 +4521,9 @@ QLabel {
                        <height>35</height>
                       </size>
                      </property>
+                     <property name="text">
+                      <string/>
+                     </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
                      </property>
@@ -4485,13 +4565,13 @@ QLabel {
                <property name="minimumSize">
                 <size>
                  <width>0</width>
-                 <height>116</height>
+                 <height>64</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>116</height>
+                 <height>65</height>
                 </size>
                </property>
                <property name="styleSheet">
@@ -4500,7 +4580,7 @@ QLabel {
                <property name="frameShape">
                 <enum>QFrame::NoFrame</enum>
                </property>
-               <layout class="QVBoxLayout" name="verticalLayout_6">
+               <layout class="QHBoxLayout" name="horizontalLayout_7">
                 <property name="spacing">
                  <number>0</number>
                 </property>
@@ -4516,7 +4596,7 @@ QLabel {
                 <property name="bottomMargin">
                  <number>20</number>
                 </property>
-                <item alignment="Qt::AlignHCenter">
+                <item>
                  <widget class="QLabel" name="lbl_genTotalDiff">
                   <property name="styleSheet">
                    <string notr="true">QLabel#lbl_genTotalDiff { color: rgba(255,255,255,1.00); font-size: 20px; font-weight: 600; }</string>
@@ -4526,7 +4606,7 @@ QLabel {
                   </property>
                  </widget>
                 </item>
-                <item alignment="Qt::AlignHCenter">
+                <item>
                  <widget class="QLabel" name="genTotalDiffVal">
                   <property name="styleSheet">
                    <string notr="true">QLabel#genTotalDiffVal { color: #FFFFFF; font-size: 22px; font-weight: 800; font-family: 'Overpass', monospace; letter-spacing: 1px; }</string>

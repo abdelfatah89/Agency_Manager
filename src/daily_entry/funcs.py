@@ -310,9 +310,71 @@ def _is_tpe_agency(session, account_name):
     return agency_type == "TPE"
 
 
-def _upsert_cmi_row(session, transaction_date, agency_name, designation, amount, alimentation):
+def _find_cmi_row_for_transaction(session, transaction):
+    exact = session.execute(
+        select(CMITransaction)
+        .where(
+            CMITransaction.transaction_date == transaction.transaction_date,
+            CMITransaction.agency_name == transaction.account_name,
+            CMITransaction.designation == transaction.designation,
+            CMITransaction.amount == transaction.amount,
+            CMITransaction.alimentation == transaction.paid_amount,
+        )
+        .order_by(desc(CMITransaction.id))
+    ).scalars().first()
+    if exact:
+        return exact
+
+    return session.execute(
+        select(CMITransaction)
+        .where(
+            CMITransaction.transaction_date == transaction.transaction_date,
+            CMITransaction.agency_name == transaction.account_name,
+            CMITransaction.designation == transaction.designation,
+        )
+        .order_by(desc(CMITransaction.id))
+    ).scalars().first()
+
+
+def _delete_cmi_for_transaction(session, transaction):
+    row = _find_cmi_row_for_transaction(session, transaction)
+    if row:
+        session.delete(row)
+
+
+@with_session
+def sync_cmi_checkbox_state(self, force_unchecked=False, trans_id=None, session=None):
+    if not hasattr(self, "CheckBox_CMI"):
+        return
+
+    account_name = self.ComboBox_CustomerAccount.currentText().strip()
+    is_tpe = _is_tpe_agency(session, account_name)
+
+    self.CheckBox_CMI.blockSignals(True)
+    try:
+        self.CheckBox_CMI.setEnabled(is_tpe)
+
+        if force_unchecked or not is_tpe:
+            self.CheckBox_CMI.setChecked(False)
+            return
+
+        if trans_id is None:
+            return
+
+        transaction = session.get(Transaction, int(trans_id))
+        self.CheckBox_CMI.setChecked(bool(getattr(transaction, "cmi_check", False)) if transaction else False)
+    finally:
+        self.CheckBox_CMI.blockSignals(False)
+
+
+def _upsert_cmi_row(session, cmi_check, transaction_date, agency_name, designation, amount, alimentation, customer_name):
     commission, cost = get_commission_and_cost(amount)
-    paid_amount = amount - cost
+    if cmi_check:
+        paid_amount = amount
+        cost = 0.0
+        commission = 0.0
+    else:
+        paid_amount = amount - cost
 
     existing = session.execute(
         select(CMITransaction)
@@ -336,6 +398,7 @@ def _upsert_cmi_row(session, transaction_date, agency_name, designation, amount,
         CMITransaction(
             transaction_date=transaction_date,
             agency_name=agency_name,
+            customer_name=customer_name,
             amount=float(amount),
             paid_amount=float(paid_amount),
             cost=float(cost),
@@ -344,6 +407,12 @@ def _upsert_cmi_row(session, transaction_date, agency_name, designation, amount,
             designation=designation,
         )
     )
+
+
+def _reset_cmi_checkbox_after_save(self):
+    if not hasattr(self, "CheckBox_CMI"):
+        return
+    self.CheckBox_CMI.setChecked(False)
 
 
 @with_session
@@ -388,6 +457,9 @@ def save_transaction_to_db(self, session=None):
             inbox_checked = get_checkbox_state(table, row, 5)
             outbox_checked = get_checkbox_state(table, row, 6)
             total_amount = float(unit_price * qty)
+            cmi_check = bool(self.CheckBox_CMI.isChecked()) if hasattr(self, "CheckBox_CMI") else False
+            if not _is_tpe_agency(session, account):
+                cmi_check = False
 
             if trans_id is not None:
                 transaction = session.get(Transaction, int(trans_id))
@@ -400,6 +472,7 @@ def save_transaction_to_db(self, session=None):
                     transaction.amount = total_amount
                     transaction.paid_amount = float(payment)
                     transaction.balance_due = float(remaining)
+                    transaction.cmi_check = bool(cmi_check)
                     transaction.today_in = bool(inbox_checked)
                     transaction.today_out = bool(outbox_checked)
             else:
@@ -413,15 +486,18 @@ def save_transaction_to_db(self, session=None):
                         amount=total_amount,
                         paid_amount=float(payment),
                         balance_due=float(remaining),
+                        cmi_check=bool(cmi_check),
                         today_in=bool(inbox_checked),
                         today_out=bool(outbox_checked),
                     )
                 )
 
             if _is_tpe_agency(session, account):
-                _upsert_cmi_row(session, transaction_date, account, designation, total_amount, float(payment))
+                _upsert_cmi_row(session, cmi_check, transaction_date, account, designation, total_amount, float(payment), customer_name)
 
         calculate_agency_balances(session)
+        _reset_cmi_checkbox_after_save(self)
+        sync_cmi_checkbox_state(self)
 
         QMessageBox.information(self, "نجح", f"تم حفظ {table.rowCount()} معاملة بنجاح!")
         return True
@@ -522,6 +598,9 @@ def save_single_transaction(
             return False
 
         amount = float(unit_price) * float(qty)
+        cmi_check = bool(self.CheckBox_CMI.isChecked()) if hasattr(self, "CheckBox_CMI") else False
+        if not _is_tpe_agency(session, account):
+            cmi_check = False
 
         if trans_id is not None:
             transaction = session.get(Transaction, int(trans_id))
@@ -534,6 +613,7 @@ def save_single_transaction(
                 transaction.amount = float(amount)
                 transaction.paid_amount = float(payment)
                 transaction.balance_due = float(remaining)
+                transaction.cmi_check = bool(cmi_check)
                 transaction.today_in = bool(inbox)
                 transaction.today_out = bool(outbox)
         else:
@@ -547,15 +627,18 @@ def save_single_transaction(
                     amount=float(amount),
                     paid_amount=float(payment),
                     balance_due=float(remaining),
+                    cmi_check=bool(cmi_check),
                     today_in=bool(inbox),
                     today_out=bool(outbox),
                 )
             )
 
         if _is_tpe_agency(session, account):
-            _upsert_cmi_row(session, transaction_date, account, designation, amount, float(payment))
+            _upsert_cmi_row(session, cmi_check, transaction_date, account, designation, amount, float(payment), customer_name)
 
         calculate_agency_balances(session)
+        _reset_cmi_checkbox_after_save(self)
+        sync_cmi_checkbox_state(self)
 
         return True
     except SQLAlchemyError as err:
@@ -724,6 +807,7 @@ def on_date_changed(self):
     load_transactions_for_date(self)
     update_totals(self)
     on_cancel(self)
+    sync_cmi_checkbox_state(self)
 
 
 def on_customer_selected(self, index):
@@ -735,6 +819,13 @@ def on_customer_selected(self, index):
         self.Input_CustomerName.clear()
     load_transactions_for_date(self)
     update_totals(self)
+    sync_cmi_checkbox_state(self)
+
+
+def on_account_selected(self, index):
+    load_transactions_for_date(self)
+    update_totals(self)
+    sync_cmi_checkbox_state(self, force_unchecked=True)
 
 
 def on_verify(self):
@@ -763,6 +854,7 @@ def on_table_row_clicked(self, row, column):
     self.current_edit_row = row
     self.current_trans_id = trans_id
     self.Button_AddItem.setText("حفظ التعديلات")
+    sync_cmi_checkbox_state(self, trans_id=trans_id)
 
 
 def on_add_item(self):
@@ -815,33 +907,7 @@ def delete_transaction_from_db(self, trans_id, session=None):
             return False
 
         if _is_tpe_agency(session, transaction.account_name):
-            # Prefer an exact CMI match. A looser key (date/agency/designation only)
-            # can delete the wrong row when duplicate designations exist on same day.
-            cmi_match = session.execute(
-                select(CMITransaction)
-                .where(
-                    CMITransaction.transaction_date == transaction.transaction_date,
-                    CMITransaction.agency_name == transaction.account_name,
-                    CMITransaction.designation == transaction.designation,
-                    CMITransaction.amount == transaction.amount,
-                    CMITransaction.alimentation == transaction.paid_amount,
-                )
-                .order_by(desc(CMITransaction.id))
-            ).scalars().first()
-
-            if cmi_match is None:
-                cmi_match = session.execute(
-                    select(CMITransaction)
-                    .where(
-                        CMITransaction.transaction_date == transaction.transaction_date,
-                        CMITransaction.agency_name == transaction.account_name,
-                        CMITransaction.designation == transaction.designation,
-                    )
-                    .order_by(desc(CMITransaction.id))
-                ).scalars().first()
-
-            if cmi_match:
-                session.delete(cmi_match)
+            _delete_cmi_for_transaction(session, transaction)
 
         session.delete(transaction)
         calculate_agency_balances(session)
@@ -893,6 +959,9 @@ def clear_all(self):
     self.Input_ItemQuantity.setValue(1)
     self.CheckBox_TransactionIn.setChecked(False)
     self.CheckBox_TransactionOut.setChecked(False)
+    if hasattr(self, "CheckBox_CMI"):
+        self.CheckBox_CMI.setChecked(False)
+        self.CheckBox_CMI.setEnabled(False)
     self.current_edit_row = None
     self.current_trans_id = None
     self.Button_AddItem.setText("إضافة")
@@ -910,6 +979,9 @@ def on_cancel(self):
         self.CheckBox_TransactionIn.setChecked(False)
     if hasattr(self, "CheckBox_TransactionOut"):
         self.CheckBox_TransactionOut.setChecked(False)
+    if hasattr(self, "CheckBox_CMI"):
+        self.CheckBox_CMI.setChecked(False)
+    sync_cmi_checkbox_state(self)
 
     self.current_edit_row = None
     self.current_trans_id = None
@@ -1033,7 +1105,7 @@ def setup_funcs(self):
     load_accounts(self)
     refresh_description_suggestions(self)
 
-    self.ComboBox_CustomerAccount.currentIndexChanged.connect(lambda: load_transactions_for_date(self))
+    self.ComboBox_CustomerAccount.currentIndexChanged.connect(lambda index: on_account_selected(self, index))
 
     self.Button_VerifyCustomer.clicked.connect(lambda: on_verify(self))
     self.Button_AddItem.clicked.connect(lambda: on_add_item(self))
@@ -1057,3 +1129,5 @@ def setup_funcs(self):
 
     self.CheckBox_TransactionIn.stateChanged.connect(lambda: on_checkbox(self, "CheckBox_TransactionIn"))
     self.CheckBox_TransactionOut.stateChanged.connect(lambda: on_checkbox(self, "CheckBox_TransactionOut"))
+
+    sync_cmi_checkbox_state(self, force_unchecked=True)
